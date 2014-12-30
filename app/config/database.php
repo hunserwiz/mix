@@ -54,10 +54,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
+			'host'      => '128.199.101.142',
 			'database'  => 'betagen',
 			'username'  => 'mix',
-			'password'  => '1234',
+			'password'  => 'mixmz',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
