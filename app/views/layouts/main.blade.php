@@ -36,14 +36,11 @@
 </head>
 
 <body>
-    <div class="row-fluid">
-      <div class="span12" style="padding-top: 5%;">
-        <ul class="breadcrumb">
-          <li><a href="#"><i class="icon-home"></i></a> <span class="divider">/</span></li>
-          <li class="active" lang="En">ใบวางบิล</li>
-        </ul>
-      </div>
-    </div>
+      <div class="row-fluid">
+          <div class="span12" style="padding-top: 5%;">
+        @yield('navigate')  
+           </div>
+     </div>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -78,7 +75,13 @@
                   <li><a href="#">ค่า Commition</a></li>
                   <li><a href="ListOrder.html">รายการสั่งซื้อ</a></li>
                   <li><a href="ใบลงฝากของ.html">รายการฝากลูกค้า</a></li>
-        </ul>
+              </ul>
+              </li>
+               <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">สินค้า <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a></li>
+              </ul>
               </li>
             </ul>
             <div class="navbar-form pull-right">

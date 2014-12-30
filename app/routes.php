@@ -29,15 +29,13 @@ Route::group(array('before' => 'auth'), function() {
 
 	Route::get('/','BillController@getIndex');
 	Route::get('/bill','BillController@getIndex');
-    Route::group(array('prefix' => 'navi','before' => 'navi'), function() {
+  
 
-        Route::group(array('prefix' => 'shop'), function() {
-
-        });
-
+    Route::get('manage-product','ProductController@getIndex');
+    Route::get('form-product','ProductController@getform');
+    Route::group(array('before' => 'csrf'), function() {
+        Route::post('form-product','ProductController@postform');
     });
-
-
     Route::get('account/sign-out','AccountController@getSignOut');
 
  

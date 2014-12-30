@@ -9,10 +9,15 @@
 class ProductController extends BaseController {
 
     public function getIndex() {
-        return View::make('bill.index');
+    	$model = Product::all();
+        return View::make('product.index',compact('model'));
     }
 
-    public function postBill() {
+    public function getForm() {
+        return View::make('product.form');
+    }
+
+    public function postForm() {
 
     }
     
