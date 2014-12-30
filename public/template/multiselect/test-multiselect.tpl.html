@@ -1,0 +1,58 @@
+<div class="row">
+	<div class="col-sm-5">
+		<table class="table table-bordered table-condensed multi-select">
+			<thead>
+				<tr>
+					<th>Available</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<select class="span12 from-list" size="8" multiple>
+							<option data-ng-repeat="siteGroup in fromList" data-bo-value="siteGroup.siteGroupCode" data-bo-bind="siteGroup.siteGroupCode+' : '+siteGroup.siteGroupName"></option>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="col-sm-2">
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<button class="span12 btn btn-default move-from-to-all" style="margin-top: 16px;">
+				<i class="fa fa-angle-double-right"></i>
+				</button>
+				<button class="span12 btn btn-default move-from-to" style="margin-top: 5px;">
+				<i class="fa fa-angle-right"></i>
+				</button>
+				<button class="span12 btn btn-default move-to-from" style="margin-top: 16px;">
+				<i class="fa fa-angle-left"></i>
+				</button>
+				<button class="span12 btn btn-default move-to-from-all" style="margin-top: 5px;">
+				<i class="fa fa-angle-double-left"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-sm-5">
+		<table class="table table-bordered table-condensed multi-select">
+			<thead>
+				<tr>
+					<th>Selected</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<select class="span12 to-list" size="8" multiple>
+							<option data-ng-repeat="siteGroup in toList" data-bo-value="siteGroup.siteGroupCode" data-bo-bind="siteGroup.siteGroupCode+' : '+siteGroup.siteGroupName"></option>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
