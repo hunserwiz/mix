@@ -1,13 +1,13 @@
 <?php
 
-class Bill extends Eloquent {
+class Order extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'order';
+    protected $table = 'orders';
     protected $primaryKey = 'order_id';
     
 

@@ -27,8 +27,8 @@ Route::group(array('before' => 'guest'), function() {
 });
 Route::group(array('before' => 'auth'), function() {
 
-	Route::get('/','BillController@getIndex');
-	Route::get('/bill','BillController@getIndex');
+	Route::get('/','OrderController@getIndex');
+	Route::get('/order','OrderController@getIndex');
   
 
     Route::get('manage-product','ProductController@getIndex');
@@ -37,6 +37,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('delete-product','ProductController@postDelete');
 
     Route::group(array('before' => 'csrf'), function() {
+        Route::post('post-order','OrderController@postForm');
         Route::post('post-product','ProductController@postForm');
     });
 

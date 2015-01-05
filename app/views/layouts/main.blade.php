@@ -52,7 +52,7 @@
           <a class="brand" href="#"><img src="images/immage3.png" alt=""></a>
           <div class="nav-collapse collapse">
             <ul class="nav nav-tabs">
-              <li class="" ><a href="index.html">หน้าแรก</a></li>
+              <li class="" ><a href="{{ url('/') }}">หน้าแรก</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">บัญชี <b class="caret"></b></a>
                 <ul class="dropdown-menu">
