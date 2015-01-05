@@ -32,12 +32,13 @@ Route::group(array('before' => 'auth'), function() {
   
 
     Route::get('manage-product','ProductController@getIndex');
-    Route::get('form-product','ProductController@getform');
+    Route::get('form-product','ProductController@getForm');
+    Route::get('edit-product/{id}','ProductController@getForm');
+    Route::get('delete-product/{id}','ProductController@getDelete');
+
     Route::group(array('before' => 'csrf'), function() {
-        Route::post('form-product','ProductController@postform');
+        Route::post('post-product','ProductController@postForm');
     });
+
     Route::get('account/sign-out','AccountController@getSignOut');
-
- 
-
 });

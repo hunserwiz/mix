@@ -29,22 +29,25 @@
 							@foreach($model as $data)
 							<tr>
 								<td style="text-align:center">{{ $data->name }}</td>
-								<td style="text-align:center">{{ $data->categorise_id }}</td>
+								<td style="text-align:center">{{ $data->categorise($data->categorise_id) }}</td>
 								<td style="text-align:center">{{ $data->price }}</td>
 								<td style="text-align:center">{{ $data->flavor }}</td>
 								<td style="text-align:center">{{ $data->size }}</td>
-								<td style="text-align:center">{{ $data->unit }}</td>
+								<td style="text-align:center">{{ $data->unit->product_balance }}</td>
 								<td style="text-align:center">
 									<span class="" >
-										<a title=""><i class="icon-edit"></i>
+										<a href="{{ url('edit-product/'.$data->product_id) }}" title="">
+											<i class="icon-edit"></i>
 										</a>
 									</span>
 									<span class="" >
-										<a title=""><i class="icon-trash"></i>
+										<a href="{{ url('delete-product/'.$data->product_id) }}" title="">
+											<i class="icon-trash"></i>
 										</a>
 									</span>
 									<span class="" >
-										<a href="BillDetailx.pdf" title="ÍÍ¡ãºàÊÃç¨"><i class="icon-eye-open"></i>
+										<a href="BillDetailx.pdf" title="ÍÍ¡ãºàÊÃç¨">
+											<i class="icon-eye-open"></i>
 										</a>
 									</span>
 								</td>							
