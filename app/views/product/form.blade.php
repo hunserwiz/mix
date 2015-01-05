@@ -10,7 +10,9 @@
 @section('content')
 <div>
 {{ Form::open(array('url' => 'post-product')) }}
+@if($model != null)
 {{ Form::hidden('product_id',$model->product_id) }}
+@endif		
 			<div class="row-fluid" >
 					<!-- <div class="span6">
 						<label class="span4">วันที่เพิ่มสินค้า  :</label>
@@ -20,9 +22,15 @@
 					</div> -->
 					<div class="span6">
 						<label class="span4">ประเภทสินค้า  :</label>
-						<div class="span8">					
-							{{ Form::select('categorise_id', $array_categories, $model->categorise_id ,
+						<div class="span8">		
+						@if($model == null)
+							 {{ Form::select('categorise_id', $array_categories, Input::old('categorise_id') ,
                                           array("class"=>"form-control","id"=>"categorise_id")) }}
+						@else
+							 {{ Form::select('categorise_id', $array_categories, $model->categorise_id ,
+                                          array("class"=>"form-control","id"=>"categorise_id")) }}
+						@endif			
+							
 
 						</div>
 					</div>
@@ -32,7 +40,7 @@
 					<div class="span6">
 						<label class="span4">ชื่อสินค้า :</label>
 						<div class="span8">
-						@if($model == null){
+						@if($model == null)
 							 {{ Form::text('name',Input::old('name') ,
                                         array('class'=>'form-control',"id"=>"name",'placeholder'=>'กรอกชื่อสินค้า')) }}
 						@else
@@ -48,7 +56,7 @@
 				<div class="span6">
 					<label class="span4">ราคาต่อหน่วย :</label>
 					<div class="span8">
-						@if($model == null){
+						@if($model == null)
 							 {{ Form::text('price',Input::old('price') ,
                                         array('class'=>'form-control',"id"=>"price",'placeholder'=>'กรอกราคาต่อหน่วย')) }}
 						@else
@@ -67,7 +75,7 @@
 				  <div class="span6">
 					<label class="span4">รส  :</label>
 					<div class="span8">
-						@if($model == null){
+						@if($model == null)
 							{{ Form::text('flavor',Input::old('flavor') ,
                                         array('class'=>'form-control',"id"=>"flavor",'placeholder'=>'กรอกรส')) }}
 						@else
@@ -84,7 +92,7 @@
 				<label class="span4">ขนาด   :</label>
 				<div class="span8">					
 					<div class="span8">
-						@if($model == null){
+						@if($model == null)
 							{{ Form::text('size',Input::old('size') ,
                                         array('class'=>'form-control',"id"=>"size",'placeholder'=>'กรอกขนาด')) }}
 						@else
@@ -103,7 +111,7 @@
 			<div class="span6">
 					<label class="span4">จำนวน:</label>
 					<div class="span8">
-						@if($model == null){
+						@if($model == null)
 							{{ Form::text('product_balance',Input::old('product_balance') ,
                                         array('class'=>'form-control',"id"=>"product_balance",'placeholder'=>'กรอกจำนวน')) }}
 						@else
@@ -121,8 +129,11 @@
 		</div>
 		 <div class="text-right" style="padding-right:19%">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
-		</div>
 {{ Form::Close() }}
+		 	<a href="{{ url('manage-product') }}" >
+		 		<button class='btn btn-danger'>ยกเลิก</button>
+		 	</a>
+		</div>
 
 </div>
 @stop

@@ -13,16 +13,24 @@ class ProductController extends BaseController {
         return View::make('product.index',compact('model'));
     }
 
-    public function getForm($product_id=null) {
+    public function getForm($product_id = NULL) {
     	$array_categories = Categorise::lists('name','categorise_id');
-        if($product_id != null || $_GET['product_id']){
+        $model = null;
+        $model_stock = null;
+        return View::make('product.form',compact(
+            'array_categories',
+            'model',
+            'model_stock'
+            ));
+    }
+    public function getFormEdit($product_id = NULL) {
+        $array_categories = Categorise::lists('name','categorise_id');
+
+        if($product_id != NULL || $_GET['product_id']){
             if($product_id == null)
                 $product_id = $_GET['product_id'];
                 $model = Product::find($product_id);
                 $model_stock = Stock::where('product_id','=',$product_id)->first();
-        }else{
-            $model = null;
-            $model_stock = null;
         }
         return View::make('product.form',compact(
             'array_categories',
@@ -30,7 +38,6 @@ class ProductController extends BaseController {
             'model_stock'
             ));
     }
-
     public function postForm() {
     	$validation = Product::validate(Input::all());
         $validation->setAttributeNames(Product::attributeName());
@@ -66,13 +73,20 @@ class ProductController extends BaseController {
                 }
             }
         }else{
-        	return Redirect::action('ProductController@getForm',array('product_id'=>Input::get('product_id')))
+            if(Input::get('product_id')){
+        	return Redirect::action('ProductController@getFormEdit',array('product_id'=>Input::get('product_id')))
                             ->withErrors($validation)
                             ->withInput();    
+            }else{
+            return Redirect::action('ProductController@getForm')
+                        ->withErrors($validation)
+                            ->withInput();    
+            }
         }
     }
     
-    public function getDelete($product_id = null) {
+    public function postDelete() {
+        $product_id = Input::get('product_id');
         $model_stock = Stock::where('product_id','=',$product_id)->first();
         if($model_stock->delete()){
             $model = Product::find($product_id);

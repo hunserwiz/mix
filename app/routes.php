@@ -33,8 +33,8 @@ Route::group(array('before' => 'auth'), function() {
 
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');
-    Route::get('edit-product/{id}','ProductController@getForm');
-    Route::get('delete-product/{id}','ProductController@getDelete');
+    Route::get('edit-product/{product_id}','ProductController@getFormEdit');
+    Route::post('delete-product','ProductController@postDelete');
 
     Route::group(array('before' => 'csrf'), function() {
         Route::post('post-product','ProductController@postForm');

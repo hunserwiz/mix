@@ -81,6 +81,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">สินค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a></li>
+                  <li><a href="{{ url('manage-product') }}">รายการฝากลูกค้า</a></li>
               </ul>
               </li>
             </ul>

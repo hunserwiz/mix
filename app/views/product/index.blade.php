@@ -3,11 +3,13 @@
 @section('navigate')
         <ul class="breadcrumb">
           <li><a href="{{ url('/') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
-          <li class="active" lang="En">จัดการสินค้า</li>
+          <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a> <span class="divider">/</span></li>
+          <li class="active" lang="En">รายการสินค้า</li>
         </ul>
 @stop
 @section('content')
 <div>
+	<form name="form-sep">
 		<div class="text-Left" style="padding-right:19%">
 			<a class="btn btn-primary" href="{{ url('form-product') }}"><i class="icon-plus-sign icon-white"></i>&nbsp;<span lang="En" >Add New</span></a>			
 		</div>
@@ -15,6 +17,7 @@
 					<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
 							<thead>
 								<tr>
+									<th style="text-align:center">ลำดับที่</th>
 									<th style="text-align:center">ชื่อสินค้า</th>
 									<th style="text-align:center">ประเภท</th>
 									<th style="text-align:center">ราคาต่อหน่วย</th>
@@ -26,8 +29,10 @@
 							</thead>	
 							<tbody>	
 							@if($model->count() > 0)
-							@foreach($model as $data)
+							@foreach($model as $k => $data)
+							<?php $k++; ?>
 							<tr>
+								<td style="text-align:center">{{ $k }}</td>
 								<td style="text-align:center">{{ $data->name }}</td>
 								<td style="text-align:center">{{ $data->categorise($data->categorise_id) }}</td>
 								<td style="text-align:center">{{ $data->price }}</td>
@@ -41,14 +46,16 @@
 										</a>
 									</span>
 									<span class="" >
-										<a href="{{ url('delete-product/'.$data->product_id) }}" title="">
-											<i class="icon-trash"></i>
-										</a>
-									</span>
-									<span class="" >
-										<a href="BillDetailx.pdf" title="ÍÍ¡ãºàÊÃç¨">
-											<i class="icon-eye-open"></i>
-										</a>
+									{{ Form::open(array(
+                                    'id' => 'delete-product',  
+                                    'url' => 'delete-product',
+                                    'onsubmit' => 'return confirm("คุณต้องการลบข้อมูลหรือไม่?");'
+                                               )) }}
+                               {{ Form::hidden('product_id', $data->product_id) }}
+                               {{ Form::submit('',array(
+                               						'class'=>'icon-trash'
+                               						)) }}
+								{{ Form::close() }}
 									</span>
 								</td>							
 							</tr>
@@ -62,6 +69,7 @@
 							</tbody>
 					</table>
 			</div>	
+	</form>		
 </div>	
 
 @stop
