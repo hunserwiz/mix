@@ -29,7 +29,7 @@ Route::group(array('before' => 'auth'), function() {
 
 	Route::get('/','OrderController@getIndex');
 	Route::get('/order','OrderController@getIndex');
-  
+    Route::get('form-order','OrderController@getForm');
 
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');

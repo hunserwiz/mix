@@ -11,7 +11,7 @@
 <div>
 	<form name="form-sep">
 		<div class="text-Left" style="padding-right:19%">
-			<a class="btn btn-primary" href="{{ url('form-bill') }}"><i class="icon-plus-sign icon-white"></i>&nbsp;<span lang="En" >Add New</span></a>			
+			<a class="btn btn-primary" href="{{ url('form-order') }}"><i class="icon-plus-sign icon-white"></i>&nbsp;<span lang="En" >Add New</span></a>			
 		</div>
 				<div class="row-fluid" style="padding-top: 0%;">
 					<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
