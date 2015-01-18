@@ -16,8 +16,9 @@ class OrderController extends BaseController {
         $list_categorise = Categorise::lists('name','categorise_id');
         $model_agent = Agent::get();
         $list_agent = array();
-        $list_location = array();
+        $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
+
 
         if($model_agent->count() > 0)
         foreach ($model_agent as $key => $value) {

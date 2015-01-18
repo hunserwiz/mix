@@ -32,7 +32,7 @@
       {{ HTML::script('js/bootstrap-collapse.js') }}     
       {{ HTML::script('js/bootstrap-carousel.js') }}     
       {{ HTML::script('js/bootstrap-typeahead.js') }}    
-   
+      {{ HTML::script('js/bootstrap-datepicker.js') }}    
 </head>
 
 <body>
