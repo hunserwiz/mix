@@ -2,6 +2,13 @@
 
 @section('content')
 {{ Form::open(array('url' => 'post-product')) }}
+<style type="text/css">
+@import url('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css');
+
+.date-form { margin: 10px; }
+label.control-label span { cursor: pointer; }
+</style>
+
 	<form name="form-sep">
 		<!-- ################################################################################ -->
 			<div class="row-fluid" >
@@ -9,7 +16,7 @@
 						<label class="span4">วันที่ออกใบสินค้า  :</label>
 						<div class="span8">					
 							{{ Form::text('date_order', Input::old('date_order'),
-                                            array("id"=>"date_order",'required'=>'','class'=>'datepicker','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"date_order",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
 						</div>
 					</div>
 			</div>
@@ -99,10 +106,13 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.datepicker').datepicker({
-    format: 'mm/dd/yyyy',
-    startDate: '-3d'
-})
+$(".date-picker").datepicker();
+
+$(".date-picker").on("change", function () {
+    var id = $(this).attr("id");
+    var val = $("label[for='" + id + "']").text();
+    $("#msg").text(val + " changed");
+});
 });
 
 </script>
