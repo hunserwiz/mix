@@ -34,7 +34,7 @@
 										</a>
 									</span>
 									<span class="" >
-										<a id='del_{{ $data->order_id }}' data-order_id-id='{{ $data->order_id }}' href="#" title="">
+										<a id='del_{{ $data->order_id }}' data-order-id='{{ $data->order_id }}' href="#" title="">
 											<i class="icon-trash"></i>
 										</a>
 									</span>
@@ -64,7 +64,7 @@ $(document).ready(function(){
                 $.ajax({
                     url: "{{ url('delete-order') }}",
                     type: "post",
-                    data: {product_id:product_id},
+                    data: {order_id:order_id},
                     success:function(r){                       
                         if(r.status == 'success'){
                             $.ajax({

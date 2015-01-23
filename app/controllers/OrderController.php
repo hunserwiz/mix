@@ -23,7 +23,7 @@ class OrderController extends BaseController {
         $model = Order::skip($skip)->take($arr_perpage['order'])
                             ->get();
 
-        $count_model = Product::count();                
+        $count_model = Order::count();                
 
         $arr_count_page['order'] = ceil($count_model/$arr_perpage['order']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['order'],$arr_count_page['order']);
@@ -53,7 +53,7 @@ class OrderController extends BaseController {
         $model = Order::skip($skip)->take($arr_perpage['order'])
                             ->get();
 
-        $count_model = Product::count();                
+        $count_model = Order::count();                
 
         $arr_count_page['order'] = ceil($count_model/$arr_perpage['order']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['order'],$arr_count_page['order']);

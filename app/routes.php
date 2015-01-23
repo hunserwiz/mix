@@ -32,6 +32,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('form-order','OrderController@getForm');
     Route::get('edit-order/{order_id}','OrderController@getFormEdit');
     Route::post('delete-order','OrderController@postDelete');
+    Route::post('search-order','OrderController@postSearch');
 
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');
