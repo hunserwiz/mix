@@ -9,8 +9,61 @@
 class ProductController extends BaseController {
 
     public function getIndex() {
-    	$model = Product::all();
-        return View::make('product.index',compact('model'));
+        $keyword = "";
+
+        $arr_page = array(
+            'product' => 1
+        );
+
+        $arr_perpage = array(
+            'product' => 4
+        );
+        $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
+
+        $model = Product::skip($skip)->take($arr_perpage['product'])
+                            ->get();
+
+        $count_model = Product::count();                
+
+        $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
+        return View::make('product.index',compact('model',
+                                        'count_model',
+                                        'keyword',
+                                        'arr_list_page',
+                                        'arr_perpage',
+                                        'arr_page',
+                                        'arr_count_page'));
+    }
+
+    public function postSearch() {
+        $keyword = Input::get('keyword');
+
+        $arr_page = array(
+            'product' => Input::get('page')
+        );
+
+        $arr_perpage = array(
+            'product' => Input::get('perpage')
+        );
+        $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
+
+         $model = Product::skip($skip)->take($arr_perpage['product'])
+                            ->get();
+
+        $count_model = Product::count();                
+
+        $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
+
+        return View::make('product._tbl',compact('model',
+                                        'count_model',
+                                        'keyword',
+                                        'arr_list_page',
+                                        'arr_perpage',
+                                        'arr_page',
+                                        'arr_count_page'
+            ));
     }
 
     public function getForm($product_id = NULL) {
@@ -84,15 +137,15 @@ class ProductController extends BaseController {
             }
         }
     }
-    
+   
     public function postDelete() {
         $product_id = Input::get('product_id');
         $model_stock = Stock::where('product_id','=',$product_id)->first();
         if($model_stock->delete()){
             $model = Product::find($product_id);
             $model->delete();
+            return Response::json(array('status' => 'success'));
         }
-        return Redirect::action('ProductController@getIndex');
     }
 
 

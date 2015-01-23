@@ -545,6 +545,15 @@ class ThaiHelper {
     public static function getLocationList($option = null){
         return array('1'=>'พัทยาเหนือ','2'=>'พัทยาใต้');
     }
+    public static function DateToDB($date = null){
+        $result = "";
+        if($date != null){
+            $ex = explode("/", $date);
+            $result = $ex[2]."-".$ex[1]."-".$ex[0];
+        }
+        return $result;
+        
+    }
 }
 
 ?>

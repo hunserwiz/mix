@@ -12,7 +12,7 @@ class Order extends Eloquent {
     	
     public static function validate($input) {
         $rules = array(
-            'date_order' => 'required ',        	
+            'order_date' => 'required ',        	
             'product_id' => 'required',
             'price' => 'required|integer',       
             'amount' => 'required|integer ',
@@ -27,7 +27,7 @@ class Order extends Eloquent {
 
     public static function attributeName() {
         $attributes_name = array(      
-            'date_order' => 'วันที่ออกใบสินค้า',        	
+            'order_date' => 'วันที่ออกใบสินค้า',        	
             'product_id' => 'สินค้า',
             'price' => ' ราคาต่อหน่วย',       
             'amount' => 'จำนวนสินค้า',
@@ -39,5 +39,24 @@ class Order extends Eloquent {
 
         return $attributes_name;
     }
+
+    public function GetUser($id){
+          $model = User::find($id);
+          return $model->name;
+    }
+    public function GetAgent($id){
+          $model = Agent::find($id);
+          return $model->agent_name." " .$model->agent_lastname;
+    }
+    public function GetLocation($id){
+        $text = "";
+          if($id == 1){
+            $text = "พัทยาเหนือ";
+          }else if($id == 2){
+            $text = "พัทยาใต้";
+          }
+          return $text;
+    }
+    
 }
 ?>

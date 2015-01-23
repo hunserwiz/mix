@@ -1,13 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
-{{ Form::open(array('url' => 'post-product')) }}
+{{ Form::open(array('url' => 'post-order')) }}
 <style type="text/css">
 @import url('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css');
 
 .date-form { margin: 10px; }
 label.control-label span { cursor: pointer; }
 </style>
+            {{ $errors->first() }}
 
 	<form name="form-sep">
 		<!-- ################################################################################ -->
@@ -15,8 +16,15 @@ label.control-label span { cursor: pointer; }
 					<div class="span6">
 						<label class="span4">วันที่ออกใบสินค้า  :</label>
 						<div class="span8">					
-							{{ Form::text('date_order', Input::old('date_order'),
-                                            array("id"=>"date_order",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+							{{ Form::text('order_date', Input::old('order_date'),
+                                            array("id"=>"order_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+						</div>
+					</div>
+					<div class="span6">
+						<label class="span4">เรื่อง  :</label>
+						<div class="span8">					
+							{{ Form::text('order_title', Input::old('order_title'),
+                                            array("id"=>"order_title",'required'=>'','class'=>'form-control','placeholder'=>'กรอก หัวเรื่อง')) }}
 						</div>
 					</div>
 			</div>
@@ -25,14 +33,14 @@ label.control-label span { cursor: pointer; }
 					<div class="span6">
 						<label class="span4">ประเภทสินค้า  :</label>
 						<div class="span8">					
-							{{ Form::select('building', array(''=> 'กรุณาเลือก') + $list_categorise  , null, array('required'=>'',"class"=>"form-control")) }}
+							{{ Form::select('category', array(''=> 'กรุณาเลือก') + $list_categorise  , null, array('required'=>'',"class"=>"form-control")) }}
 						</div>
 					</div>
 					<div class="span6">
 						<label class="span4">ชื่อสินค้า :</label>
 						<div class="span8">
-							{{ Form::text('name', Input::old('name'),
-                                            array("id"=>"name",'required'=>'','class'=>'form-control','placeholder'=>'กรอกชื่อสินค้า')) }}
+							{{ Form::text('product_id', Input::old('product_id'),
+                                            array("id"=>"product_id",'required'=>'','class'=>'form-control','placeholder'=>'กรอกชื่อสินค้า')) }}
 						</div>
 					</div>
 
@@ -106,7 +114,9 @@ label.control-label span { cursor: pointer; }
 
 <script type="text/javascript">
 $(document).ready(function(){
-$(".date-picker").datepicker();
+$(".date-picker").datepicker({
+	format: 'dd/mm/yyyy',
+});
 
 $(".date-picker").on("change", function () {
     var id = $(this).attr("id");

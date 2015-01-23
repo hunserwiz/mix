@@ -30,11 +30,14 @@ Route::group(array('before' => 'auth'), function() {
 	Route::get('/','OrderController@getIndex');
 	Route::get('/order','OrderController@getIndex');
     Route::get('form-order','OrderController@getForm');
+    Route::get('edit-order/{order_id}','OrderController@getFormEdit');
+    Route::post('delete-order','OrderController@postDelete');
 
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');
     Route::get('edit-product/{product_id}','ProductController@getFormEdit');
     Route::post('delete-product','ProductController@postDelete');
+    Route::post('search-product','ProductController@postSearch');
 
     Route::group(array('before' => 'csrf'), function() {
         Route::post('post-order','OrderController@postForm');
