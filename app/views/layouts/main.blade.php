@@ -56,10 +56,9 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">บัญชี <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="finance.html">บัญชีรายรับ - รายจ่าย</a></li>
-          <li><a href="Financedetail.html">รายการบัญชีรายรับ - รายจ่าย</a></li>
-                  <li><a href="#">ลูกหนี้</a></li>
-                  <li><a href="#">sell</a></li>
+                  <li><a href="{{ url('finance') }}">บัญชีรายรับ - รายจ่าย</a></li>
+                  <li><a href="{{ url('debtor') }}">ลูกหนี้</a></li>
+                  <li><a href="{{ url('sell') }}">sell</a></li>
         </ul>
               </li>
         <li class="dropdown">

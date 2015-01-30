@@ -34,6 +34,12 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('delete-order','OrderController@postDelete');
     Route::post('search-order','OrderController@postSearch');
 
+    Route::get('finance','FinanceController@getIndex');
+
+    Route::get('debtor','DebtorController@getIndex');
+
+    Route::get('sell','SellController@getIndex');
+
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');
     Route::get('edit-product/{product_id}','ProductController@getFormEdit');
