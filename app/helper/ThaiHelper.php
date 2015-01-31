@@ -545,6 +545,9 @@ class ThaiHelper {
     public static function getLocationList($option = null){
         return array('1'=>'พัทยาเหนือ','2'=>'พัทยาใต้');
     }
+    public static function getTypeAccountList($option = null){
+        return array('1'=>'รายรับ','2'=>'รายจ่าย','3'=>'อื่น ๆ','4'=>'เก็บหนี้ + จ่ายค้าง');
+    }
     public static function DateToDB($date = null){
         $result = "";
         if($date != null){

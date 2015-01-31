@@ -35,6 +35,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-order','OrderController@postSearch');
 
     Route::get('finance','FinanceController@getIndex');
+    Route::get('form-finance','FinanceController@getForm');
 
     Route::get('debtor','DebtorController@getIndex');
 
@@ -47,6 +48,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-product','ProductController@postSearch');
 
     Route::group(array('before' => 'csrf'), function() {
+        Route::post('post-finance','FinanceController@postForm');
         Route::post('post-order','OrderController@postForm');
         Route::post('post-product','ProductController@postForm');
     });
