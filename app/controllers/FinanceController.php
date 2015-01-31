@@ -49,4 +49,38 @@ class FinanceController extends BaseController {
         $list_type = ThaiHelper::getTypeAccountList();
         return View::make('finance.form',compact('list_user','list_type'));
     }
+
+    public function postForm() {
+        $validation = Finance::validate(Input::all());
+        $validation->setAttributeNames(Finance::attributeName());
+        if ($validation->passes()) {
+            if(Input::get('id')){
+                $model = Finance::find(Input::get('id'));
+                $model->type = Input::get('type');
+                $model->price = Input::get('price');
+                $model->detail = Input::get('detail');
+                $model->create_by = Input::get('create_by');
+                if($model->save()){
+                        return Redirect::action('FinanceController@getIndex');
+                }
+            }else{
+                echo "<pre>";
+                print_r(Input::all());
+                echo "</pre>";
+                die;
+                $model = new Finance();
+                $model->type = Input::get('type');
+                $model->price = Input::get('price');
+                $model->detail = Input::get('detail');
+                $model->create_by = Input::get('create_by');
+                if($model->save()){
+                    return Redirect::action('FinanceController@getIndex');
+                }
+            }
+        }else{
+            return Redirect::action('FinanceController@getForm')
+                            ->withErrors($validation)
+                            ->withInput();    
+        }
+    }
 }

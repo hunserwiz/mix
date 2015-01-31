@@ -7,7 +7,7 @@
 <div>
 	<form name="form-sep">
 		<!-- ################################################################################ -->
-			<div class="row-fluid" >
+		<!-- 	<div class="row-fluid" >
 					<div class="span6">
 						<label class="span4"> วันที่ลงข้อมูล  :</label>
 						<div class="span8">					
@@ -15,7 +15,7 @@
                                             array("id"=>"created_at",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
 						</div>
 					</div>
-			</div>
+			</div> -->
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >
 					<div class="span6">
@@ -50,7 +50,7 @@
 			<div class="span6">
 				<label class="span4"> เจ้าหน้าที่ออกใบเสร็จ :</label>
 				<div class="span8">
-						{{ Form::select('operate_by', array(''=> 'กรุณาเลือก') + $list_user  , null, array('required'=>'',"class"=>"form-control")) }}			
+						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user  , null, array('required'=>'',"class"=>"form-control")) }}			
 				</div>
 			</div>
 		<div>
