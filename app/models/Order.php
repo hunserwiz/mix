@@ -40,10 +40,6 @@ class Order extends Eloquent {
         return $attributes_name;
     }
 
-    public function GetUser($id){
-          $model = User::find($id);
-          return $model->name;
-    }
     public function GetAgent($id){
           $model = Agent::find($id);
           return $model->agent_name." " .$model->agent_lastname;

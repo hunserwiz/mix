@@ -56,6 +56,7 @@ class FinanceController extends BaseController {
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Finance::find(Input::get('id'));
+                $model->date_account = Input::get('date_account');
                 $model->type = Input::get('type');
                 $model->price = Input::get('price');
                 $model->detail = Input::get('detail');
@@ -64,11 +65,8 @@ class FinanceController extends BaseController {
                         return Redirect::action('FinanceController@getIndex');
                 }
             }else{
-                echo "<pre>";
-                print_r(Input::all());
-                echo "</pre>";
-                die;
                 $model = new Finance();
+                $model->date_account = ThaiHelper::DateToDB(Input::get('date_account'));
                 $model->type = Input::get('type');
                 $model->price = Input::get('price');
                 $model->detail = Input::get('detail');

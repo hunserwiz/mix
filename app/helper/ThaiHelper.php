@@ -557,6 +557,10 @@ class ThaiHelper {
         return $result;
         
     }
+    public static function GetUser($id){
+          $model = User::find($id);
+          return $model->name;
+    }
 }
 
 ?>

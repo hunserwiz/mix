@@ -14,12 +14,11 @@
 							@if($model->count() > 0)
 							@foreach($model as $k => $data)
 							<tr>
-								<td style="text-align:center">{{ $data->created_ay }}</td>
+								<td style="text-align:center">{{ $data->date_account }}</td>
 								<td style="text-align:center">{{ $data->type }}</td>
 								<td style="text-align:center">{{ $data->price }}</td>
-								<!-- <td style="text-align:center">{{ $data>price }}</td> -->
 								<td style="text-align:center">{{ $data->detail }}</td>
-								<td style="text-align:center">{{ $data->GetAgent($data->create_by) }}</td>
+								<td style="text-align:center">{{ ThaiHelper::GetUser($data->create_by) }}</td>
 								<td style="text-align:center">
 									<span class="" >
 										<a href="{{ url('edit-order/'.$data->id) }}" title="">

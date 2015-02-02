@@ -26,7 +26,7 @@
 								<td style="text-align:center">{{ $data->amount_total }}</td>
 								<td style="text-align:center">{{ $data->GetLocation($data->location_id) }}</td>
 								<td style="text-align:center">{{ $data->GetAgent($data->agent_id) }}</td>
-								<td style="text-align:center">{{ $data->GetUser($data->payment_by) }}</td>
+								<td style="text-align:center">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
 								<td style="text-align:center">
 									<span class="" >
 										<a href="{{ url('edit-order/'.$data->order_id) }}" title="">

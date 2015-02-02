@@ -7,15 +7,15 @@
 <div>
 	<form name="form-sep">
 		<!-- ################################################################################ -->
-		<!-- 	<div class="row-fluid" >
+			<div class="row-fluid" >
 					<div class="span6">
 						<label class="span4"> วันที่ลงข้อมูล  :</label>
 						<div class="span8">					
-							{{ Form::text('created_at', Input::old('created_at'),
-                                            array("id"=>"created_at",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+							{{ Form::text('date_account', Input::old('date_account'),
+                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
 						</div>
 					</div>
-			</div> -->
+			</div>
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >
 					<div class="span6">
