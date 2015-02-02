@@ -3,7 +3,6 @@
 @section('navigate')
         <ul class="breadcrumb">
           <li><a href="{{ url('/') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
-          <li><a href="{{ url('bill') }}">ใบวางบิล</a> <span class="divider">/</span></li>
           <li class="active" lang="En">รายการบิล</li>
         </ul>
 @stop
