@@ -14,7 +14,7 @@ class Order extends Eloquent {
         $rules = array(
             'order_date' => 'required ',        	
             'product_id' => 'required',
-            'price' => 'required|integer',       
+            'price' => 'required',       
             'amount' => 'required|integer ',
             'agent_id' => 'required',
             'location_id' => 'required',
@@ -54,5 +54,9 @@ class Order extends Eloquent {
           return $text;
     }
     
+
+    public function product(){
+      return $this->hasOne('Product', 'product_id', 'product_id');
+    }
 }
 ?>

@@ -1,10 +1,10 @@
 <table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
 							<thead>
 								<tr>
-									<th style="text-align:center">ลำดับที่</th>
 									<th style="text-align:center">เรื่อง</th>
 									<th style="text-align:center">เลขที่ใบเสร็จ</th>
 									<th style="text-align:center">วันที่ออกบิล</th>
+									<th style="text-align:center">สินค้า</th>
 									<th style="text-align:center">ราคา</th>
 									<th style="text-align:center">จำนวน</th>
 									<th style="text-align:center">location</th>
@@ -16,12 +16,11 @@
 							<tbody>	
 							@if($model->count() > 0)
 							@foreach($model as $k => $data)
-							<?php $k++; ?>
 							<tr>
-								<td style="text-align:center">{{ $k }}</td>
 								<td style="text-align:center">{{ $data->order_title }}</td>
 								<td style="text-align:center">{{ $data->order_no }}</td>
 								<td style="text-align:center">{{ $data->order_date }}</td>
+								<td style="text-align:center">{{ $data->product->name }}</td>
 								<td style="text-align:center">{{ $data->price }}</td>
 								<td style="text-align:center">{{ $data->amount_total }}</td>
 								<td style="text-align:center">{{ $data->GetLocation($data->location_id) }}</td>

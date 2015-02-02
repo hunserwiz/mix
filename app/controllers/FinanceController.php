@@ -23,7 +23,7 @@ class FinanceController extends BaseController {
         );
 
         $arr_perpage = array(
-            'finance' => 4
+            'finance' => 10
         );
         $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
 
@@ -44,10 +44,48 @@ class FinanceController extends BaseController {
                                         'arr_count_page'));
     }
 
+    public function postSearch() {
+        $keyword = Input::get('keyword');
+
+        $arr_page = array(
+            'finance' => Input::get('page')
+        );
+
+        $arr_perpage = array(
+            'finance' => Input::get('perpage')
+        );
+        $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
+
+        $model = Finance::skip($skip)->take($arr_perpage['finance'])
+                            ->get();
+
+        $count_model = Finance::count();                
+
+        $arr_count_page['finance'] = ceil($count_model/$arr_perpage['finance']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['finance'],$arr_count_page['finance']);
+
+        return View::make('finance._tbl',compact('model',
+                                        'count_model',
+                                        'keyword',
+                                        'arr_list_page',
+                                        'arr_perpage',
+                                        'arr_page',
+                                        'arr_count_page'
+            ));
+    }
+
     public function getForm() {
         $list_user = User::where('user_type','=',2)->lists('name','id');  
         $list_type = ThaiHelper::getTypeAccountList();
         return View::make('finance.form',compact('list_user','list_type'));
+    }
+
+    public function getFormEdit($id) {
+        $list_user = User::where('user_type','=',2)->lists('name','id');  
+        $list_type = ThaiHelper::getTypeAccountList();
+        $model = Finance::find($id);
+
+        return View::make('finance.form',compact('model','list_user','list_type'));
     }
 
     public function postForm() {
@@ -79,6 +117,14 @@ class FinanceController extends BaseController {
             return Redirect::action('FinanceController@getForm')
                             ->withErrors($validation)
                             ->withInput();    
+        }
+    }
+
+    public function postDelete() {
+        $id = Input::get('id');
+        $model= Finance::find($id);
+        if($model->delete()){
+            return Response::json(array('status' => 'success'));
         }
     }
 }

@@ -3,8 +3,7 @@
 								<tr>
 									<th style="text-align:center">วันที่ลงข้อมูล</th>
 									<th style="text-align:center">ประเภท</th>
-									<!-- <th style="text-align:center">รายจ่าย</th> -->
-									<th style="text-align:center">จำนวน</th>
+									<th style="text-align:center">จำนวนเงิน</th>
 									<th style="text-align:center">รายละเอียด</th>
 									<th style="text-align:center">เจ้าหน้าที่บันทึกข้อมูล</th>	
 									<th style="text-align:center">จัดการ</th>									
@@ -15,18 +14,18 @@
 							@foreach($model as $k => $data)
 							<tr>
 								<td style="text-align:center">{{ $data->date_account }}</td>
-								<td style="text-align:center">{{ $data->type }}</td>
+								<td style="text-align:center">{{ ThaiHelper::getTypeAccount($data->type) }}</td>
 								<td style="text-align:center">{{ $data->price }}</td>
 								<td style="text-align:center">{{ $data->detail }}</td>
 								<td style="text-align:center">{{ ThaiHelper::GetUser($data->create_by) }}</td>
 								<td style="text-align:center">
 									<span class="" >
-										<a href="{{ url('edit-order/'.$data->id) }}" title="">
+										<a href="{{ url('edit-finance/'.$data->id) }}" title="">
 											<i class="icon-edit"></i>
 										</a>
 									</span>
 									<span class="" >
-										<a id='del_{{ $data->id }}' data-order-id='{{ $data->id }}' href="#" title="">
+										<a id='del_{{ $data->id }}' data-finance-id='{{ $data->id }}' href="#" title="">
 											<i class="icon-trash"></i>
 										</a>
 									</span>
@@ -50,13 +49,13 @@ $(document).ready(function(){
         $("[id^='del']").click(function(){
         var result = confirm("Do you want to delete?");
             if (result==true) {
-                var order_id = $("#"+this.id).attr("data-finance-id");
+                var id = $("#"+this.id).attr("data-finance-id");
                 var page = {{ $arr_page['finance'] }};
                 // ============= Ajax Delete ==============
                 $.ajax({
                     url: "{{ url('delete-finance') }}",
                     type: "post",
-                    data: {order_id:order_id},
+                    data: {id:id},
                     success:function(r){                       
                         if(r.status == 'success'){
                             $.ajax({

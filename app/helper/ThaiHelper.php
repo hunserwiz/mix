@@ -548,15 +548,40 @@ class ThaiHelper {
     public static function getTypeAccountList($option = null){
         return array('1'=>'รายรับ','2'=>'รายจ่าย','3'=>'อื่น ๆ','4'=>'เก็บหนี้ + จ่ายค้าง');
     }
+
+    public static function getTypeAccount($id = null){
+        $text = "";
+        if($id == 1){
+            $text = "รายรับ";
+        }else if($id == 2){
+            $text = "รายจ่าย";
+        }else if($id == 3){
+            $text = "อื่น ๆ";
+        }else if($id == 4){
+            $text = "เก็บหนี้ + จ่ายค้าง";
+        }
+        
+        return $text;
+    }
+
     public static function DateToDB($date = null){
         $result = "";
         if($date != null){
-            $ex = explode("/", $date);
+            $ex = explode("-", $date);
             $result = $ex[2]."-".$ex[1]."-".$ex[0];
         }
-        return $result;
-        
+        return $result;        
     }
+
+    public static function DateToShowForm($date = null){
+        $result = "";
+        if($date != null){
+            $ex = explode("-", $date);
+            $result = $ex[2]."-".$ex[1]."-".$ex[0];
+        }
+        return $result;        
+    }
+    
     public static function GetUser($id){
           $model = User::find($id);
           return $model->name;

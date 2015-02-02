@@ -36,6 +36,9 @@ Route::group(array('before' => 'auth'), function() {
 
     Route::get('finance','FinanceController@getIndex');
     Route::get('form-finance','FinanceController@getForm');
+    Route::get('edit-finance/{id}','FinanceController@getFormEdit');
+    Route::post('delete-finance','FinanceController@postDelete');
+    Route::post('search-finance','FinanceController@postSearch');
 
     Route::get('debtor','DebtorController@getIndex');
 

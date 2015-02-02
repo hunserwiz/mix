@@ -59,7 +59,7 @@
 		 <div class="text-right" style="padding-right:19%">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
-				<a href="{{ url('/') }}">
+				<a href="{{ url('/finance') }}">
 					<input type="button" class="btn btn-danger" value="Cancel">
 				</a>
 		</div>
@@ -69,7 +69,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 $(".date-picker").datepicker({
-	format: 'dd/mm/yyyy',
+	format: 'dd-mm-yyyy',
 });
 
 $(".date-picker").on("change", function () {
