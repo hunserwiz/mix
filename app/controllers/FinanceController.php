@@ -75,15 +75,18 @@ class FinanceController extends BaseController {
     }
 
     public function getForm() {
+        $model = null;
         $list_user = User::where('user_type','=',2)->lists('name','id');  
         $list_type = ThaiHelper::getTypeAccountList();
-        return View::make('finance.form',compact('list_user','list_type'));
+
+        return View::make('finance.form',compact('model','list_user','list_type'));
     }
 
     public function getFormEdit($id) {
         $list_user = User::where('user_type','=',2)->lists('name','id');  
         $list_type = ThaiHelper::getTypeAccountList();
         $model = Finance::find($id);
+        $model->date_account = ThaiHelper::DateToShowForm($model->date_account);
 
         return View::make('finance.form',compact('model','list_user','list_type'));
     }
@@ -94,7 +97,7 @@ class FinanceController extends BaseController {
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Finance::find(Input::get('id'));
-                $model->date_account = Input::get('date_account');
+                $model->date_account = ThaiHelper::DateToDB(Input::get('date_account'));
                 $model->type = Input::get('type');
                 $model->price = Input::get('price');
                 $model->detail = Input::get('detail');
@@ -114,9 +117,15 @@ class FinanceController extends BaseController {
                 }
             }
         }else{
-            return Redirect::action('FinanceController@getForm')
+            if(Input::get('id')){
+                return Redirect::action('FinanceController@getFormEdit',Input::get('id'))
                             ->withErrors($validation)
                             ->withInput();    
+            }else{
+                return Redirect::action('FinanceController@getForm')
+                            ->withErrors($validation)
+                            ->withInput();  
+            }
         }
     }
 

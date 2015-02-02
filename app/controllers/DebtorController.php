@@ -2,40 +2,40 @@
 
 class DebtorController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Default Home Controller
+    |--------------------------------------------------------------------------
+    |
+    | You may wish to use controllers instead of, or in addition to, Closure
+    | based routes. That's great! Here is an example controller method to
+    | get you started. To route to this controller, just add the route:
+    |
+    |   Route::get('/', 'HomeController@showWelcome');
+    |
+    */
 
-	public function getIndex() {
+    public function getIndex() {
         $keyword = "";
 
         $arr_page = array(
-            'finance' => 1
+            'debtor' => 1
         );
 
         $arr_perpage = array(
-            'finance' => 4
+            'debtor' => 10
         );
-        $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
+        $skip = ($arr_page['debtor'] - 1) * $arr_perpage['debtor'];
 
-        $model = Finance::skip($skip)->take($arr_perpage['finance'])
+        $model = Debtor::skip($skip)->take($arr_perpage['debtor'])
                             ->get();
 
-        $count_model = Finance::count();                
+        $count_model = Debtor::count();                
 
-        $arr_count_page['finance'] = ceil($count_model/$arr_perpage['finance']); 
-        $arr_list_page = ThaiHelper::getArrListPage($arr_page['finance'],$arr_count_page['finance']);
+        $arr_count_page['debtor'] = ceil($count_model/$arr_perpage['debtor']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['debtor'],$arr_count_page['debtor']);
         
-        return View::make('finance.index',compact('model',
+        return View::make('debtor.index',compact('model',
                                         'count_model',
                                         'keyword',
                                         'arr_list_page',
@@ -44,4 +44,96 @@ class DebtorController extends BaseController {
                                         'arr_count_page'));
     }
 
+    public function postSearch() {
+        $keyword = Input::get('keyword');
+
+        $arr_page = array(
+            'debtor' => Input::get('page')
+        );
+
+        $arr_perpage = array(
+            'debtor' => Input::get('perpage')
+        );
+        $skip = ($arr_page['debtor'] - 1) * $arr_perpage['debtor'];
+
+        $model = Debtor::skip($skip)->take($arr_perpage['debtor'])
+                            ->get();
+
+        $count_model = Debtor::count();                
+
+        $arr_count_page['debtor'] = ceil($count_model/$arr_perpage['debtor']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['debtor'],$arr_count_page['debtor']);
+
+        return View::make('debtor._tbl',compact('model',
+                                        'count_model',
+                                        'keyword',
+                                        'arr_list_page',
+                                        'arr_perpage',
+                                        'arr_page',
+                                        'arr_count_page'
+            ));
+    }
+
+    public function getForm() {
+        $model = null;
+        $list_user = User::where('user_type','=',2)->lists('name','id');  
+        $list_type = ThaiHelper::getTypeAccountList();
+
+        return View::make('debtor.form',compact('model','list_user','list_type'));
+    }
+
+    public function getFormEdit($id) {
+        $list_user = User::where('user_type','=',2)->lists('name','id');  
+        $list_type = ThaiHelper::getTypeAccountList();
+        $model = Finance::find($id);
+        $model->date_account = ThaiHelper::DateToShowForm($model->date_account);
+
+        return View::make('debtor.form',compact('model','list_user','list_type'));
+    }
+
+    public function postForm() {
+        $validation = Debtor::validate(Input::all());
+        $validation->setAttributeNames(Finance::attributeName());
+        if ($validation->passes()) {
+            if(Input::get('id')){
+                $model = Debtor::find(Input::get('id'));
+                $model->date_account = ThaiHelper::DateToDB(Input::get('date_account'));
+                $model->type = Input::get('type');
+                $model->price = Input::get('price');
+                $model->detail = Input::get('detail');
+                $model->create_by = Input::get('create_by');
+                if($model->save()){
+                        return Redirect::action('FinanceController@getIndex');
+                }
+            }else{
+                $model = new Debtor();
+                $model->date_account = ThaiHelper::DateToDB(Input::get('date_account'));
+                $model->type = Input::get('type');
+                $model->price = Input::get('price');
+                $model->detail = Input::get('detail');
+                $model->create_by = Input::get('create_by');
+                if($model->save()){
+                    return Redirect::action('DebtorController@getIndex');
+                }
+            }
+        }else{
+            if(Input::get('id')){
+                return Redirect::action('DebtorController@getFormEdit',Input::get('id'))
+                            ->withErrors($validation)
+                            ->withInput();    
+            }else{
+                return Redirect::action('DebtorController@getForm')
+                            ->withErrors($validation)
+                            ->withInput();  
+            }
+        }
+    }
+
+    public function postDelete() {
+        $id = Input::get('id');
+        $model= Debtor::find($id);
+        if($model->delete()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
 }

@@ -16,6 +16,7 @@
   <!-- Java Script -->
       {{ HTML::style('bootstrap/css/bootstrap-responsive.css') }}
       {{ HTML::style('bootstrap/css/bootstrap.css') }}
+      {{ HTML::style('bootstrap/css/datepicker.css') }}
       
 
       {{ HTML::script('js/jquery-1.10.2.js') }}     

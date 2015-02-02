@@ -14,7 +14,7 @@ class Finance extends Eloquent {
         $rules = array(
             // 'created_at' => 'required ',        	
             'detail' => 'required',
-            'price' => 'required|integer',       
+            'price' => 'required',       
             'type' => 'required',
             'create_by' => 'required',
         );
@@ -26,7 +26,7 @@ class Finance extends Eloquent {
         $attributes_name = array(      
             // 'created_at' => 'วันที่บันทึก',        	
             'detail' => 'รายละเอียด',
-            'price' => ' ราคาต่อหน่วย',  
+            'price' => '  จำนวนเงิน',  
             'type' => 'ชนิด',     
             'create_by' => 'เจ้าหน้าที่ออกใบเสร็จ ',
         );
