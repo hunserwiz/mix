@@ -55,7 +55,7 @@
 $(document).ready(function(){
         // ============= Delete ==============
         $("[id^='del']").click(function(){
-        var result = confirm("Do you want to delete?");
+        var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
             if (result==true) {
                 var order_id = $("#"+this.id).attr("data-order-id");
                 var page = {{ $arr_page['order'] }};

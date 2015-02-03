@@ -12,10 +12,10 @@ class Debtor extends Eloquent {
     
     public static function validate($input) {
         $rules = array(
-            // 'created_at' => 'required ',        	
-            'detail' => 'required',
-            'price' => 'required',       
-            'type' => 'required',
+            'payable' => 'required',    
+            'pay' => 'required',       
+            'debtor_id' => 'required',
+            'detail' => 'required',            
             'create_by' => 'required',
         );
 
@@ -24,15 +24,17 @@ class Debtor extends Eloquent {
 
     public static function attributeName() {
         $attributes_name = array(      
-            // 'created_at' => 'วันที่บันทึก',        	
+            'payable' => 'จำนวนเงินที่ค้างชำระ',    
+            'pay' => 'จำนวนเงินที่จ่าย',       
+            'debtor_id' => 'ลูกหนี้',     	
             'detail' => 'รายละเอียด',
-            'price' => '  จำนวนเงิน',  
-            'type' => 'ชนิด',     
             'create_by' => 'เจ้าหน้าที่ออกใบเสร็จ ',
         );
 
         return $attributes_name;
     }
-
+    public function user(){
+      return $this->hasOne('User', 'id', 'debtor_id');
+    }
 }
 ?>

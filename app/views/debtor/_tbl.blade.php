@@ -2,8 +2,10 @@
 							<thead>
 								<tr>
 									<th style="text-align:center">วันที่ลงข้อมูล</th>
-									<th style="text-align:center">ประเภท</th>
-									<th style="text-align:center">จำนวนเงิน</th>
+									<th style="text-align:center">ชื่อลูกหนี้</th>
+									<th style="text-align:center">วันที่จ่ายเงินค้างชำระ</th>
+                                    <th style="text-align:center">จำนวนเงินที่ค้างชำระ</th>
+                                    <th style="text-align:center">จำนวนเงินที่จ่าย</th>
 									<th style="text-align:center">รายละเอียด</th>
 									<th style="text-align:center">เจ้าหน้าที่บันทึกข้อมูล</th>	
 									<th style="text-align:center">จัดการ</th>									
@@ -13,9 +15,11 @@
 							@if($model->count() > 0)
 							@foreach($model as $k => $data)
 							<tr>
-								<td style="text-align:center">{{ $data->date_account }}</td>
-								<td style="text-align:center">{{ ThaiHelper::getTypeAccount($data->type) }}</td>
-								<td style="text-align:center">{{ $data->price }}</td>
+								<td style="text-align:center">{{ $data->date_debtor }}</td>
+                                <td style="text-align:center">{{ $data->user->name }}</td>
+                                <td style="text-align:center">{{ $data->date_pay }}</td>
+                                <td style="text-align:center">{{ $data->payable }}</td>
+								<td style="text-align:center">{{ $data->pay }}</td>
 								<td style="text-align:center">{{ $data->detail }}</td>
 								<td style="text-align:center">{{ ThaiHelper::GetUser($data->create_by) }}</td>
 								<td style="text-align:center">
@@ -47,7 +51,7 @@
 $(document).ready(function(){
         // ============= Delete ==============
         $("[id^='del']").click(function(){
-        var result = confirm("Do you want to delete?");
+        var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
             if (result==true) {
                 var id = $("#"+this.id).attr("data-debtor-id");
                 var page = {{ $arr_page['debtor'] }};

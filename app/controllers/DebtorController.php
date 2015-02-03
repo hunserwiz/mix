@@ -76,19 +76,20 @@ class DebtorController extends BaseController {
 
     public function getForm() {
         $model = null;
-        $list_user = User::where('user_type','=',2)->lists('name','id');  
-        $list_type = ThaiHelper::getTypeAccountList();
-
-        return View::make('debtor.form',compact('model','list_user','list_type'));
+        $list_user_operate = User::where('user_type','=',2)->lists('name','id');  
+        $list_user = User::where('user_type','=',3)->lists('name','id');  
+        
+        return View::make('debtor.form',compact('model','list_user','list_user_operate'));
     }
 
     public function getFormEdit($id) {
-        $list_user = User::where('user_type','=',2)->lists('name','id');  
-        $list_type = ThaiHelper::getTypeAccountList();
-        $model = Finance::find($id);
-        $model->date_account = ThaiHelper::DateToShowForm($model->date_account);
+        $list_user_operate = User::where('user_type','=',2)->lists('name','id');  
+        $list_user = User::where('user_type','=',3)->lists('name','id');  
+        $model = Debtor::find($id);
+        $model->date_debtor = ThaiHelper::DateToShowForm($model->date_debtor);
+        $model->date_pay = ThaiHelper::DateToShowForm($model->date_pay);
 
-        return View::make('debtor.form',compact('model','list_user','list_type'));
+        return View::make('debtor.form',compact('model','list_user','list_user_operate'));
     }
 
     public function postForm() {
@@ -97,19 +98,23 @@ class DebtorController extends BaseController {
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Debtor::find(Input::get('id'));
-                $model->date_account = ThaiHelper::DateToDB(Input::get('date_account'));
-                $model->type = Input::get('type');
-                $model->price = Input::get('price');
+                $model->date_debtor = ThaiHelper::DateToDB(Input::get('date_debtor'));
+                $model->date_pay = ThaiHelper::DateToDB(Input::get('date_pay'));
+                $model->debtor_id = Input::get('debtor_id');
+                $model->payable = Input::get('payable');
+                $model->pay = Input::get('pay');
                 $model->detail = Input::get('detail');
                 $model->create_by = Input::get('create_by');
                 if($model->save()){
-                        return Redirect::action('FinanceController@getIndex');
+                        return Redirect::action('DebtorController@getIndex');
                 }
             }else{
                 $model = new Debtor();
-                $model->date_account = ThaiHelper::DateToDB(Input::get('date_account'));
-                $model->type = Input::get('type');
-                $model->price = Input::get('price');
+                $model->date_debtor = ThaiHelper::DateToDB(Input::get('date_debtor'));
+                $model->date_pay = ThaiHelper::DateToDB(Input::get('date_pay'));
+                $model->debtor_id = Input::get('debtor_id');
+                $model->payable = Input::get('payable');
+                $model->pay = Input::get('pay');
                 $model->detail = Input::get('detail');
                 $model->create_by = Input::get('create_by');
                 if($model->save()){

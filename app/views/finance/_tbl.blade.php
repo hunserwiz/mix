@@ -47,7 +47,7 @@
 $(document).ready(function(){
         // ============= Delete ==============
         $("[id^='del']").click(function(){
-        var result = confirm("Do you want to delete?");
+        var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
             if (result==true) {
                 var id = $("#"+this.id).attr("data-finance-id");
                 var page = {{ $arr_page['finance'] }};

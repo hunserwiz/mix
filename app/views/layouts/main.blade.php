@@ -7,13 +7,14 @@
     <meta name="author" content="Aor">
 
     <!-- Le styles -->
-    <style type="text/css">
+   <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
   <!-- Java Script -->
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
       {{ HTML::style('bootstrap/css/bootstrap-responsive.css') }}
       {{ HTML::style('bootstrap/css/bootstrap.css') }}
       {{ HTML::style('bootstrap/css/datepicker.css') }}

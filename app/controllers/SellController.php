@@ -16,32 +16,11 @@ class SellController extends BaseController {
 	*/
 
 	public function getIndex() {
-        $keyword = "";
-
-        $arr_page = array(
-            'finance' => 1
-        );
-
-        $arr_perpage = array(
-            'finance' => 4
-        );
-        $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
-
-        $model = Finance::skip($skip)->take($arr_perpage['finance'])
-                            ->get();
-
-        $count_model = Finance::count();                
-
-        $arr_count_page['finance'] = ceil($count_model/$arr_perpage['finance']); 
-        $arr_list_page = ThaiHelper::getArrListPage($arr_page['finance'],$arr_count_page['finance']);
-        
-        return View::make('finance.index',compact('model',
-                                        'count_model',
-                                        'keyword',
-                                        'arr_list_page',
-                                        'arr_perpage',
-                                        'arr_page',
-                                        'arr_count_page'));
+        $list_day = Date::getDayInMon();
+        $list_month = Date::getDayInMon();
+        $list_year = Date::getDayInMon();
+        $model = null;
+        return View::make('sell.index',compact('model','list_day','list_month','list_year'));
     }
 
 }

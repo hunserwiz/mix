@@ -1,12 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-{{ Form::open(array('url' => 'post-finance')) }}
+{{ Form::open(array('url' => 'post-debtor')) }}
 @if($model != null)
 	{{ Form::hidden('id',$model->id) }}
 @endif	
 
 {{ $errors->first() }}
+
 <div>
 	<form name="form-sep">
 		<!-- ################################################################################ -->
@@ -15,11 +16,11 @@
 						<label class="span4"> วันที่ลงข้อมูล  :</label>
 						<div class="span8">		
 						@if($model == null)			
-							{{ Form::text('date_account', Input::old('date_account'),
-                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+							{{ Form::text('date_debtor', Input::old('date_debtor'),
+                                            array("id"=>"date_debtor",'required'=>'','class'=>'date-picker form-control','placeholder'=>'วันที่ลงข้อมูล')) }}
 						@else
-							{{ Form::text('date_account', $model->date_account,
-                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+							{{ Form::text('date_debtor', $model->date_debtor,
+                                            array("id"=>"date_debtor",'required'=>'','class'=>'date-picker form-control','placeholder'=>'วันที่ลงข้อมูล')) }}
 						@endif
 						</div>
 					</div>
@@ -27,27 +28,57 @@
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >
 					<div class="span6">
-						<label class="span4"> ประเภท  :</label>
+						<label class="span4">  ชื่อลูกหนี้  :</label>
 						<div class="span8">		
 						@if($model == null)			
-							{{ Form::select('type', array(''=> 'กรุณาเลือก') + $list_type  , null, array('required'=>'',"class"=>"form-control")) }}
+							{{ Form::select('debtor_id', array(''=> 'กรุณาเลือก') + $list_user  , null, array('required'=>'',"class"=>"form-control")) }}
 						@else
-							{{ Form::select('type', array(''=> 'กรุณาเลือก') + $list_type  , $model->type , array('required'=>'',"class"=>"form-control")) }}
+							{{ Form::select('debtor_id', array(''=> 'กรุณาเลือก') + $list_user  , $model->debtor_id , array('required'=>'',"class"=>"form-control")) }}
 						@endif			
+						</div>
+					</div>
+			</div>
+			<!-- ################################################################################ -->
+			<div class="row-fluid" >
+					<div class="span6">
+						<label class="span4">  วันที่จ่ายเงินค้างชำระ  :</label>
+						<div class="span8">		
+						@if($model == null)			
+							{{ Form::text('date_pay', Input::old('date_pay'),
+                                            array("id"=>"date_pay",'required'=>'','class'=>'date-picker form-control','placeholder'=>' วันที่จ่ายเงินค้างชำระ')) }}
+						@else
+							{{ Form::text('date_pay', $model->date_pay,
+                                            array("id"=>"date_pay",'required'=>'','class'=>'date-picker form-control','placeholder'=>' วันที่จ่ายเงินค้างชำระ')) }}
+						@endif
 						</div>
 					</div>
 			</div>
     	<!-- ################################################################################ -->
 			<div class="row-fluid" >
 				<div class="span6">
-					<label class="span4"> จำนวนเงิน :</label>
+					<label class="span4">  จำนวนเงินที่ค้างชำระ :</label>
 					<div class="span8">
 						@if($model == null)			
-							{{ Form::text('price', Input::old('price'),
-                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+							{{ Form::text('payable', Input::old('payable'),
+                                            array("id"=>"payable",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่ค้างชำระ')) }}
 						@else
-							{{ Form::text('price', $model->price,
-                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+							{{ Form::text('payable', $model->payable,
+                                            array("id"=>"payable",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่ค้างชำระ')) }}
+						@endif						
+					</div>
+				</div>
+			</div>
+			 	<!-- ################################################################################ -->
+			<div class="row-fluid" >
+				<div class="span6">
+					<label class="span4">   จำนวนเงินที่จ่าย :</label>
+					<div class="span8">
+						@if($model == null)			
+							{{ Form::text('pay', Input::old('pay'),
+                                            array("id"=>"pay",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่จ่าย')) }}
+						@else
+							{{ Form::text('pay', $model->pay,
+                                            array("id"=>"pay",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่จ่าย')) }}
 						@endif						
 					</div>
 				</div>
@@ -70,12 +101,12 @@
 		<!-- ################################################################################ -->
 		<div class="row-fluid" >
 			<div class="span6">
-				<label class="span4"> เจ้าหน้าที่ออกใบเสร็จ :</label>
+				<label class="span4">  เจ้าหน้ารับเงิน :</label>
 				<div class="span8">
 					@if($model == null)			
-						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user  , null, array('required'=>'',"class"=>"form-control")) }}			
+						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user_operate  , null, array('required'=>'',"class"=>"form-control")) }}			
 					@else
-						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user  , $model->create_by , array('required'=>'',"class"=>"form-control")) }}			
+						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user_operate  , $model->create_by , array('required'=>'',"class"=>"form-control")) }}			
 					@endif	
 				</div>
 			</div>
@@ -84,7 +115,7 @@
 		 <div class="text-right" style="padding-right:19%">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
-				<a href="{{ url('/finance') }}">
+				<a href="{{ url('/debtor') }}">
 					<input type="button" class="btn btn-danger" value="Cancel">
 				</a>
 		</div>
