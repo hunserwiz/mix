@@ -27,17 +27,21 @@
 				{{ Form::text('year', null,
 					array("id"=>"year",'required'=>'','class'=>'form-control','placeholder'=>'กรอกปี')) }}
 			</div>
+		</div>.
+		<div class="span4">
+			<!-- <div class="span4">				 -->
+			<div class="text-rigth" style="padding-left:41%;padding-bottom:1%;high:20px;">	
+				<a id='search' class="btn btn-primary" href="#">
+				<i class="icon-plus-sign icon-white"></i>&nbsp;
+				<span lang="En">ค้นหา</span>
+			</a>
+			</div>			
+			<!-- </div> -->
 		</div>
 	</div>		
 </div>	
 <div>
 	<form name="form-sep">
-		<div class="text-Left" style="padding-right:19%">
-			<a id='search' class="btn btn-primary" href="#">
-				<i class="icon-plus-sign icon-white"></i>&nbsp;
-				<span lang="En">ค้นหา</span>
-			</a>			
-		</div>
 		<div id='tbl' class="row-fluid" style="padding-top: 0%;">
 				@include('sell._tbl')		
 		</div>	

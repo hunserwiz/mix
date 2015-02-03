@@ -1,5 +1,11 @@
 @extends('layouts.main')
-
+@section('navigate')
+        <ul class="breadcrumb">
+          <li><a href="{{ url('/') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+          <li><a href="{{ url('/finance') }}">รายการบัญชีรายรับ - รายจ่าย</a><span class="divider">/</span></li>
+          <li class="active" lang="En">เพิ่มบัญชีรายรับ - รายจ่าย</li>
+        </ul>
+@stop
 @section('content')
 {{ Form::open(array('url' => 'post-finance')) }}
 @if($model != null)

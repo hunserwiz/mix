@@ -1,5 +1,11 @@
 @extends('layouts.main')
-
+@section('navigate')
+        <ul class="breadcrumb">
+          <li><a href="{{ url('/') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+          <li><a href="{{ url('/debtor') }}">รายการลูกหนี้</a> <span class="divider">/</span></li>
+          <li class="active" lang="En">เพิ่มลูกหนี้</li>
+        </ul>
+@stop
 @section('content')
 {{ Form::open(array('url' => 'post-debtor')) }}
 @if($model != null)

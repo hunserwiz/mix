@@ -1,5 +1,11 @@
 @extends('layouts.main')
-
+@section('navigate')
+        <ul class="breadcrumb">
+          <li><a href="{{ url('/') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+          <li class="active" lang="En"><a href="{{ url('/order') }}">รายการใบวางบิล</a><span class="divider">/</span></li>
+          <li class="active" lang="En">เพิ่มใบวางบิล</li>
+        </ul>
+@stop
 @section('content')
 {{ Form::open(array('url' => 'post-order')) }}
 @if($model != null)

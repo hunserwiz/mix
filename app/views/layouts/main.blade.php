@@ -37,11 +37,11 @@
 </head>
 
 <body>
-      <div class="row-fluid">
-          <div class="span12" style="padding-top: 5%;">
+    <div class="row-fluid">
+      <div class="span12" style="padding-top: 2%;">
         @yield('navigate')  
-           </div>
-     </div>
+      </div>
+    </div>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">

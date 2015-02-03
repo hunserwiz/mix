@@ -19,5 +19,8 @@ class SellController extends BaseController {
         $model = null;
         return View::make('sell.index',compact('model'));
     }
-
+    public function getIndex() {
+        $model = Product::get();
+        return View::make('sell._tbl',compact('model'));
+    }
 }
