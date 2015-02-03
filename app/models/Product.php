@@ -38,6 +38,12 @@ class Product extends Eloquent {
     public function unit(){
           return $this->hasOne('Stock');
     }
+
+    public function orders(){
+          return $this->hasOne('Order');
+    }
+
+
     public function categorise($categorise_id){
           $model = Categorise::find($categorise_id);
           return $model->name;

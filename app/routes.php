@@ -47,7 +47,6 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-debtor','DebtorController@postSearch');
 
     Route::get('sell','SellController@getIndex');
-    Route::get('sell-report','SellController@postResult');
 
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');
@@ -59,6 +58,7 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('post-order','OrderController@postForm');
         Route::post('post-finance','FinanceController@postForm');
         Route::post('post-debtor','DebtorController@postForm');
+        Route::post('post-sell','SellController@postReport');
         Route::post('post-product','ProductController@postForm');
     });
 
