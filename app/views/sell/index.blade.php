@@ -18,7 +18,7 @@
 		<div class="span4">
 		<label class="span4">เดือน  :</label>
 			<div class="span4">					
-				{{ Form::select('month', array(''=> 'กรุณาเลือก') + Date::getDayInMon()  , null, array('required'=>'',"class"=>"form-control")) }}
+				{{ Form::select('month', array(''=> 'กรุณาเลือก') + Date::getMon()  , null, array('required'=>'',"class"=>"form-control")) }}
 			</div>
 		</div>
 		<div class="span4">
@@ -34,8 +34,8 @@
 	<form name="form-sep">
 		<div class="text-Left" style="padding-right:19%">
 			<a id='search' class="btn btn-primary" href="#">
-				<i class="icon-plus-sign icon-white"></i>&nbsp;\
-				<span lang="En" >ค้นหา</span>
+				<i class="icon-plus-sign icon-white"></i>&nbsp;
+				<span lang="En">ค้นหา</span>
 			</a>			
 		</div>
 		<div id='tbl' class="row-fluid" style="padding-top: 0%;">

@@ -16,11 +16,8 @@ class SellController extends BaseController {
 	*/
 
 	public function getIndex() {
-        $list_day = Date::getDayInMon();
-        $list_month = Date::getDayInMon();
-        $list_year = Date::getDayInMon();
         $model = null;
-        return View::make('sell.index',compact('model','list_day','list_month','list_year'));
+        return View::make('sell.index',compact('model'));
     }
 
 }
