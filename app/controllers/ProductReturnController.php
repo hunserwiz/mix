@@ -16,14 +16,14 @@ class ProductReturnController extends BaseController {
         );
 
         $arr_perpage = array(
-            'product' => 4
+            'product' => 10
         );
         $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
 
-        $model = Product::skip($skip)->take($arr_perpage['product'])
+        $model = ProductReturn::skip($skip)->take($arr_perpage['product'])
                             ->get();
 
-        $count_model = Product::count();                
+        $count_model = ProductReturn::count();                
 
         $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
@@ -48,10 +48,10 @@ class ProductReturnController extends BaseController {
         );
         $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
 
-         $model = Product::skip($skip)->take($arr_perpage['product'])
+         $model = ProductReturn::skip($skip)->take($arr_perpage['product'])
                             ->get();
 
-        $count_model = Product::count();                
+        $count_model = ProductReturn::count();                
 
         $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
@@ -66,84 +66,83 @@ class ProductReturnController extends BaseController {
             ));
     }
 
-    public function getForm($product_id = NULL) {
-    	$array_categories = Categorise::lists('name','categorise_id');
+    public function getForm() {
         $model = null;
-        $model_stock = null;
+
+    	$list_category = Categorise::lists('name','categorise_id');
+        $list_location = ThaiHelper::getLocationList();
+        $list_product = Product::lists('name','product_id');
+        $list_user = User::where('user_type','=','2')->lists('name','id');
+        $list_agent = User::where('user_type','=','3')->lists('name','id');
+
         return View::make('productReturn.form',compact(
-            'array_categories',
             'model',
-            'model_stock'
+            'list_category',
+            'list_product',
+            'list_location',
+            'list_user',
+            'list_agent'
             ));
     }
-    public function getFormEdit($product_id = NULL) {
-        $array_categories = Categorise::lists('name','categorise_id');
+    public function getFormEdit($id = NULL) {
+        $model = ProductReturn::find($id);
+        $list_category = Categorise::lists('name','categorise_id');
+        $list_location = ThaiHelper::getLocationList();
+        $list_product = Product::lists('name','product_id');
+        $list_user = User::where('user_type','=','2')->lists('name','id');
+        $list_agent = User::where('user_type','=','3')->lists('name','id');
 
-        if($product_id != NULL || $_GET['product_id']){
-            if($product_id == null)
-                $product_id = $_GET['product_id'];
-                $model = Product::find($product_id);
-                $model_stock = Stock::where('product_id','=',$product_id)->first();
-        }
         return View::make('productReturn.form',compact(
-            'array_categories',
             'model',
-            'model_stock'
+            'list_category',
+            'list_product',
+            'list_location',
+            'list_user',
+            'list_agent'
             ));
     }
     public function postForm() {
-    	$validation = Product::validate(Input::all());
-        $validation->setAttributeNames(Product::attributeName());
+    	$validation = ProductReturn::validate(Input::all());
+        $validation->setAttributeNames(ProductReturn::attributeName());
         if ($validation->passes()) {
-            if(Input::get('product_id')){
-                $model = Product::find(Input::get('product_id'));
+            if(Input::get('id')){
+                $model = ProductReturn::find(Input::get('product_id'));
                 $model->name = Input::get('name');
                 $model->categorise_id = Input::get('categorise_id');
                 $model->price = Input::get('price');
                 $model->size = Input::get('size');
                 $model->flavor = Input::get('flavor');
                 if($model->save()){
-                    $model_stock = Stock::where('product_id','=',Input::get('product_id'))->first();
-                    $model_stock->product_balance = Input::get('product_balance');
-                    if($model_stock->save()){
-                        return Redirect::action('ProductReturnController@getIndex');
-                    }
+                    return Redirect::action('ProductReturnController@getIndex');
                 }
             }else{
-                $model = new Product();
+                $model = new ProductReturn();
                 $model->name = Input::get('name');
                 $model->categorise_id = Input::get('categorise_id');
                 $model->price = Input::get('price');
                 $model->size = Input::get('size');
                 $model->flavor = Input::get('flavor');
                 if($model->save()){
-                    $model_stock = new Stock();
-                    $model_stock->product_id = $model->product_id;
-                    $model_stock->product_balance = Input::get('product_balance');
-                    if($model_stock->save()){
-                        return Redirect::action('ProductReturnController@getIndex');
-                    }
+                    return Redirect::action('ProductReturnController@getIndex');
                 }
             }
         }else{
-            if(Input::get('product_id')){
-        	return Redirect::action('ProductReturnController@getFormEdit',array('product_id'=>Input::get('product_id')))
-                            ->withErrors($validation)
-                            ->withInput();    
+            if(Input::get('id')){
+            	return Redirect::action('ProductReturnController@getFormEdit',Input::get('id'))
+                                ->withErrors($validation)
+                                ->withInput();    
             }else{
-            return Redirect::action('ProductReturnController@getForm')
-                        ->withErrors($validation)
-                            ->withInput();    
+                return Redirect::action('ProductReturnController@getForm')
+                            ->withErrors($validation)
+                                ->withInput();    
             }
         }
     }
    
     public function postDelete() {
-        $product_id = Input::get('product_id');
-        $model_stock = Stock::where('product_id','=',$product_id)->first();
-        if($model_stock->delete()){
-            $model = Product::find($product_id);
-            $model->delete();
+        $id = Input::get('id');
+        $model = Product::find($id);
+        if($model->delete()){
             return Response::json(array('status' => 'success'));
         }
     }

@@ -55,10 +55,10 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-product','ProductController@postSearch');
     // product-return
     Route::get('product-return','ProductReturnController@getIndex');
-    Route::get('form-debtor','ProductReturnController@getForm');
-    Route::get('edit-debtor/{id}','ProductReturnController@getFormEdit');
-    Route::post('delete-debtor','ProductReturnController@postDelete');
-    Route::post('search-debtor','ProductReturnController@postSearch');
+    Route::get('form-product-return','ProductReturnController@getForm');
+    Route::get('edit-product-return/{id}','ProductReturnController@getFormEdit');
+    Route::post('delete-product-return','ProductReturnController@postDelete');
+    Route::post('search-product-return','ProductReturnController@postSearch');
     // deposit
     Route::get('deposit','DepositController@getIndex');
     Route::get('form-deposit','DepositController@getForm');

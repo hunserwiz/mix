@@ -127,7 +127,7 @@
 			</div>
 			
 		</div>
-		 <div class="text-right" style="padding-right:19%">
+		<div class="text-center">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 		 	<a href="{{ url('manage-product') }}" >

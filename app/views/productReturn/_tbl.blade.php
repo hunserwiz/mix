@@ -1,36 +1,31 @@
 <table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
 							<thead>
 								<tr>
-									<th style="text-align:center">ลำดับที่</th>
-									<th style="text-align:center">ชื่อสินค้า</th>
-									<th style="text-align:center">ประเภท</th>
-									<th style="text-align:center">ราคาต่อหน่วย</th>
-									<th style="text-align:center">รส</th>
-									<th style="text-align:center">ขนาด</th>
-									<th style="text-align:center">จำนวน</th>	
-									<th style="text-align:center">จัดการ</th>									
+									<th style="text-align:center" lang="En">ชื่อสินค้า</th>
+									<th style="text-align:center" lang="En">ประเภท</th>
+									<th style="text-align:center" lang="En">วันที่คืนสินค้า</th>
+									<th style="text-align:center" lang="En">จำนวนที่คืน</th>
+									<th style="text-align:center" lang="En">ราคา</th>
+									<th style="text-align:center" lang="En">จัดการ</th>						
 								</tr>
 							</thead>	
 							<tbody>	
 							@if($model->count() > 0)
-							@foreach($model as $k => $data)
-							<?php $k++; ?>
+							@foreach($model as $data)
 							<tr>
-								<td style="text-align:center">{{ $k }}</td>
-								<td style="text-align:center">{{ $data->name }}</td>
-								<td style="text-align:center">{{ $data->categorise($data->categorise_id) }}</td>
+								<td style="text-align:center">{{ $data->product->name }}</td>
+								<td style="text-align:center">{{ $data->categorise->name }}</td>
+								<td style="text-align:center">{{ $data->date_return }}</td>
+								<td style="text-align:center">{{ $data->amount }}</td>
 								<td style="text-align:center">{{ $data->price }}</td>
-								<td style="text-align:center">{{ $data->flavor }}</td>
-								<td style="text-align:center">{{ $data->size }}</td>
-								<td style="text-align:center">{{ $data->unit->product_balance }}</td>
 								<td style="text-align:center">
 									<span class="" >
-										<a href="{{ url('edit-product/'.$data->product_id) }}" title="">
+										<a href="{{ url('edit-product-return/'.$data->id) }}" title="">
 											<i class="icon-edit"></i>
 										</a>
 									</span>
 									<span class="" >
-										<a id='del_{{ $data->product_id }}' data-product-id='{{ $data->product_id }}' href="#" title="">
+										<a id='del_{{ $data->id }}' data-product-return-id='{{ $data->id }}' href="#" title="">
 											<i class="icon-trash"></i>
 										</a>
 									</span>
@@ -53,17 +48,17 @@ $(document).ready(function(){
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
             if (result==true) {
-                var product_id = $("#"+this.id).attr("data-product-id");
+                var product_id = $("#"+this.id).attr("data-product-return-id");
                 var page = {{ $arr_page['product'] }};
                 // ============= Ajax Delete ==============
                 $.ajax({
-                    url: "{{ url('delete-product') }}",
+                    url: "{{ url('delete-product-return') }}",
                     type: "post",
                     data: {product_id:product_id},
                     success:function(r){                       
                         if(r.status == 'success'){
                             $.ajax({
-                                    url:"{{ url('search-product') }}",
+                                    url:"{{ url('search-product-return') }}",
                                     type: "post",
                                     data:{ page: page, perpage: perpage ,keyword: ""},
                                     success:function(r){
@@ -91,7 +86,7 @@ $(document).ready(function(){
         function SearchShop(page,keyword){
             $.ajax({
                 type:"POST",
-                url:"{{ url('search-product') }}",
+                url:"{{ url('search-product-return') }}",
                 data:{ page: page, perpage: perpage, keyword: keyword },
                 success:function(result){
                     $("div#tbl").html(result);
