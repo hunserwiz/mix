@@ -45,21 +45,35 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('edit-debtor/{id}','DebtorController@getFormEdit');
     Route::post('delete-debtor','DebtorController@postDelete');
     Route::post('search-debtor','DebtorController@postSearch');
-
+    // sell
     Route::get('sell','SellController@getIndex');
-
+    // product
     Route::get('manage-product','ProductController@getIndex');
     Route::get('form-product','ProductController@getForm');
     Route::get('edit-product/{product_id}','ProductController@getFormEdit');
     Route::post('delete-product','ProductController@postDelete');
     Route::post('search-product','ProductController@postSearch');
-
+    // product-return
+    Route::get('product-return','ProductReturnController@getIndex');
+    Route::get('form-debtor','ProductReturnController@getForm');
+    Route::get('edit-debtor/{id}','ProductReturnController@getFormEdit');
+    Route::post('delete-debtor','ProductReturnController@postDelete');
+    Route::post('search-debtor','ProductReturnController@postSearch');
+    // deposit
+    Route::get('deposit','DepositController@getIndex');
+    Route::get('form-deposit','DepositController@getForm');
+    Route::get('edit-deposit/{id}','DepositController@getFormEdit');
+    Route::post('delete-deposit','DepositController@postDelete');
+    Route::post('search-deposit','DepositController@postSearch');
+    // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');
         Route::post('post-finance','FinanceController@postForm');
         Route::post('post-debtor','DebtorController@postForm');
         Route::post('post-sell','SellController@postReport');
         Route::post('post-product','ProductController@postForm');
+        Route::post('post-product-return','ProductReturnController@postForm');
+        Route::post('post-deposit','DepositController@postForm');
     });
 
     Route::get('account/sign-out','AccountController@getSignOut');

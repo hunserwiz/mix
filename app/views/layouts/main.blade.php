@@ -53,7 +53,7 @@
           <a class="brand" href="#"><img src="images/immage3.png" alt=""></a>
           <div class="nav-collapse collapse">
             <ul class="nav nav-tabs">
-              <li class="" ><a href="{{ url('/') }}">หน้าแรก</a></li>
+              <li class="" ><a href="{{ url('/') }}">ใบวางบิล</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">บัญชี <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -62,26 +62,23 @@
                   <li><a href="{{ url('sell') }}">sell</a></li>
         </ul>
               </li>
-        <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">คืนสินค้า <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-          <li><a href="คืนสินค้า.html">คืนสินค้า</a></li> 
-          <li><a href="Financedetail.html">รายการคืนสินค้า</a></li>
-        </ul>
+          <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">คืนสินค้า <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ url('product-return') }}">รายการคืนสินค้า</a></li>
+            </ul> 
               </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">ลูกค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">ค่า Commition</a></li>
-                  <li><a href="ListOrder.html">รายการสั่งซื้อ</a></li>
-                  <li><a href="ใบลงฝากของ.html">รายการฝากลูกค้า</a></li>
+                  <li><a href="{{ url('commition') }}">ค่า Commition</a></li>
+                  <li><a href="{{ url('deposit') }}">รายการฝากลูกค้า</a></li>
               </ul>
               </li>
                <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">สินค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a></li>
-                  <li><a href="{{ url('manage-product') }}">รายการฝากลูกค้า</a></li>
               </ul>
               </li>
             </ul>
