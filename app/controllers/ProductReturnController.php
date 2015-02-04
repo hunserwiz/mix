@@ -27,6 +27,16 @@ class ProductReturnController extends BaseController {
 
         $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
+
+
+  
+        // $a = 8911777151;
+        // $b = 25013171414;
+        // $c = 19125059;
+        //  echo number_format(($a * $b) + $c);
+        //  echo "<hr>";
+        //  echo ($a * $b) + $c;
+
         return View::make('productReturn.index',compact('model',
                                         'count_model',
                                         'keyword',
