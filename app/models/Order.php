@@ -40,10 +40,7 @@ class Order extends Eloquent {
         return $attributes_name;
     }
 
-    public function GetAgent($id){
-          $model = Agent::find($id);
-          return $model->agent_name." " .$model->agent_lastname;
-    }
+
     public function GetLocation($id){
         $text = "";
           if($id == 1){
@@ -54,6 +51,9 @@ class Order extends Eloquent {
           return $text;
     }
     
+    public function user(){
+      return $this->hasOne('User', 'id', 'agent_id');
+    }
 
     public function product(){
       return $this->hasOne('Product', 'product_id', 'product_id');
