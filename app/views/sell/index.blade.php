@@ -35,6 +35,16 @@
 			</div>			
 		</div>
 	</div>
+	@if(Auth::user()->user_type == 1)
+	<div class="row-fluid" >
+		<div class="span4">
+		<label class="span4">sell  :</label>
+			<div class="span4">					
+				{{ Form::select('agent_id', array(''=> 'กรุณาเลือก') +  $list_agent ,$agent_id, array('required'=>'',"class"=>"form-control")) }}
+			</div>
+		</div>
+	</div>
+	@endif
 	{{ Form::Close() }}		
 </div>	
 <div>

@@ -70,16 +70,11 @@ class OrderController extends BaseController {
 
     public function getForm() {
         $list_categorise = Categorise::lists('name','categorise_id');
-        $model_agent = Agent::get();
-        $list_agent = array();
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
+        $list_agent = User::where('user_type','=',3)->lists('name','id');
         $list_product = Product::lists('name','product_id');
         $model = null;
-        if($model_agent->count() > 0)
-        foreach ($model_agent as $key => $value) {
-            $list_agent[$value->agent_id] = $value->agent_name." ".$value->agent_lastname;
-        }
 
         return View::make('order.form',compact('model','list_product','list_categorise','list_agent','list_location','list_user'));
     }
@@ -88,16 +83,13 @@ class OrderController extends BaseController {
         $model = Order::find($order_id);
         $model->order_date = ThaiHelper::DateToShowForm($model->order_date);
         $list_categorise = Categorise::lists('name','categorise_id');
-        $model_agent = Agent::get();
-        $list_agent = array();
+
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
+        $list_agent = User::where('user_type','=',3)->lists('name','id');
         $list_product = Product::lists('name','product_id');
 
-        if($model_agent->count() > 0)
-        foreach ($model_agent as $key => $value) {
-            $list_agent[$value->agent_id] = $value->agent_name." ".$value->agent_lastname;
-        }
+
         return View::make('order.form',compact('model','list_product','list_categorise','list_agent','list_location','list_user'));
     }
     public function postForm() {
