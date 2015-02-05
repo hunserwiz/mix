@@ -46,11 +46,11 @@
 					</div>
 					<div class="span6">
 						<label class="span4"> สินค้า  :</label>
-						<div class="span8">		
+						<div class="span8" id='product'>		
 						@if($model == null)			
-							{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('required'=>'',"class"=>"form-control")) }}
+							{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('required'=>'',"class"=>"form-control" ,'id'=>"product_id")) }}
 						@else
-							{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , $model->product_id , array('required'=>'',"class"=>"form-control")) }}
+							{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , $model->product_id , array('required'=>'',"class"=>"form-control" ,'id'=>"product_id")) }}
 						@endif			
 						</div>
 					</div>
@@ -162,9 +162,20 @@ $(document).ready(function(){
 	$(".date-picker").datepicker({
 		format: 'dd-mm-yyyy',
 	});
+	var mode = "{{ $mode }}";
+
+	if(mode == 'add')
+		$("#product_id").prop('disabled',true);
 
 	$("#categorise_id").change(function(){
-		console.log(this.value);
+		$.ajax({
+				url:"{{ url('get-list-product') }}",
+				type: "post",
+				data:{ categorise_id: this.value},
+				success:function(r){
+					$("div#product").html(r);
+				}
+			});
 	});
 });
 </script>

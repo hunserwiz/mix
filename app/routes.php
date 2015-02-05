@@ -59,6 +59,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('edit-product-return/{id}','ProductReturnController@getFormEdit');
     Route::post('delete-product-return','ProductReturnController@postDelete');
     Route::post('search-product-return','ProductReturnController@postSearch');
+    Route::post('get-list-product','ProductReturnController@getListProduct');
     // deposit
     Route::get('deposit','DepositController@getIndex');
     Route::get('form-deposit','DepositController@getForm');

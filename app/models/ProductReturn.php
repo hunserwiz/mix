@@ -33,11 +33,11 @@ class ProductReturn extends Eloquent {
     }
 
     public function product(){
-          return $this->hasOne('Product');
+          return $this->hasOne('Product','id','product_id');
     }
 
     public function categorise(){
-          return $this->hasOne('Categorise');
+          return $this->hasOne('Categorise','categorise_id','categorise_id');
     }
 
      public function user(){

@@ -8,7 +8,7 @@ class Product extends Eloquent {
      * @var string
      */
     protected $table = 'products';
-    protected $primaryKey = 'product_id';
+    protected $primaryKey = 'id';
     
     	public static function validate($input) {
         $rules = array(

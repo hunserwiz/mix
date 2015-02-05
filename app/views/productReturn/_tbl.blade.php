@@ -48,13 +48,13 @@ $(document).ready(function(){
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
             if (result==true) {
-                var product_id = $("#"+this.id).attr("data-product-return-id");
+                var id = $("#"+this.id).attr("data-product-return-id");
                 var page = {{ $arr_page['product'] }};
                 // ============= Ajax Delete ==============
                 $.ajax({
                     url: "{{ url('delete-product-return') }}",
                     type: "post",
-                    data: {product_id:product_id},
+                    data: {id:id},
                     success:function(r){                       
                         if(r.status == 'success'){
                             $.ajax({
@@ -76,14 +76,14 @@ $(document).ready(function(){
             var page = arr_id.pop();
             var keyword = {{ $keyword }}
 
-            SearchShop(page,keyword);
+            Search(page,keyword);
 
             return false;
         });
 
 		var perpage = {{ $arr_perpage['product'] }};
 
-        function SearchShop(page,keyword){
+        function Search(page,keyword){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-product-return') }}",
