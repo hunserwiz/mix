@@ -8,8 +8,8 @@
 									<th style="text-align:center">ราคา</th>
 									<th style="text-align:center">จำนวน</th>
 									<th style="text-align:center">location</th>
-									<th style="text-align:center">agent</th>
-									<th style="text-align:center">payment_by</th>	
+									<th style="text-align:center">ผู้ขาย</th>
+									<th style="text-align:center">ผู้ออกใบเสร็จ</th>	
 									<th style="text-align:center">จัดการ</th>									
 								</tr>
 							</thead>	

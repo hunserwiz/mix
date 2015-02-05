@@ -34,10 +34,10 @@
 						<div class="span8">	
 							@if($model == null)
 							{{ Form::text('order_title', Input::old('order_title'),
-                                            array("id"=>"order_title",'required'=>'','class'=>'form-control','placeholder'=>'กรอก หัวเรื่อง')) }}
+                                            array("id"=>"order_title",'required'=>'','class'=>'form-control','placeholder'=>'กรอกรื่อง')) }}
 							@else
 							{{ Form::text('order_title', $model->order_title,
-                                            array("id"=>"order_title",'required'=>'','class'=>'form-control','placeholder'=>'กรอก หัวเรื่อง')) }}
+                                            array("id"=>"order_title",'required'=>'','class'=>'form-control','placeholder'=>'กรอกเรื่อง')) }}
 							@endif				
 						</div>
 					</div>
@@ -153,7 +153,7 @@
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 				<a href="{{ url('/') }}">
-					<input type="button" class="btn btn-danger" value="Cancel">
+					<input type="button" class="btn btn-danger" value="ยกเลิก">
 				</a>
 		</div>
      </form> 

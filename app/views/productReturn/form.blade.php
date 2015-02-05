@@ -24,10 +24,10 @@
 						<div class="span8">		
 						@if($model == null)			
 							{{ Form::text('date_return', Input::old('date_return'),
-                                            array("id"=>"date_return",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"date_return",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่คืนสินค้า')) }}
 						@else
 							{{ Form::text('date_return', $model->date_return,
-                                            array("id"=>"date_return",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"date_return",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่คืนสินค้า')) }}
 						@endif
 						</div>
 					</div>
@@ -74,10 +74,10 @@
 					<div class="span8">
 						@if($model == null)			
 							{{ Form::text('amount', Input::old('amount'),
-                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
 						@else
 							{{ Form::text('amount', $model->amount,
-                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
 						@endif						
 					</div>
 				</div>
@@ -125,10 +125,10 @@
 					<div class="span8">
 						@if($model == null)			
 							{{ Form::text('product_date', Input::old('product_date'),
-                                            array("id"=>"product_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"product_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ผลิต')) }}
 						@else
 							{{ Form::text('product_date', $model->product_date,
-                                            array("id"=>"product_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"product_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ผลิต')) }}
 						@endif	
 					</div>
 				</div>
@@ -137,10 +137,10 @@
 					<div class="span8">
 						@if($model == null)			
 							{{ Form::text('expired_date', Input::old('expired_date'),
-	                                            array("id"=>"expired_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+	                                            array("id"=>"expired_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่หมดอายุ')) }}
 						@else
 							{{ Form::text('expired_date', $model->expired_date,
-	                                            array("id"=>"expired_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+	                                            array("id"=>"expired_date",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่หมดอายุ')) }}
 						@endif
 					</div>
 				</div>
@@ -151,7 +151,7 @@
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 				<a href="{{ url('/product-return') }}">
-					<input type="button" class="btn btn-danger" value="Cancel">
+					<input type="button" class="btn btn-danger" value="ยกเลิก">
 				</a>
 		</div>
      </form> 

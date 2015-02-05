@@ -122,7 +122,7 @@
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 				<a href="{{ url('/debtor') }}">
-					<input type="button" class="btn btn-danger" value="Cancel">
+					<input type="button" class="btn btn-danger" value="ยกเลิก">
 				</a>
 		</div>
      </form> 

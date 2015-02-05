@@ -22,10 +22,10 @@
 						<div class="span8">		
 						@if($model == null)			
 							{{ Form::text('date_account', Input::old('date_account'),
-                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ลงข้อมูล')) }}
 						@else
 							{{ Form::text('date_account', $model->date_account,
-                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ออกใบสินค้า')) }}
+                                            array("id"=>"date_account",'required'=>'','class'=>'date-picker form-control','placeholder'=>'กรอกวันที่ลงข้อมูล')) }}
 						@endif
 						</div>
 					</div>
@@ -50,10 +50,10 @@
 					<div class="span8">
 						@if($model == null)			
 							{{ Form::text('price', Input::old('price'),
-                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงิน')) }}
 						@else
 							{{ Form::text('price', $model->price,
-                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงิน')) }}
 						@endif						
 					</div>
 				</div>
@@ -91,7 +91,7 @@
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 				<a href="{{ url('/finance') }}">
-					<input type="button" class="btn btn-danger" value="Cancel">
+					<input type="button" class="btn btn-danger" value="ยกเลิก">
 				</a>
 		</div>
      </form> 
