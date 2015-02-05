@@ -56,7 +56,7 @@ class Order extends Eloquent {
     }
 
     public function product(){
-      return $this->hasOne('Product', 'product_id', 'product_id');
+      return $this->hasOne('Product', 'id', 'product_id');
     }
 }
 ?>

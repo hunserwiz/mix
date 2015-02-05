@@ -73,7 +73,7 @@ class OrderController extends BaseController {
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
         $list_agent = User::where('user_type','=',3)->lists('name','id');
-        $list_product = Product::lists('name','product_id');
+        $list_product = Product::lists('name','id');
         $model = null;
 
         return View::make('order.form',compact('model','list_product','list_categorise','list_agent','list_location','list_user'));
@@ -87,7 +87,7 @@ class OrderController extends BaseController {
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
         $list_agent = User::where('user_type','=',3)->lists('name','id');
-        $list_product = Product::lists('name','product_id');
+        $list_product = Product::lists('name','id');
 
 
         return View::make('order.form',compact('model','list_product','list_categorise','list_agent','list_location','list_user'));

@@ -37,13 +37,13 @@ class SellController extends BaseController {
         $model = Product::get();
         $array_result = array();
         foreach ($model as $m) {
-            $array_result[$m->product_id]['name'] = $m->name;
-            $array_result[$m->product_id]['amount'] = 0;
-            $array_result[$m->product_id]['point'] = $m->point;
+            $array_result[$m->id]['name'] = $m->name;
+            $array_result[$m->id]['amount'] = 0;
+            $array_result[$m->id]['point'] = $m->point;
         }
         // loop query condition //
         $product_model = Product::join('orders', function($join) {
-            $join->on('products.product_id', '=', 'orders.product_id');
+            $join->on('products.id', '=', 'orders.product_id');
         })
         ->where(function($query) use ($agent_id)
         {
@@ -64,10 +64,10 @@ class SellController extends BaseController {
         $salary = 0;
         $multiply = 0.08;
         foreach ($product_model as $p) {
-            $array_result[$p->product_id]['name'] = $p->name;
-            $array_result[$p->product_id]['amount'] = $p->amount_total;
+            $array_result[$p->id]['name'] = $p->name;
+            $array_result[$p->id]['amount'] = $p->amount_total;
             $total_amount = $total_amount + $p->amount_total;
-            $total_result = $total_result + $array_result[$p->product_id]['amount'] * $array_result[$p->product_id]['point'];
+            $total_result = $total_result + $array_result[$p->id]['amount'] * $array_result[$p->id]['point'];
         }
         $point = $total_result * 26;
 
