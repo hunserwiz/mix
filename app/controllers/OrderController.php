@@ -20,8 +20,7 @@ class OrderController extends BaseController {
         );
         $skip = ($arr_page['order'] - 1) * $arr_perpage['order'];
 
-        $model = Order::skip($skip)->take($arr_perpage['order'])
-                            ->get();
+        $model = Order::skip($skip)->take($arr_perpage['order'])->get();
 
         $count_model = Order::count();                
 
@@ -50,8 +49,7 @@ class OrderController extends BaseController {
         );
         $skip = ($arr_page['order'] - 1) * $arr_perpage['order'];
 
-        $model = Order::skip($skip)->take($arr_perpage['order'])
-                            ->get();
+        $model = Order::skip($skip)->take($arr_perpage['order'])->get();
 
         $count_model = Order::count();                
 

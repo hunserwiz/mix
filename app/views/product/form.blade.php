@@ -11,7 +11,7 @@
 <div>
 {{ Form::open(array('url' => 'post-product')) }}
 @if($model != null)
-{{ Form::hidden('product_id',$model->product_id) }}
+{{ Form::hidden('id',$model->id) }}
 @endif		
 			<div class="row-fluid" >
 					<!-- <div class="span6">
@@ -24,10 +24,10 @@
 						<label class="span4">ประเภทสินค้า  :</label>
 						<div class="span8">		
 						@if($model == null)
-							 {{ Form::select('categorise_id', $array_categories, Input::old('categorise_id') ,
+							 {{ Form::select('categorise_id', array('กรุณาเลือก') + $list_categories, Input::old('categorise_id') ,
                                           array("class"=>"form-control","id"=>"categorise_id")) }}
 						@else
-							 {{ Form::select('categorise_id', $array_categories, $model->categorise_id ,
+							 {{ Form::select('categorise_id', array('กรุณาเลือก') + $list_categories, $model->categorise_id ,
                                           array("class"=>"form-control","id"=>"categorise_id")) }}
 						@endif			
 							

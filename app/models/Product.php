@@ -14,9 +14,9 @@ class Product extends Eloquent {
         $rules = array(
             'categorise_id' => 'required',    
             'name' => 'required',
-            'price' => 'required|integer',
+            'price' => 'required',
             'flavor' => 'required ',
-            'size' => 'required|integer ',
+            'size' => 'required ',
             'product_balance' => 'required|integer',
         );
 
@@ -27,7 +27,7 @@ class Product extends Eloquent {
         $attributes_name = array(      
             'categorise_id' => 'ประเภทสินค้า',    
             'name' => ' ชื่อสินค้า',
-            'price' => ' ราคาต่อหน่วย',
+            'price' => 'ราคาต่อหน่วย',
             'flavor' => 'รส ',
             'size' => 'ขนาด',
             'product_balance' => 'จำนวน',
@@ -35,14 +35,13 @@ class Product extends Eloquent {
 
         return $attributes_name;
     }
-    public function unit(){
+    public function stock(){
           return $this->hasOne('Stock');
     }
 
     public function orders(){
           return $this->hasOne('Order');
     }
-
 
     public function categorise($categorise_id){
           $model = Categorise::find($categorise_id);

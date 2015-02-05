@@ -16,18 +16,18 @@ class ProductController extends BaseController {
         );
 
         $arr_perpage = array(
-            'product' => 4
+            'product' => 10
         );
         $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
 
-        $model = Product::skip($skip)->take($arr_perpage['product'])
-                            ->get();
+        $model = Product::skip($skip)->take($arr_perpage['product'])->get();
 
         $count_model = Product::count();                
 
         $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
-        return View::make('product.index',compact('model',
+        return View::make('product.index',compact(
+                                        'model',
                                         'count_model',
                                         'keyword',
                                         'arr_list_page',
@@ -48,15 +48,15 @@ class ProductController extends BaseController {
         );
         $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
 
-         $model = Product::skip($skip)->take($arr_perpage['product'])
-                            ->get();
+        $model = Product::skip($skip)->take($arr_perpage['product'])->get();
 
         $count_model = Product::count();                
 
         $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
 
-        return View::make('product._tbl',compact('model',
+        return View::make('product._tbl',compact(
+                                        'model',
                                         'count_model',
                                         'keyword',
                                         'arr_list_page',
@@ -67,26 +67,22 @@ class ProductController extends BaseController {
     }
 
     public function getForm($product_id = NULL) {
-    	$array_categories = Categorise::lists('name','categorise_id');
+    	$list_categories = Categorise::lists('name','categorise_id');
         $model = null;
         $model_stock = null;
         return View::make('product.form',compact(
-            'array_categories',
+            'list_categories',
             'model',
             'model_stock'
             ));
     }
-    public function getFormEdit($product_id = NULL) {
-        $array_categories = Categorise::lists('name','categorise_id');
-
-        if($product_id != NULL || $_GET['product_id']){
-            if($product_id == null)
-                $product_id = $_GET['product_id'];
-                $model = Product::find($product_id);
-                $model_stock = Stock::where('product_id','=',$product_id)->first();
-        }
+    public function getFormEdit($id = NULL) {
+        $list_categories = Categorise::lists('name','categorise_id');
+        $model = Product::find($id);
+        $model_stock = Stock::where('product_id','=',$id)->first();
+        
         return View::make('product.form',compact(
-            'array_categories',
+            'list_categories',
             'model',
             'model_stock'
             ));
@@ -95,15 +91,15 @@ class ProductController extends BaseController {
     	$validation = Product::validate(Input::all());
         $validation->setAttributeNames(Product::attributeName());
         if ($validation->passes()) {
-            if(Input::get('product_id')){
-                $model = Product::find(Input::get('product_id'));
+            if(Input::get('id')){
+                $model = Product::find(Input::get('id'));
                 $model->name = Input::get('name');
                 $model->categorise_id = Input::get('categorise_id');
                 $model->price = Input::get('price');
                 $model->size = Input::get('size');
                 $model->flavor = Input::get('flavor');
                 if($model->save()){
-                    $model_stock = Stock::where('product_id','=',Input::get('product_id'))->first();
+                    $model_stock = Stock::where('product_id','=',Input::get('id'))->first();
                     $model_stock->product_balance = Input::get('product_balance');
                     if($model_stock->save()){
                         return Redirect::action('ProductController@getIndex');
@@ -118,7 +114,7 @@ class ProductController extends BaseController {
                 $model->flavor = Input::get('flavor');
                 if($model->save()){
                     $model_stock = new Stock();
-                    $model_stock->product_id = $model->product_id;
+                    $model_stock->product_id = $model->id;
                     $model_stock->product_balance = Input::get('product_balance');
                     if($model_stock->save()){
                         return Redirect::action('ProductController@getIndex');
@@ -126,8 +122,8 @@ class ProductController extends BaseController {
                 }
             }
         }else{
-            if(Input::get('product_id')){
-        	return Redirect::action('ProductController@getFormEdit',array('product_id'=>Input::get('product_id')))
+            if(Input::get('id')){
+        	return Redirect::action('ProductController@getFormEdit',Input::get('id'))
                             ->withErrors($validation)
                             ->withInput();    
             }else{
@@ -139,10 +135,10 @@ class ProductController extends BaseController {
     }
    
     public function postDelete() {
-        $product_id = Input::get('product_id');
-        $model_stock = Stock::where('product_id','=',$product_id)->first();
+        $id = Input::get('id');
+        $model_stock = Stock::where('product_id','=',$id)->first();
         if($model_stock->delete()){
-            $model = Product::find($product_id);
+            $model = Product::find($id);
             $model->delete();
             return Response::json(array('status' => 'success'));
         }
