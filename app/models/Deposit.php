@@ -15,10 +15,12 @@ class Deposit extends Eloquent {
             'date_deposit' => 'required',    
             'categorise_id' => 'required',       
             'product_id' => 'required',
-            'type_deposit' => 'required',         
+            'type_deposit' => 'required',
+            'price' => 'required', 
             'amount' => 'required',            
             'deposit_by' => 'required',
             'create_by' => 'required',
+            'date_return_deposit' => 'required',    
         );
 
         return Validator::make($input, $rules,ThaiHelper::getValidationMessage());
@@ -29,10 +31,12 @@ class Deposit extends Eloquent {
             'date_deposit' => 'วันที่ฝาก',    
             'categorise_id' => 'ประเภทสินค้า',       
             'product_id' => 'สินค้า',
-            'type_deposit' => 'ประเภทการฝากสินค้า',         
+            'type_deposit' => 'ประเภทการฝากสินค้า',    
+            'price' => 'ราคา',      
             'amount' => 'จำนวนสินค้า',            
             'deposit_by' => 'ผู้ฝาก',
             'create_by' => 'ผู้รับฝาก',
+            'date_return_deposit' => 'วันรับคืน',    
         );
 
         return $attributes_name;

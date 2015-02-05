@@ -75,7 +75,7 @@ class DepositController extends BaseController {
         $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
         $list_agent = User::where('user_type','=','3')->lists('name','id');
-
+        
         return View::make('deposit.form',compact(
             'model',
             'list_category',
@@ -95,6 +95,7 @@ class DepositController extends BaseController {
         $list_user = User::where('user_type','=','2')->lists('name','id');
         $list_agent = User::where('user_type','=','3')->lists('name','id');
         $model->date_deposit = ThaiHelper::DateToShowForm($model->date_deposit);
+        $model->date_return_depoist = ThaiHelper::DateToShowForm($model->date_return_depoist);
 
         return View::make('deposit.form',compact(
             'model',
@@ -108,7 +109,11 @@ class DepositController extends BaseController {
     }
     public function postForm() {
         $validation = Deposit::validate(Input::all());
-        $validation->setAttributeNames(ProductReturn::attributeName());
+        $validation->setAttributeNames(Deposit::attributeName());
+        echo "<pre>";
+        print_r(Input::all());
+        echo "</pre>";
+        die;
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Deposit::find(Input::get('id'));
@@ -162,7 +167,7 @@ class DepositController extends BaseController {
         $categorise_id = Input::get('categorise_id');
         $list_product = Product::where('categorise_id','=',$categorise_id)->lists('name','id');
         
-        return View::make('deposit._list_product',compact('list_product'));
+        return View::make('productReturn._list_product',compact('list_product'));
     }
 
 
