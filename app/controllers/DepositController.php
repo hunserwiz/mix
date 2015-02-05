@@ -12,22 +12,23 @@ class DepositController extends BaseController {
         $keyword = "";
 
         $arr_page = array(
-            'product' => 1
+            'deposit' => 1
         );
 
         $arr_perpage = array(
-            'product' => 4
+            'deposit' => 10
         );
-        $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
+        $skip = ($arr_page['deposit'] - 1) * $arr_perpage['deposit'];
 
-        $model = Product::skip($skip)->take($arr_perpage['product'])
+        $model = Deposit::skip($skip)->take($arr_perpage['deposit'])
                             ->get();
 
-        $count_model = Product::count();                
+        $count_model = Deposit::count();                
 
-        $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
-        $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
-        return View::make('product.index',compact('model',
+        $arr_count_page['deposit'] = ceil($count_model/$arr_perpage['deposit']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['deposit'],$arr_count_page['deposit']);
+
+        return View::make('deposit.index',compact('model',
                                         'count_model',
                                         'keyword',
                                         'arr_list_page',
@@ -40,23 +41,23 @@ class DepositController extends BaseController {
         $keyword = Input::get('keyword');
 
         $arr_page = array(
-            'product' => Input::get('page')
+            'deposit' => Input::get('page')
         );
 
         $arr_perpage = array(
-            'product' => Input::get('perpage')
+            'deposit' => Input::get('perpage')
         );
-        $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
+        $skip = ($arr_page['deposit'] - 1) * $arr_perpage['deposit'];
 
-         $model = Product::skip($skip)->take($arr_perpage['product'])
+        $model = Deposit::skip($skip)->take($arr_perpage['deposit'])
                             ->get();
 
-        $count_model = Product::count();                
+        $count_model = Deposit::count();                
 
-        $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
-        $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
+        $arr_count_page['deposit'] = ceil($count_model/$arr_perpage['deposit']); 
+        $arr_list_page = ThaiHelper::getArrListPage($arr_page['deposit'],$arr_count_page['deposit']);
 
-        return View::make('product._tbl',compact('model',
+        return View::make('deposit._tbl',compact('model',
                                         'count_model',
                                         'keyword',
                                         'arr_list_page',
@@ -66,86 +67,102 @@ class DepositController extends BaseController {
             ));
     }
 
-    public function getForm($product_id = NULL) {
-    	$array_categories = Categorise::lists('name','categorise_id');
+    public function getForm() {
         $model = null;
-        $model_stock = null;
-        return View::make('product.form',compact(
-            'array_categories',
+        $mode = "add";
+        $list_category = Categorise::lists('name','categorise_id');
+        $list_location = ThaiHelper::getLocationList();
+        $list_product = Product::lists('name','id');
+        $list_user = User::where('user_type','=','2')->lists('name','id');
+        $list_agent = User::where('user_type','=','3')->lists('name','id');
+
+        return View::make('deposit.form',compact(
             'model',
-            'model_stock'
+            'list_category',
+            'list_product',
+            'list_location',
+            'list_user',
+            'list_agent',
+            'mode'
             ));
     }
-    public function getFormEdit($product_id = NULL) {
-        $array_categories = Categorise::lists('name','categorise_id');
+    public function getFormEdit($id = NULL) {
+        $model = Deposit::find($id);
+        $mode = "edit";
+        $list_category = Categorise::lists('name','categorise_id');
+        $list_location = ThaiHelper::getLocationList();
+        $list_product = Product::where('categorise_id','=',$model->categorise_id)->lists('name','id');
+        $list_user = User::where('user_type','=','2')->lists('name','id');
+        $list_agent = User::where('user_type','=','3')->lists('name','id');
+        $model->date_deposit = ThaiHelper::DateToShowForm($model->date_deposit);
 
-        if($product_id != NULL || $_GET['product_id']){
-            if($product_id == null)
-                $product_id = $_GET['product_id'];
-                $model = Product::find($product_id);
-                $model_stock = Stock::where('product_id','=',$product_id)->first();
-        }
-        return View::make('product.form',compact(
-            'array_categories',
+        return View::make('deposit.form',compact(
             'model',
-            'model_stock'
+            'list_category',
+            'list_product',
+            'list_location',
+            'list_user',
+            'list_agent',
+            'mode'
             ));
     }
     public function postForm() {
-    	$validation = Product::validate(Input::all());
-        $validation->setAttributeNames(Product::attributeName());
+        $validation = Deposit::validate(Input::all());
+        $validation->setAttributeNames(ProductReturn::attributeName());
         if ($validation->passes()) {
-            if(Input::get('product_id')){
-                $model = Product::find(Input::get('product_id'));
-                $model->name = Input::get('name');
+            if(Input::get('id')){
+                $model = Deposit::find(Input::get('id'));
+                $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
                 $model->categorise_id = Input::get('categorise_id');
-                $model->price = Input::get('price');
-                $model->size = Input::get('size');
-                $model->flavor = Input::get('flavor');
+                $model->product_id = Input::get('product_id');    
+                $model->type_deposit_id = Input::get('type_deposit_id');                            
+                $model->amount = Input::get('amount');
+                $model->deposit_by = Input::get('deposit_by');
+                $model->create_by = Input::get('create_by');
+                $model->date_return_depoist = ThaiHelper::DateToDB(Input::get('date_return_depoist'));
                 if($model->save()){
-                    $model_stock = Stock::where('product_id','=',Input::get('product_id'))->first();
-                    $model_stock->product_balance = Input::get('product_balance');
-                    if($model_stock->save()){
-                        return Redirect::action('ProductController@getIndex');
-                    }
+                    return Redirect::action('DepositController@getIndex');
                 }
             }else{
-                $model = new Product();
-                $model->name = Input::get('name');
+                $model = new Deposit();
+                $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
                 $model->categorise_id = Input::get('categorise_id');
-                $model->price = Input::get('price');
-                $model->size = Input::get('size');
-                $model->flavor = Input::get('flavor');
+                $model->product_id = Input::get('product_id');    
+                $model->type_deposit_id = Input::get('type_deposit_id');                            
+                $model->amount = Input::get('amount');
+                $model->deposit_by = Input::get('deposit_by');
+                $model->create_by = Input::get('create_by');
+                $model->date_return_depoist = ThaiHelper::DateToDB(Input::get('date_return_depoist'));
                 if($model->save()){
-                    $model_stock = new Stock();
-                    $model_stock->product_id = $model->product_id;
-                    $model_stock->product_balance = Input::get('product_balance');
-                    if($model_stock->save()){
-                        return Redirect::action('ProductController@getIndex');
-                    }
+                    return Redirect::action('DepositController@getIndex');
                 }
             }
         }else{
-            if(Input::get('product_id')){
-        	return Redirect::action('ProductController@getFormEdit',array('product_id'=>Input::get('product_id')))
-                            ->withErrors($validation)
-                            ->withInput();    
+            if(Input::get('id')){
+                return Redirect::action('DepositController@getFormEdit',Input::get('id'))
+                                ->withErrors($validation)
+                                ->withInput();    
             }else{
-            return Redirect::action('ProductController@getForm')
-                        ->withErrors($validation)
-                            ->withInput();    
+                return Redirect::action('DepositController@getForm')
+                                ->withErrors($validation)
+                                ->withInput();    
             }
         }
     }
    
     public function postDelete() {
-        $product_id = Input::get('product_id');
-        $model_stock = Stock::where('product_id','=',$product_id)->first();
-        if($model_stock->delete()){
-            $model = Product::find($product_id);
-            $model->delete();
+        $id = Input::get('id');
+        $model = Deposit::find($id);
+        if($model->delete()){
             return Response::json(array('status' => 'success'));
         }
+    }
+
+    public function getListProduct() {
+        $categorise_id = Input::get('categorise_id');
+        $list_product = Product::where('categorise_id','=',$categorise_id)->lists('name','id');
+        
+        return View::make('deposit._list_product',compact('list_product'));
     }
 
 
