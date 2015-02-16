@@ -169,11 +169,11 @@
 			<div class="row-fluid" >
 				<div class="span12">
 				สินค้า :
-					{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('required'=>'',"class"=>"form-control")) }}
-				เลขที่ใบเสร็จ :     
+					{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id','required'=>'',"class"=>"form-control")) }}
+				ราคา :     
 					{{ Form::text('price', Input::old('price'),
 		                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
-		        เลขที่ใบเสร็จ :                               
+		        จำนวน :                               
 		           	{{ Form::text('amount', Input::old('amount'),
 		                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
 					
@@ -183,7 +183,24 @@
 			</div>
 		</div>
 
-		<div id='tbl_product'></div>
+		<div id='tbl_product'>
+			<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
+							<thead>
+								<tr>
+									<th style="text-align:center">ชื่อสินค้า</th>
+									<th style="text-align:center">ราคาต่อหน่วย</th>
+									<th style="text-align:center">จำนวน</th>																
+								</tr>
+							</thead>	
+							<tbody>	
+							<tr>
+								<td style="text-align:left"></td>
+								<td style="text-align:left"></td>
+								<td style="text-align:left"></td>							
+							</tr>								
+							</tbody>
+					</table>
+		</div>
 
 		<div class="text-center">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
@@ -196,15 +213,70 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-$(".date-picker").datepicker({
-	format: 'dd-mm-yyyy',
-});
+	var product_id = '';
+	var product_name = '';
+	var price = $("#price").val();
+	var amount = $("#amount").val();
+	$("#tbl_product").hide();
+	$("#add").prop('disabled',true);
+	$("#product_id").change(function(){
+		product_id = this.value;
+		$("#add").prop('disabled',true);
+		$("#price").val(null);
+		$("#amount").val(null);
+	});
+	
+	$("#price").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+	    price = $("#price").val();
+	    amount = $("#amount").val();
+	    if(amount != "" && price != "" && product_id != "")
+	    	$("#add").prop('disabled',false);
+    });
 
-$(".date-picker").on("change", function () {
-    var id = $(this).attr("id");
-    var val = $("label[for='" + id + "']").text();
-    $("#msg").text(val + " changed");
-});
+    $("#amount").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        return false;
+	    }
+	    price = $("#price").val();
+	    amount = $("#amount").val();
+	    if(amount != "" && price != "" && product_id != "")
+	    	$("#add").prop('disabled',false);
+    });
+
+		$("#add").click(function(){
+			$("#tbl_product").show();
+			var price = $("#price").val();
+					$.ajax({
+	                    url: "{{ url('post-product-name') }}",
+	                    type: "post",
+	                    data: {product_id:product_id},
+	                    success:function(r){                       
+	                        if(r.status == 'success'){
+	                            product_name = r.name;
+	                            var tr = "<tr>"+
+									"<td style='text-align:left'>"+ product_name +"</td>"+
+									"<td style='text-align:right'>"+ price +"</td>"+
+									"<td style='text-align:right'>"+ amount +"</td>"+
+									"<td style='text-align:center'><input type='button' class='btn btn-danger' value='ลบ'></td>"+
+									"</tr>";
+								$('div#tbl_product tbody tr:last').after(tr);
+	                        }
+	                    }
+	                }); 
+
+		});
+
+	$(".date-picker").datepicker({
+		format: 'dd-mm-yyyy',
+	});
+
+	$(".date-picker").on("change", function () {
+	    var id = $(this).attr("id");
+	    var val = $("label[for='" + id + "']").text();
+	    $("#msg").text(val + " changed");
+	});
 });
 
 </script>

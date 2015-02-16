@@ -33,6 +33,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('edit-order/{order_id}','OrderController@getFormEdit');
     Route::post('delete-order','OrderController@postDelete');
     Route::post('search-order','OrderController@postSearch');
+    Route::post('post-product-name','OrderController@postProductName');
+    
     // finance
     Route::get('finance','FinanceController@getIndex');
     Route::get('form-finance','FinanceController@getForm');

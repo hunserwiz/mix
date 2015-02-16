@@ -98,6 +98,7 @@ class OrderController extends BaseController {
                 $model = Order::find(Input::get('order_id'));
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
+                $model->type = Input::get('type');
                 $model->category_id = Input::get('category');
                 $model->product_id = Input::get('product_id');
                 $model->price = Input::get('price');
@@ -114,6 +115,7 @@ class OrderController extends BaseController {
                 $model = new Order();
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
+                $model->type = Input::get('type');
                 $model->category_id = Input::get('category');
                 $model->product_id = Input::get('product_id');
                 $model->price = Input::get('price');
@@ -139,6 +141,14 @@ class OrderController extends BaseController {
         $model= Order::find($order_id);
         if($model->delete()){
             return Response::json(array('status' => 'success'));
+        }
+    }
+
+    public function postProductName() {
+        $product_id = Input::get('product_id');
+        $model= Product::find($product_id);
+        if($model->count() > 0){
+            return Response::json(array('status' => 'success','name'=>$model->name));
         }
     }
  
