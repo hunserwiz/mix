@@ -3,10 +3,7 @@
 								<tr>
 									<th style="text-align:center">เรื่อง</th>
 									<th style="text-align:center">เลขที่ใบเสร็จ</th>
-									<th style="text-align:center">วันที่ออกบิล</th>
-									<th style="text-align:center">สินค้า</th>
-									<th style="text-align:center">ราคา</th>
-									<th style="text-align:center">จำนวน</th>
+									<th style="text-align:center">วันที่ออกบิล</th>									
 									<th style="text-align:center">location</th>
 									<th style="text-align:center">ผู้ขาย</th>
 									<th style="text-align:center">ผู้ออกใบเสร็จ</th>	
@@ -17,15 +14,12 @@
 							@if($model->count() > 0)
 							@foreach($model as $k => $data)
 							<tr>
-								<td style="text-align:center">{{ $data->order_title }}</td>
-								<td style="text-align:center">{{ $data->order_no }}</td>
-								<td style="text-align:center">{{ $data->order_date }}</td>
-								<td style="text-align:center">{{ $data->product->name }}</td>
-								<td style="text-align:center">{{ $data->price }}</td>
-								<td style="text-align:center">{{ $data->amount_total }}</td>
-								<td style="text-align:center">{{ $data->GetLocation($data->location_id) }}</td>
-								<td style="text-align:center">{{ $data->user->name }}</td>
-								<td style="text-align:center">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
+								<td style="text-align:left">{{ $data->order_title }}</td>
+								<td style="text-align:left">{{ $data->order_no }}</td>
+								<td style="text-align:left">{{ $data->order_date }}</td>
+								<td style="text-align:left">{{ $data->GetLocation($data->location_id) }}</td>
+								<td style="text-align:left">{{ $data->user->name }}</td>
+								<td style="text-align:left">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
 								<td style="text-align:center">
 									<span class="" >
 										<a href="{{ url('edit-order/'.$data->order_id) }}" title="">
