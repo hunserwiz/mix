@@ -43,6 +43,7 @@
 					</div>
 			</div>
 			<!-- ################################################################################ -->
+			<!--
 			<div class="row-fluid" >
 					<div class="span6">
 						<label class="span4">ประเภทสินค้า  :</label>
@@ -67,10 +68,11 @@
 					</div>
 
 			</div>
-    <!-- ################################################################################ -->
 
+			--->
+    <!-- ################################################################################ -->
+    		<!--
 			<div class="row-fluid" >
-		
 				<div class="span6">
 					<label class="span4">ราคาต่อหน่วย :</label>
 					<div class="span8">
@@ -83,20 +85,20 @@
 						@endif							
 					</div>
 				</div>
-              <div class="span6">
+              	<div class="span6">
 				<label class="span4"> จำนวนสินค้า :</label>
-				<div class="span8">
-					@if($model == null)
-						{{ Form::text('amount',Input::old('amount'), 
-                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
-					@else
-						{{ Form::text('amount', $model->amount_total,
-                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
-					@endif	
+					<div class="span8">
+						@if($model == null)
+							{{ Form::text('amount',Input::old('amount'), 
+	                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
+						@else
+							{{ Form::text('amount', $model->amount_total,
+	                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
+						@endif	
+					</div>
 				</div>
 			</div>
-
-			</div>
+			--->
        <!-- ################################################################################ -->
 		<div class="row-fluid" >
 			<div class="span6">
@@ -121,7 +123,19 @@
 			</div>
 			
 		</div>
-
+		<!-- ################################################################################ -->
+		<div class="row-fluid" >
+			<div class="span6">
+				<label class="span4">สถานะพนักงาน :</label>
+					<div class="span8">		
+					@if($model == null)
+						{{ Form::select('type', array(''=> 'กรุณาเลือก','1'=>'พนักงานทั่วไป','2'=>'โครงการ 500')   , null , array('required'=>'',"class"=>"form-control")) }}			
+					@else
+						{{ Form::select('type', array(''=> 'กรุณาเลือก','1'=>'พนักงานทั่วไป','2'=>'โครงการ 500')  , $model->type , array('required'=>'',"class"=>"form-control")) }}			
+					@endif				
+					</div>
+			</div>
+		</div>
 		<!-- ################################################################################ -->
 		<div class="row-fluid" >
 			<div class="span6">
@@ -148,6 +162,28 @@
 				</div>
 			</div>
 		<div>
+
+			<hr>
+
+		<div class="text-center">
+			<div class="row-fluid" >
+				<div class="span12">
+				สินค้า :
+					{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('required'=>'',"class"=>"form-control")) }}
+				เลขที่ใบเสร็จ :     
+					{{ Form::text('price', Input::old('price'),
+		                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+		        เลขที่ใบเสร็จ :                               
+		           	{{ Form::text('amount', Input::old('amount'),
+		                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
+					
+				<input type="button" id='add' class="btn btn" value="เพิ่มรายการสินค้า">	
+	            
+	            </div>                  
+			</div>
+		</div>
+
+		<div id='tbl_product'></div>
 
 		<div class="text-center">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
