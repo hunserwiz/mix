@@ -293,7 +293,7 @@ a:focus {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: auto;
+  width: 90px;
 }
 
 .span12 {
