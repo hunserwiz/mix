@@ -219,6 +219,7 @@ $(document).ready(function(){
 	var product_name = '';
 	var price = $("#price").val();
 	var amount = $("#amount").val();
+	var key = 0;
 	$("#tbl_product").hide();
 	$("#add").prop('disabled',true);
 	$("#product_id").change(function(){
@@ -258,6 +259,7 @@ $(document).ready(function(){
 			price = $("#price").val();
 			amount = $("#amount").val();
 			console.log(price +" : "+ amount);
+
 			if(amount != "" && price != ""){
 				$("#tbl_product").show();
 					$.ajax({
@@ -266,20 +268,30 @@ $(document).ready(function(){
 	                    data: {product_id:product_id},
 	                    success:function(r){                       
 	                        if(r.status == 'success'){
+	                        	key = key + 1;
 	                            product_name = r.name;
-	                            var tr = "<tr>"+
+	                            var tr = "<tr id='"+key+"'>"+
 									"<td style='text-align:left'>"+ product_name +"</td>"+
 									"<td style='text-align:right'>"+ price +"</td>"+
 									"<td style='text-align:right'>"+ amount +"</td>"+
-									"<td style='text-align:center'><input type='button' class='btn btn-danger' value='ลบ'></td>"+
+									"<td style='text-align:center'>"+
+									"<input type='button' id='del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
+									"</td>"+
 									"</tr>";
 								$('div#tbl_product tbody tr:last').after(tr);
+
+								$("[id^='del_']").click(function(){
+									var str = this.id.split("_");
+									console.log(str[1]);
+									$('div#tbl_product tbody tr#'+str[1]).remove();
+									});
 	                        }
 	                    }
 	                }); 
 				}
 
 		});
+	
 
 	$(".date-picker").datepicker({
 		format: 'dd-mm-yyyy',
