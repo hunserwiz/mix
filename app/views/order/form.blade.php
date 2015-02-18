@@ -189,11 +189,13 @@
 								<tr>
 									<th style="text-align:center">ชื่อสินค้า</th>
 									<th style="text-align:center">ราคาต่อหน่วย</th>
-									<th style="text-align:center">จำนวน</th>																
+									<th style="text-align:center">จำนวน</th>	
+									<th style="text-align:center">จัดการ</th>																
 								</tr>
 							</thead>	
 							<tbody>	
 							<tr>
+								<td style="text-align:left"></td>
 								<td style="text-align:left"></td>
 								<td style="text-align:left"></td>
 								<td style="text-align:left"></td>							
@@ -228,26 +230,36 @@ $(document).ready(function(){
 	
 	$("#price").keypress(function (e) {
      //if the letter is not digit then display error and don't type anything
-	    price = $("#price").val();
 	    amount = $("#amount").val();
-	    if(amount != "" && price != "" && product_id != "")
-	    	$("#add").prop('disabled',false);
+	    price = $("#price").val();
+	    if(product_id != ""){
+	    		$("#add").prop('disabled',false);
+	    	}else{
+	    		$("#add").prop('disabled',true);	    		
+	    	}
     });
 
     $("#amount").keypress(function (e) {
+
      //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	        return false;
+	        return false; 
+	    }else{
+	    	if(product_id != ""){
+	    		$("#add").prop('disabled',false);
+	    	}else{
+	    		$("#add").prop('disabled',true);	    		
+	    	}
 	    }
-	    price = $("#price").val();
-	    amount = $("#amount").val();
-	    if(amount != "" && price != "" && product_id != "")
-	    	$("#add").prop('disabled',false);
+	    
     });
 
 		$("#add").click(function(){
-			$("#tbl_product").show();
-			var price = $("#price").val();
+			price = $("#price").val();
+			amount = $("#amount").val();
+			console.log(price +" : "+ amount);
+			if(amount != "" && price != ""){
+				$("#tbl_product").show();
 					$.ajax({
 	                    url: "{{ url('post-product-name') }}",
 	                    type: "post",
@@ -265,6 +277,7 @@ $(document).ready(function(){
 	                        }
 	                    }
 	                }); 
+				}
 
 		});
 
