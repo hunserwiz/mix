@@ -154,6 +154,13 @@ class OrderController extends BaseController {
         }
     }
 
+    public function postView() {
+        $order_id = Input::get('order_id');
+        $model= OrderItem::where('order_id','=',$order_id)->get();
+        
+        return View::make('order._view',compact('model'));
+    }
+
     public function postProductName() {
         $product_id = Input::get('product_id');
         $model= Product::find($product_id);

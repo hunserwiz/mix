@@ -21,7 +21,7 @@
                                 @if($model->count() > 0)
                                 @foreach($model as $k => $data)
                                 <tr>
-                                    <td style="text-align:center">{{ $data->product_id }}</td>
+                                    <td style="text-align:center">{{ $data->product->name }}</td>
                                     <td style="text-align:right">{{ $data->price }}</td>
                                     <td style="text-align:right">{{ $data->amount }}</td>                         
                                 </tr>
