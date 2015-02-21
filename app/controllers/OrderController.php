@@ -10,6 +10,7 @@ class OrderController extends BaseController {
 
     public function getIndex() {
     	$keyword = "";
+        $keydate = "";
 
         $arr_page = array(
             'order' => 1
@@ -30,6 +31,7 @@ class OrderController extends BaseController {
         return View::make('order.index',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -39,7 +41,9 @@ class OrderController extends BaseController {
 
     public function postSearch() {
         $keyword = Input::get('keyword');
-
+        $keydate = Input::get('keydate');
+        $keydate = ThaiHelper::DateToDB($keydate);
+        echo $keydate;
         $arr_page = array(
             'order' => Input::get('page')
         );
@@ -49,9 +53,30 @@ class OrderController extends BaseController {
         );
         $skip = ($arr_page['order'] - 1) * $arr_perpage['order'];
 
-        $model = Order::skip($skip)->take($arr_perpage['order'])->get();
+        $model = Order::where(function($query) use ($keyword,$keydate)
+        {
+           if($keyword){
+                $query->where('order_title','LIKE',"%".$keyword."%")
+                ->orWhere('order_no','LIKE',"%".$keyword."%");
+            }
+            if($keydate){
+                $query->where('order_date','=',$keydate);
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->skip($skip)->take($arr_perpage['order'])->get();
 
-        $count_model = Order::count();                
+        $count_model = Order::where(function($query) use ($keyword,$keydate)
+        {
+            if($keyword){
+                $query->where('order_title','LIKE',"%".$keyword."%")
+                ->orWhere('order_no','LIKE',"%".$keyword."%");
+            }
+            if($keydate){
+                $query->where('order_date','=',$keydate);
+            }
+        })
+        ->count();        
 
         $arr_count_page['order'] = ceil($count_model/$arr_perpage['order']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['order'],$arr_count_page['order']);
@@ -59,6 +84,7 @@ class OrderController extends BaseController {
         return View::make('order._tbl',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',

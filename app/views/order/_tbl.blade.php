@@ -97,27 +97,6 @@ $(document).ready(function(){
                 // =========== Close Ajax Delete ==========
             }
         });
-		$("ul.pagination.order li a").click(function(){
-            var arr_id = (this.id).split("_");
-            var page = arr_id.pop();
-            var keyword = {{ $keyword }}
-
-            SearchShop(page,keyword);
-
-            return false;
-        });
-
-		var perpage = {{ $arr_perpage['order'] }};
-
-        function SearchShop(page,keyword){
-            $.ajax({
-                type:"POST",
-                url:"{{ url('search-order') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword },
-                success:function(result){
-                    $("div#tbl").html(result);
-                }
-            });
-        }
+		
 });
 </script>
