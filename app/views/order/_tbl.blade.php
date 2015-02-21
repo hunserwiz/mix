@@ -22,6 +22,11 @@
 								<td style="text-align:left">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
 								<td style="text-align:center">
 									<span class="" >
+										<a href="#" id="view_{{ $data->order_id }}" data-order-id='{{ $data->order_id }}' title="view">
+											<i class="icon-edit"></i>
+										</a>
+									</span>
+									<span class="" >
 										<a href="{{ url('edit-order/'.$data->order_id) }}" title="">
 											<i class="icon-edit"></i>
 										</a>
@@ -45,8 +50,26 @@
 <div class="text-center">
     {{ ThaiHelper::getPaginationLink('order',$arr_page['order'],$arr_count_page['order'],$arr_list_page) }}
 </div>
+<div id="modal_order"></div>
 <script type="text/javascript">
 $(document).ready(function(){
+		// modal //
+		$("[id^='view_']").click(function(){
+			var order_id = $("#"+this.id).attr("data-order-id");
+	        $.ajax({
+	            	url: "{{ url('view-order') }}",
+	                data: {order_id:order_id},
+	                type:"POST",
+	                beforeSend : function(){
+	                         
+	                },
+	                success:function(r){                    
+	                    $("#modal_order").html(r);
+	                    $("#viewOrder").modal();
+	            }
+	        });
+	    });
+	    // closemodal //
         // ============= Delete ==============
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
