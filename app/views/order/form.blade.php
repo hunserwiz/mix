@@ -277,6 +277,9 @@ $(document).ready(function(){
 									"<td style='text-align:center'>"+
 									"<input type='button' id='del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
 									"</td>"+
+									"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
+									"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
+									"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
 									"</tr>";
 								$('div#tbl_product tbody tr:last').after(tr);
 

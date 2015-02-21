@@ -99,10 +99,10 @@ class OrderController extends BaseController {
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
                 $model->type = Input::get('type');
-                $model->category_id = Input::get('category');
-                $model->product_id = Input::get('product_id');
-                $model->price = Input::get('price');
-                $model->amount_total = Input::get('amount');
+                // $model->category_id = Input::get('category');
+                // $model->product_id = Input::get('product_id');
+                // $model->price = Input::get('price');
+                // $model->amount_total = Input::get('amount');
                 $model->agent_id = Input::get('agent_id');
                 $model->location_id = Input::get('location_id');
                 $model->receive_by = Input::get('operate_by');
@@ -111,21 +111,31 @@ class OrderController extends BaseController {
                 if($model->save()){
                     return Redirect::action('OrderController@getIndex');
                 }
-            }else{
+            }else{             
                 $model = new Order();
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
                 $model->type = Input::get('type');
-                $model->category_id = Input::get('category');
-                $model->product_id = Input::get('product_id');
-                $model->price = Input::get('price');
-                $model->amount_total = Input::get('amount');
+                // $model->category_id = Input::get('category');
+                // $model->product_id = Input::get('product_id');
+                // $model->price = Input::get('price');
+                // $model->amount_total = Input::get('amount');
                 $model->agent_id = Input::get('agent_id');
                 $model->location_id = Input::get('location_id');
                 $model->receive_by = Input::get('operate_by');
                 $model->payment_by = Input::get('operate_by');
                 $model->order_no = Input::get('order_no');
                 if($model->save()){
+                    if(Input::get('product')){
+                        foreach (Input::get('product') as $key => $value) {
+                            $model_order_item = new OrderItem();
+                            $model_order_item->order_id = $model->order_id;
+                            $model_order_item->product_id = $value['product_id'];
+                            $model_order_item->price = $value['price'];
+                            $model_order_item->amount = $value['amount'];
+                            $model_order_item->save();
+                        }
+                    }
                     return Redirect::action('OrderController@getIndex');
                 }
             }
