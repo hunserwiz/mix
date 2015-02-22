@@ -17,20 +17,46 @@ class FinanceController extends BaseController {
 
 	public function getIndex() {
         $keyword = "";
+        $keydate = "";
+        $keytype = "";
 
         $arr_page = array(
             'finance' => 1
         );
 
         $arr_perpage = array(
-            'finance' => 10
+            'finance' => 2
         );
         $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
 
-        $model = Finance::skip($skip)->take($arr_perpage['finance'])
-                            ->get();
+        $model = Finance::where(function($query) use ($keyword,$keydate,$keytype)
+        {
+           if($keyword){
+                $query->where('detail','LIKE',"%".$keyword."%");
+            }
+            if($keydate){
+                $query->where('date_account','=',$keydate);
+            }
+            if($keytype){
+                $query->where('type','=',$keytype);
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->skip($skip)->take($arr_perpage['finance'])->get();
 
-        $count_model = Finance::count();                
+        $count_model = Finance::where(function($query) use ($keyword,$keydate,$keytype)
+        {
+            if($keyword){
+                $query->where('detail','LIKE',"%".$keyword."%");
+            }
+            if($keydate){
+                $query->where('date_account','=',$keydate);
+            }
+            if($keytype){
+                $query->where('type','=',$keytype);
+            }
+        })
+        ->count();               
 
         $arr_count_page['finance'] = ceil($count_model/$arr_perpage['finance']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['finance'],$arr_count_page['finance']);
@@ -38,6 +64,8 @@ class FinanceController extends BaseController {
         return View::make('finance.index',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
+                                        'keytype',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -46,6 +74,8 @@ class FinanceController extends BaseController {
 
     public function postSearch() {
         $keyword = Input::get('keyword');
+        $keydate = Input::get('keydate');
+        $keytype = Input::get('keytype');
 
         $arr_page = array(
             'finance' => Input::get('page')
@@ -56,17 +86,42 @@ class FinanceController extends BaseController {
         );
         $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
 
-        $model = Finance::skip($skip)->take($arr_perpage['finance'])
-                            ->get();
+        $model = Finance::where(function($query) use ($keyword,$keydate,$keytype)
+        {
+           if($keyword){
+                $query->where('detail','LIKE',"%".$keyword."%");
+            }
+            if($keydate){
+                $query->where('date_account','=',$keydate);
+            }
+            if($keytype){
+                $query->where('type','=',$keytype);
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->skip($skip)->take($arr_perpage['finance'])->get();
 
-        $count_model = Finance::count();                
-
+        $count_model = Finance::where(function($query) use ($keyword,$keydate,$keytype)
+        {
+            if($keyword){
+                $query->where('detail','LIKE',"%".$keyword."%");
+            }
+            if($keydate){
+                $query->where('date_account','=',$keydate);
+            }
+            if($keytype){
+                $query->where('type','=',$keytype);
+            }
+        })
+        ->count();                
         $arr_count_page['finance'] = ceil($count_model/$arr_perpage['finance']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['finance'],$arr_count_page['finance']);
 
         return View::make('finance._tbl',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
+                                        'keytype',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
