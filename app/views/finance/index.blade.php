@@ -12,6 +12,7 @@
 		<div class="text-right" style="padding-bottom:1%">
 			<!-- Search Box -->
 			<div class="input-group input-search">
+				{{ "ค้นหาประเภท: " }}
 				{{ Form::select('type', 
 				array(''=> 'กรุณาเลือก',
 				'1'=>'รายรับ',

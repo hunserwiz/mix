@@ -43,7 +43,7 @@ class OrderController extends BaseController {
         $keyword = Input::get('keyword');
         $keydate = Input::get('keydate');
         $keydate = ThaiHelper::DateToDB($keydate);
-        echo $keydate;
+
         $arr_page = array(
             'order' => Input::get('page')
         );

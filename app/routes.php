@@ -62,6 +62,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('delete-product-return','ProductReturnController@postDelete');
     Route::post('search-product-return','ProductReturnController@postSearch');
     Route::post('get-list-product','ProductReturnController@getListProduct');
+    // commition
+    Route::get('commition','CommitionController@getIndex');
     // deposit
     Route::get('deposit','DepositController@getIndex');
     Route::get('form-deposit','DepositController@getForm');
@@ -74,6 +76,7 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('post-finance','FinanceController@postForm');
         Route::post('post-debtor','DebtorController@postForm');
         Route::post('post-sell','SellController@postReport');
+        Route::post('post-commition','CommitionController@postReport');
         Route::post('post-product','ProductController@postForm');
         Route::post('post-product-return','ProductReturnController@postForm');
         Route::post('post-deposit','DepositController@postForm');

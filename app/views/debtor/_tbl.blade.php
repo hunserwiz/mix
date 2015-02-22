@@ -76,23 +76,25 @@ $(document).ready(function(){
                 // =========== Close Ajax Delete ==========
             }
         });
+        // Search //
+        var perpage = {{ $arr_perpage['debtor'] }};
+    
 		$("ul.pagination.debtor li a").click(function(){
             var arr_id = (this.id).split("_");
             var page = arr_id.pop();
-            var keyword = {{ $keyword }}
+            var keyword = "{{ $keyword }}";
+            var keydate = "{{ $keydate }}";
 
-            SearchShop(page,keyword);
+            Search(page,keyword,keydate);
 
             return false;
         });
 
-		var perpage = {{ $arr_perpage['debtor'] }};
-
-        function SearchShop(page,keyword){
+        function Search(page,keyword,keydate){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-debtor') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword },
+                data:{ page: page, perpage: perpage, keyword: keyword ,keydate:keydate },
                 success:function(result){
                     $("div#tbl").html(result);
                 }

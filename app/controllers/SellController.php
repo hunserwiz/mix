@@ -42,18 +42,18 @@ class SellController extends BaseController {
             $array_result[$m->id]['point'] = $m->point;
         }
         // loop query condition //
-        $product_model = Product::join('orders', function($join) {
-            $join->on('products.id', '=', 'orders.product_id');
+        $order_model = Order::join('order_item', function($join) {
+            $join->on('order.order_id','=','order_item.order_id');
         })
         ->where(function($query) use ($agent_id)
         {
             if($agent_id){
-                $query->where('orders.agent_id','=',$agent_id);
+                $query->where('order.agent_id','=',$agent_id);
             }else{
-                $query->where('orders.agent_id','=',Auth::user()->id);
+                $query->where('order.agent_id','=',Auth::user()->id);
             }
         })
-        ->whereBetween('orders.order_date',array($date_start,$date_end))
+        ->whereBetween('order.order_date',array($date_start,$date_end))
         ->get();
         $list_agent = User::where('user_type','=',3)->lists('name','id');
 
@@ -63,11 +63,11 @@ class SellController extends BaseController {
         $bonus = 0;
         $salary = 0;
         $multiply = 0.08;
-        foreach ($product_model as $p) {
-            $array_result[$p->id]['name'] = $p->name;
-            $array_result[$p->id]['amount'] = $p->amount_total;
-            $total_amount = $total_amount + $p->amount_total;
-            $total_result = $total_result + $array_result[$p->id]['amount'] * $array_result[$p->id]['point'];
+        foreach ($order_model as $o) {
+            // $array_result[$o->product_id]['name'] = $o->name;
+            $array_result[$o->product_id]['amount'] = $o->amount;
+            $total_amount = $total_amount + $o->amountl;
+            $total_result = $total_result + $array_result[$o->product_id]['amount'] * $array_result[$o->product_id]['point'];
         }
         $point = $total_result * 26;
 

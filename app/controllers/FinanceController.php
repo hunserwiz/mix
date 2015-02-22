@@ -25,7 +25,7 @@ class FinanceController extends BaseController {
         );
 
         $arr_perpage = array(
-            'finance' => 2
+            'finance' => 10
         );
         $skip = ($arr_page['finance'] - 1) * $arr_perpage['finance'];
 
@@ -76,7 +76,8 @@ class FinanceController extends BaseController {
         $keyword = Input::get('keyword');
         $keydate = Input::get('keydate');
         $keytype = Input::get('keytype');
-
+        $keydate = ThaiHelper::DateToDB($keydate);
+        
         $arr_page = array(
             'finance' => Input::get('page')
         );

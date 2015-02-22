@@ -17,6 +17,7 @@ class DebtorController extends BaseController {
 
     public function getIndex() {
         $keyword = "";
+        $keydate = "";
 
         $arr_page = array(
             'debtor' => 1
@@ -34,18 +35,22 @@ class DebtorController extends BaseController {
 
         $arr_count_page['debtor'] = ceil($count_model/$arr_perpage['debtor']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['debtor'],$arr_count_page['debtor']);
-        
+        $list_debtor = User::where('user_type','=',3)->lists('name','id'); 
+
         return View::make('debtor.index',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
-                                        'arr_count_page'));
+                                        'arr_count_page','list_debtor'));
     }
 
     public function postSearch() {
         $keyword = Input::get('keyword');
+        $keydate = Input::get('keydate');
+        $keydate = ThaiHelper::DateToDB($keydate);
 
         $arr_page = array(
             'debtor' => Input::get('page')
@@ -55,22 +60,42 @@ class DebtorController extends BaseController {
             'debtor' => Input::get('perpage')
         );
         $skip = ($arr_page['debtor'] - 1) * $arr_perpage['debtor'];
+             
+        $model = Debtor::where(function($query) use ($keyword,$keydate)
+        {
+            if($keyword){
+                $query->where('debtor_id','=',$keyword);
+            }
+            if($keydate){
+                $query->where('date_pay','=',$keydate);
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->skip($skip)->take($arr_perpage['debtor'])->get();
 
-        $model = Debtor::skip($skip)->take($arr_perpage['debtor'])
-                            ->get();
-
-        $count_model = Debtor::count();                
+        $count_model = Debtor::where(function($query) use ($keyword,$keydate)
+        {
+            if($keyword){
+                $query->where('debtor_id','=',$keyword);
+            }
+            if($keydate){
+                $query->where('date_pay','=',$keydate);
+            }
+        })
+        ->count();  
 
         $arr_count_page['debtor'] = ceil($count_model/$arr_perpage['debtor']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['debtor'],$arr_count_page['debtor']);
+        $list_debtor = User::where('user_type','=',3)->lists('name','id'); 
 
         return View::make('debtor._tbl',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
-                                        'arr_count_page'
+                                        'arr_count_page','list_debtor'
             ));
     }
 
