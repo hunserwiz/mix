@@ -10,6 +10,7 @@ class ProductReturnController extends BaseController {
 
     public function getIndex() {
         $keyword = "";
+        $keydate = "";
 
         $arr_page = array(
             'product' => 1
@@ -31,6 +32,7 @@ class ProductReturnController extends BaseController {
         return View::make('productReturn.index',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -39,7 +41,9 @@ class ProductReturnController extends BaseController {
 
     public function postSearch() {
         $keyword = Input::get('keyword');
-
+        $keydate = Input::get('keydate');
+        $keydate = ThaiHelper::DateToDB($keydate);
+        
         $arr_page = array(
             'product' => Input::get('page')
         );
@@ -48,11 +52,29 @@ class ProductReturnController extends BaseController {
             'product' => Input::get('perpage')
         );
         $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
+             
+        $model = ProductReturn::where(function($query) use ($keyword,$keydate)
+        {
+            // if($keyword){
+            //     $query->where('debtor_id','=',$keyword);
+            // }
+            if($keydate){
+                $query->where('date_return','=',$keydate);
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->skip($skip)->take($arr_perpage['product'])->get();
 
-         $model = ProductReturn::skip($skip)->take($arr_perpage['product'])
-                            ->get();
-
-        $count_model = ProductReturn::count();                
+        $count_model = ProductReturn::where(function($query) use ($keyword,$keydate)
+        {
+            // if($keyword){
+            //     $query->where('debtor_id','=',$keyword);
+            // }
+            if($keydate){
+                $query->where('date_return','=',$keydate);
+            }
+        })
+        ->count();      
 
         $arr_count_page['product'] = ceil($count_model/$arr_perpage['product']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['product'],$arr_count_page['product']);
@@ -60,6 +82,7 @@ class ProductReturnController extends BaseController {
         return View::make('productReturn._tbl',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',

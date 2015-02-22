@@ -74,24 +74,25 @@ $(document).ready(function(){
 		$("ul.pagination.product li a").click(function(){
             var arr_id = (this.id).split("_");
             var page = arr_id.pop();
-            var keyword = {{ $keyword }}
+            var keyword = "{{ $keyword }}";
+            var keydate = "{{ $keydate }}";
 
-            Search(page,keyword);
+            Search(page,keyword,keydate);
 
             return false;
         });
 
 		var perpage = {{ $arr_perpage['product'] }};
 
-        function Search(page,keyword){
+        function Search(page,keyword,keydate){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-product-return') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword },
+                data:{ page: page, perpage: perpage, keyword: keyword ,keydate:keydate  },
                 success:function(result){
                     $("div#tbl").html(result);
                 }
             });
-        }
+    }
 });
 </script>
