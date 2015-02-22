@@ -10,6 +10,8 @@ class DepositController extends BaseController {
 
     public function getIndex() {
         $keyword = "";
+        $keydate = "";
+        $keytype = "";
 
         $arr_page = array(
             'deposit' => 1
@@ -20,8 +22,9 @@ class DepositController extends BaseController {
         );
         $skip = ($arr_page['deposit'] - 1) * $arr_perpage['deposit'];
 
-        $model = Deposit::skip($skip)->take($arr_perpage['deposit'])
-                            ->get();
+        $model = Deposit::orderBy('created_at', 'desc')
+                        ->skip($skip)->take($arr_perpage['deposit'])
+                        ->get();
 
         $count_model = Deposit::count();                
 
@@ -31,6 +34,8 @@ class DepositController extends BaseController {
         return View::make('deposit.index',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
+                                        'keytype',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -39,6 +44,9 @@ class DepositController extends BaseController {
 
     public function postSearch() {
         $keyword = Input::get('keyword');
+        $keydate = Input::get('keydate');
+        $keytype = Input::get('keytype');
+        $keydate = ThaiHelper::DateToDB($keydate);
 
         $arr_page = array(
             'deposit' => Input::get('page')
@@ -49,10 +57,34 @@ class DepositController extends BaseController {
         );
         $skip = ($arr_page['deposit'] - 1) * $arr_perpage['deposit'];
 
-        $model = Deposit::skip($skip)->take($arr_perpage['deposit'])
-                            ->get();
+        $model = Deposit::where(function($query) use ($keyword,$keydate,$keytype)
+        {
+           // if($keyword){
+           //      $query->where('detail','LIKE',"%".$keyword."%");
+           //  }
+            if($keydate){
+                $query->where('date_deposit','=',$keydate);
+            }
+            if($keytype){
+                $query->where('type_deposit_id','=',$keytype);
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->skip($skip)->take($arr_perpage['deposit'])->get();
 
-        $count_model = Deposit::count();                
+        $count_model = Deposit::where(function($query) use ($keyword,$keydate,$keytype)
+        {
+            // if($keyword){
+            //     $query->where('detail','LIKE',"%".$keyword."%");
+            // }
+            if($keydate){
+                $query->where('date_deposit','=',$keydate);
+            }
+            if($keytype){
+                $query->where('type_deposit_id','=',$keytype);
+            }
+        })
+        ->count();           
 
         $arr_count_page['deposit'] = ceil($count_model/$arr_perpage['deposit']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['deposit'],$arr_count_page['deposit']);
@@ -60,6 +92,8 @@ class DepositController extends BaseController {
         return View::make('deposit._tbl',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keydate',
+                                        'keytype',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',

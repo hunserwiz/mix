@@ -14,11 +14,11 @@
 							@if($model->count() > 0)
 							@foreach($model as $data)
 							<tr>
-								<td style="text-align:center">{{ $data->product->name }}</td>
-								<td style="text-align:center">{{ $data->categorise->name }}</td>
+								<!-- <td style="text-align:center">{{ $data->product->name }}</td> -->
+								<!-- <td style="text-align:center">{{ $data->categorise->name }}</td> -->
 								<td style="text-align:center">{{ $data->date_deposit }}</td>
-								<td style="text-align:center">{{ $data->amount }}</td>
-                                <td style="text-align:center">{{ $data->price }}</td>
+								<!-- <td style="text-align:center">{{ $data->amount }}</td> -->
+                                <!-- <td style="text-align:center">{{ $data->price }}</td> -->
 								<td style="text-align:center">{{ $data->type_deposit_id }}</td>
 								<td style="text-align:center">
 									<span class="" >
@@ -73,23 +73,27 @@ $(document).ready(function(){
                 // =========== Close Ajax Delete ==========
             }
         });
+        // Search //
+
+        var perpage = {{ $arr_perpage['deposit'] }};
+        
 		$("ul.pagination.deposit li a").click(function(){
             var arr_id = (this.id).split("_");
             var page = arr_id.pop();
-            var keyword = {{ $keyword }}
+            var keyword = "{{ $keyword }}";
+            var keydate = "{{ $keydate }}";
+            var keytype = "{{ $keytype }}";
 
-            Search(page,keyword);
+            Search(page,keyword,keydate,keytype);
 
             return false;
         });
 
-		var perpage = {{ $arr_perpage['deposit'] }};
-
-        function Search(page,keyword){
+        function Search(page,keyword,keydate,keytype){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-deposit') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword },
+                data:{ page: page, perpage: perpage, keyword: keyword,keydate: keydate,keytype: keytype },
                 success:function(result){
                     $("div#tbl").html(result);
                 }
