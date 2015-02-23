@@ -39,10 +39,10 @@ class ProductReturnController extends BaseController {
                                         'arr_count_page'));
     }
 
-    public function getIndexItem() {
-        $model = ProductReturnItem::get();
+    public function postIndexItem() {
+        $model_product_item = ProductReturnItem::where("product_return_id","=",Input::get('product_return_id'))->get();
         $mode = Input::get('mode');
-        return View::make('productReturn._tbl_item',compact('model','mode'));
+        return View::make('productReturn._tbl_item',compact('model_product_item','mode'));
     }
 
     public function postSearch() {

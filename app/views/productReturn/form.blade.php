@@ -241,8 +241,6 @@ $(document).ready(function(){
 	                        	var tr = $("tr#empty").html();
 	                        	if(tr != undefined){  // empty
 									$('tr#empty td').remove("");
-									// $('div#tbl_product tbody').after("<tr></tr>");
-										// $('div#tbl_product tbody tr:last').after(tr);
 								}
 
 	                        	key = key + 1;
@@ -252,7 +250,7 @@ $(document).ready(function(){
 									"<td style='text-align:right'>"+ price +"</td>"+
 									"<td style='text-align:right'>"+ amount +"</td>"+
 									"<td style='text-align:center'>"+
-									"<input type='button' id='del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
+									"<input type='button' id='add-del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
 									"</td>"+
 									"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
 									"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
@@ -261,12 +259,12 @@ $(document).ready(function(){
 									
 								$('div#tbl_product tbody tr:last').after(tr);	
 								
-								$("[id^='del_']").click(function(){
+								$("[id^='add-del_']").click(function(){
 									var str = this.id.split("_");
 									console.log(str[1]);
 									var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
 									if (result==true) 
-									$('div#tbl_product tbody tr#'+str[1]).remove();
+										$('div#tbl_product tbody tr#'+str[1]).remove();
 									});
 	                        }
 	                    }
@@ -278,7 +276,7 @@ $(document).ready(function(){
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
             if (result==true) {
-                var id = $("#"+this.id).attr("data-product-item-id");
+                var id = $("#"+this.id).attr("data-product-item-id");                
                 // ============= Ajax Delete ==============
                 $.ajax({
                     url: "{{ url('delete-product-return-item') }}",
@@ -286,10 +284,12 @@ $(document).ready(function(){
                     data: {id:id},
                     success:function(r){                       
                         if(r.status == 'success'){
+                        	var mode = "{{ $mode }}";
+                			var product_return_id = "{{ $model->id }}";
                             $.ajax({
                                     url:"{{ url('product-return-item') }}",
                                     type: "post",
-                                    date:{mode:mode},
+                                    date:{mode:mode,product_return_id:product_return_id},
                                     success:function(r){
                                         $("div#tbl_product").html(r);
                                     }
