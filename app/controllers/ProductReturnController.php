@@ -39,6 +39,12 @@ class ProductReturnController extends BaseController {
                                         'arr_count_page'));
     }
 
+    public function getIndexItem() {
+        $model = ProductReturnItem::get();
+        $mode = Input::get('mode');
+        return View::make('productReturn._tbl_item',compact('model','mode'));
+    }
+
     public function postSearch() {
         $keyword = Input::get('keyword');
         $keydate = Input::get('keydate');
@@ -111,10 +117,11 @@ class ProductReturnController extends BaseController {
     }
     public function getFormEdit($id = NULL) {
         $model = ProductReturn::find($id);
+        $model_product_item = ProductReturnItem::where("product_return_id","=",$id)->get();
         $mode = "edit";
         $list_category = Categorise::lists('name','categorise_id');
         $list_location = ThaiHelper::getLocationList();
-        $list_product = Product::where('categorise_id','=',$model->categorise_id)->lists('name','id');
+        $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
         $list_agent = User::where('user_type','=','3')->lists('name','id');
         $model->date_return = ThaiHelper::DateToShowForm($model->date_return);
@@ -124,6 +131,7 @@ class ProductReturnController extends BaseController {
 
         return View::make('productReturn.form',compact(
             'model',
+            'model_product_item',
             'list_category',
             'list_product',
             'list_location',
@@ -139,27 +147,27 @@ class ProductReturnController extends BaseController {
             if(Input::get('id')){
                 $model = ProductReturn::find(Input::get('id'));
                 $model->date_return = ThaiHelper::DateToDB(Input::get('date_return'));
-                // $model->product_id = Input::get('product_id');
-                // $model->categorise_id = Input::get('categorise_id');
-                // $model->price = Input::get('price');
-                // $model->amount = Input::get('amount');
                 $model->location_id = Input::get('location_id');
                 $model->return_by = Input::get('return_by');
                 $model->create_by = Input::get('create_by');
                 $model->product_date = ThaiHelper::DateToDB(Input::get('product_date'));
                 $model->expired_date = ThaiHelper::DateToDB(Input::get('expired_date'));
                 if($model->save()){
+                    if(Input::get('product')){
+                        foreach (Input::get('product') as $key => $value) {
+                            $model_product_item = new ProductReturnItem();
+                            $model_product_item->product_return_id = $model->id;
+                            $model_product_item->product_id = $value['product_id'];
+                            $model_product_item->price = $value['price'];
+                            $model_product_item->amount = $value['amount'];
+                            $model_product_item->save();
+                        }
+                    }
                     return Redirect::action('ProductReturnController@getIndex');
                 }
             }else{
-                print_r(Input::all());
-                die;
                 $model = new ProductReturn();
                 $model->date_return = ThaiHelper::DateToDB(Input::get('date_return'));
-                // $model->product_id = Input::get('product_id');
-                // $model->categorise_id = Input::get('categorise_id');
-                // $model->price = Input::get('price');
-                // $model->amount = Input::get('amount');
                 $model->location_id = Input::get('location_id');
                 $model->return_by = Input::get('return_by');
                 $model->create_by = Input::get('create_by');
@@ -195,6 +203,14 @@ class ProductReturnController extends BaseController {
     public function postDelete() {
         $id = Input::get('id');
         $model = ProductReturn::find($id);
+        if($model->delete()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
+
+    public function postDeleteItem() {
+        $id = Input::get('id');
+        $model = ProductReturnItem::find($id);
         if($model->delete()){
             return Response::json(array('status' => 'success'));
         }

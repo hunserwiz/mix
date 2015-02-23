@@ -57,9 +57,11 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-product','ProductController@postSearch');
     // product-return
     Route::get('product-return','ProductReturnController@getIndex');
+    Route::post('product-return-item','ProductReturnController@getIndexItem');
     Route::get('form-product-return','ProductReturnController@getForm');
     Route::get('edit-product-return/{id}','ProductReturnController@getFormEdit');
     Route::post('delete-product-return','ProductReturnController@postDelete');
+    Route::post('delete-product-return-item','ProductReturnController@postDeleteitem');
     Route::post('search-product-return','ProductReturnController@postSearch');
     Route::post('get-list-product','ProductReturnController@getListProduct');
     Route::post('view-product-return','ProductReturnController@postView');

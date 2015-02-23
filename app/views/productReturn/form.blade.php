@@ -166,24 +166,7 @@
 			</div>
 
 			<div id='tbl_product'>
-			<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
-							<thead>
-								<tr>
-									<th style="text-align:center">ชื่อสินค้า</th>
-									<th style="text-align:center">ราคาต่อหน่วย</th>
-									<th style="text-align:center">จำนวน</th>	
-									<th style="text-align:center">จัดการ</th>																
-								</tr>
-							</thead>	
-							<tbody>	
-							<tr>
-								<td style="text-align:left"></td>
-								<td style="text-align:left"></td>
-								<td style="text-align:left"></td>
-								<td style="text-align:left"></td>							
-							</tr>								
-							</tbody>
-					</table>
+					@include('productReturn._tbl_item')
 			</div>
 
 		 	<div class="text-center">
@@ -203,7 +186,11 @@ $(document).ready(function(){
 	var price = $("#price").val();
 	var amount = $("#amount").val();
 	var key = 0;
+	var mode = "{{ $mode }}";
+
+	if(mode == 'add')
 	$("#tbl_product").hide();
+	
 	$("#add").prop('disabled',true);
 	$("#product_id").change(function(){
 		product_id = this.value;
@@ -251,6 +238,13 @@ $(document).ready(function(){
 	                    data: {product_id:product_id},
 	                    success:function(r){                       
 	                        if(r.status == 'success'){
+	                        	var tr = $("tr#empty").html();
+	                        	if(tr != undefined){  // empty
+									$('tr#empty td').remove("");
+									// $('div#tbl_product tbody').after("<tr></tr>");
+										// $('div#tbl_product tbody tr:last').after(tr);
+								}
+
 	                        	key = key + 1;
 	                            product_name = r.name;
 	                            var tr = "<tr id='"+key+"'>"+
@@ -264,11 +258,14 @@ $(document).ready(function(){
 									"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
 									"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
 									"</tr>";
-								$('div#tbl_product tbody tr:last').after(tr);
-
+									
+								$('div#tbl_product tbody tr:last').after(tr);	
+								
 								$("[id^='del_']").click(function(){
 									var str = this.id.split("_");
 									console.log(str[1]);
+									var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
+									if (result==true) 
 									$('div#tbl_product tbody tr#'+str[1]).remove();
 									});
 	                        }
@@ -277,11 +274,38 @@ $(document).ready(function(){
 				}
 
 		});
+	// ============= Delete Item============== //
+        $("[id^='del']").click(function(){
+        var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
+            if (result==true) {
+                var id = $("#"+this.id).attr("data-product-item-id");
+                // ============= Ajax Delete ==============
+                $.ajax({
+                    url: "{{ url('delete-product-return-item') }}",
+                    type: "post",
+                    data: {id:id},
+                    success:function(r){                       
+                        if(r.status == 'success'){
+                            $.ajax({
+                                    url:"{{ url('product-return-item') }}",
+                                    type: "post",
+                                    date:{mode:mode},
+                                    success:function(r){
+                                        $("div#tbl_product").html(r);
+                                    }
+                            });
+                        }
+                    }
+                });     
+                // =========== Close Ajax Delete ==========
+            }
+        });
+	// ============= Close Delete Item ============== //
+	
 	// ---------------------------------------------------------------- //
 	$(".date-picker").datepicker({
 		format: 'dd-mm-yyyy',
 	});
-	var mode = "{{ $mode }}";
 
 
 });
