@@ -17,7 +17,7 @@
 								<td style="text-align:left">{{ $data->order_title }}</td>
 								<td style="text-align:left">{{ $data->order_no }}</td>
 								<td style="text-align:left">{{ $data->order_date }}</td>
-								<td style="text-align:left">{{ $data->GetLocation($data->location_id) }}</td>
+								<td style="text-align:left">{{ ThaiHelper::GetLocation($data->location_id) }}</td>
 								<td style="text-align:left">{{ $data->user->name }}</td>
 								<td style="text-align:left">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
 								<td style="text-align:center">

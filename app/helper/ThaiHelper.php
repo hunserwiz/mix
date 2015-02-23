@@ -586,6 +586,16 @@ class ThaiHelper {
           $model = User::find($id);
           return $model->name;
     }
+
+    public static function GetLocation($id){
+        $text = "";
+          if($id == 1){
+            $text = "พัทยาเหนือ";
+          }else if($id == 2){
+            $text = "พัทยาใต้";
+          }
+          return $text;
+    }
 }
 
 ?>

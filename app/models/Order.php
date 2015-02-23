@@ -40,17 +40,6 @@ class Order extends Eloquent {
         return $attributes_name;
     }
 
-
-    public function GetLocation($id){
-        $text = "";
-          if($id == 1){
-            $text = "พัทยาเหนือ";
-          }else if($id == 2){
-            $text = "พัทยาใต้";
-          }
-          return $text;
-    }
-    
     public function user(){
       return $this->hasOne('User', 'id', 'agent_id');
     }

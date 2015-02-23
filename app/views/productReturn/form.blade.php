@@ -33,7 +33,7 @@
 					</div>
 			</div>
 			<!-- ################################################################################ -->
-			<div class="row-fluid" >
+<!-- 			<div class="row-fluid" >
 					<div class="span6">
 						<label class="span4"> ประเภทสินค้า  :</label>
 						<div class="span8">		
@@ -54,9 +54,9 @@
 						@endif			
 						</div>
 					</div>
-			</div>
+			</div> -->
     	<!-- ################################################################################ -->
-			<div class="row-fluid" >
+<!-- 			<div class="row-fluid" >
 				<div class="span6">
 					<label class="span4">  ราคาต่อหน่วย :</label>
 					<div class="span8">
@@ -81,7 +81,7 @@
 						@endif						
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- ################################################################################ -->
 		<div class="row-fluid" >
 			<div class="span6">
@@ -145,38 +145,145 @@
 					</div>
 				</div>
 			</div>
+			<hr>
 
+			<div class="text-center">
+				<div class="row-fluid" >
+					<div class="span12">
+					สินค้า :
+						{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id','required'=>'',"class"=>"form-control")) }}
+					ราคา :     
+						{{ Form::text('price', Input::old('price'),
+			                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+			        จำนวน :                               
+			           	{{ Form::text('amount', Input::old('amount'),
+			                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
+						
+					<input type="button" id='add' class="btn btn" value="เพิ่มรายการสินค้า">	
+		            
+		            </div>                  
+				</div>
+			</div>
 
-		 <div class="text-center">
+			<div id='tbl_product'>
+			<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
+							<thead>
+								<tr>
+									<th style="text-align:center">ชื่อสินค้า</th>
+									<th style="text-align:center">ราคาต่อหน่วย</th>
+									<th style="text-align:center">จำนวน</th>	
+									<th style="text-align:center">จัดการ</th>																
+								</tr>
+							</thead>	
+							<tbody>	
+							<tr>
+								<td style="text-align:left"></td>
+								<td style="text-align:left"></td>
+								<td style="text-align:left"></td>
+								<td style="text-align:left"></td>							
+							</tr>								
+							</tbody>
+					</table>
+			</div>
+
+		 	<div class="text-center">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 				<a href="{{ url('/product-return') }}">
 					<input type="button" class="btn btn-danger" value="ยกเลิก">
 				</a>
-		</div>
+			</div>
      </form> 
 </div>
 
 <script type="text/javascript">
 $(document).ready(function(){
+	var product_id = '';
+	var product_name = '';
+	var price = $("#price").val();
+	var amount = $("#amount").val();
+	var key = 0;
+	$("#tbl_product").hide();
+	$("#add").prop('disabled',true);
+	$("#product_id").change(function(){
+		product_id = this.value;
+		$("#add").prop('disabled',true);
+		$("#price").val(null);
+		$("#amount").val(null);
+	});
+	
+	$("#price").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+	    amount = $("#amount").val();
+	    price = $("#price").val();
+	    if(product_id != ""){
+	    		$("#add").prop('disabled',false);
+	    	}else{
+	    		$("#add").prop('disabled',true);	    		
+	    	}
+    });
+
+    $("#amount").keypress(function (e) {
+
+     //if the letter is not digit then display error and don't type anything
+	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        return false; 
+	    }else{
+	    	if(product_id != ""){
+	    		$("#add").prop('disabled',false);
+	    	}else{
+	    		$("#add").prop('disabled',true);	    		
+	    	}
+	    }
+	    
+    });
+
+		$("#add").click(function(){
+			price = $("#price").val();
+			amount = $("#amount").val();
+			console.log(price +" : "+ amount);
+
+			if(amount != "" && price != ""){
+				$("#tbl_product").show();
+					$.ajax({
+	                    url: "{{ url('post-product-name') }}",
+	                    type: "post",
+	                    data: {product_id:product_id},
+	                    success:function(r){                       
+	                        if(r.status == 'success'){
+	                        	key = key + 1;
+	                            product_name = r.name;
+	                            var tr = "<tr id='"+key+"'>"+
+									"<td style='text-align:left'>"+ product_name +"</td>"+
+									"<td style='text-align:right'>"+ price +"</td>"+
+									"<td style='text-align:right'>"+ amount +"</td>"+
+									"<td style='text-align:center'>"+
+									"<input type='button' id='del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
+									"</td>"+
+									"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
+									"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
+									"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
+									"</tr>";
+								$('div#tbl_product tbody tr:last').after(tr);
+
+								$("[id^='del_']").click(function(){
+									var str = this.id.split("_");
+									console.log(str[1]);
+									$('div#tbl_product tbody tr#'+str[1]).remove();
+									});
+	                        }
+	                    }
+	                }); 
+				}
+
+		});
+	// ---------------------------------------------------------------- //
 	$(".date-picker").datepicker({
 		format: 'dd-mm-yyyy',
 	});
 	var mode = "{{ $mode }}";
 
-	if(mode == 'add')
-		$("#product_id").prop('disabled',true);
 
-	$("#categorise_id").change(function(){
-		$.ajax({
-				url:"{{ url('get-list-product') }}",
-				type: "post",
-				data:{ categorise_id: this.value},
-				success:function(r){
-					$("div#product").html(r);
-				}
-			});
-	});
 });
 </script>
 

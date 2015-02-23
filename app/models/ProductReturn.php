@@ -12,10 +12,13 @@ class ProductReturn extends Eloquent {
     
     	public static function validate($input) {
         $rules = array(
-            'categorise_id' => 'required',    
-            'product_id' => 'required',
-            'price' => 'required',
-            'amount' => 'required',
+            // 'categorise_id' => 'required',    
+            // 'product_id' => 'required',
+            // 'price' => 'required',
+            // 'amount' => 'required',
+           'date_return' => 'required',
+           'return_by' => 'required',
+           'location_id' => 'required',
         );
 
         return Validator::make($input, $rules,ThaiHelper::getValidationMessage());
@@ -23,21 +26,16 @@ class ProductReturn extends Eloquent {
 
     public static function attributeName() {
         $attributes_name = array(      
-            'categorise_id' => 'ประเภทสินค้า',    
-            'product_id' => ' ชื่อสินค้า',
-            'price' => 'ราคาต่อหน่วย',
-            'amount'=> 'จำนวนที่คืน'
+            // 'categorise_id' => 'ประเภทสินค้า',    
+            // 'product_id' => ' ชื่อสินค้า',
+            // 'price' => 'ราคาต่อหน่วย',
+            // 'amount'=> 'จำนวนที่คืน',
+          'date_return' => 'วันที่คืน',
+           'return_by' => 'คืนโดย',
+           'location_id' => 'เขตการขาย',
         );
 
         return $attributes_name;
-    }
-
-    public function categorise(){
-          return $this->hasOne('Categorise','categorise_id','categorise_id');
-    }
-
-    public function product(){
-          return $this->hasOne('Product','id','product_id');
     }
 
     public function user(){
