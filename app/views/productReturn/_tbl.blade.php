@@ -17,7 +17,7 @@
 								<td style="text-align:center">
                                     <span class="" >
                                         <a href="#" id="view_{{ $data->id }}" data-product-return-id='{{ $data->id }}' title="view">
-                                            <i class="icon-edit"></i>
+                                            <i class="icon-eye-open"></i>
                                         </a>
                                     </span>
 									<span class="" >

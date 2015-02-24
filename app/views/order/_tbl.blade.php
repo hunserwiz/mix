@@ -23,7 +23,7 @@
 								<td style="text-align:center">
 									<span class="" >
 										<a href="#" id="view_{{ $data->order_id }}" data-order-id='{{ $data->order_id }}' title="view">
-											<i class="icon-edit"></i>
+											<i class="icon-eye-open"></i>
 										</a>
 									</span>
 									<span class="" >

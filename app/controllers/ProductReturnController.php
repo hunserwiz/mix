@@ -40,9 +40,10 @@ class ProductReturnController extends BaseController {
     }
 
     public function postIndexItem() {
+        $model = ProductReturn::find(Input::get('product_return_id'));
         $model_product_item = ProductReturnItem::where("product_return_id","=",Input::get('product_return_id'))->get();
         $mode = Input::get('mode');
-        return View::make('productReturn._tbl_item',compact('model_product_item','mode'));
+        return View::make('productReturn._tbl_item',compact('model','model_product_item','mode'));
     }
 
     public function postSearch() {
@@ -153,16 +154,16 @@ class ProductReturnController extends BaseController {
                 $model->product_date = ThaiHelper::DateToDB(Input::get('product_date'));
                 $model->expired_date = ThaiHelper::DateToDB(Input::get('expired_date'));
                 if($model->save()){
-                    if(Input::get('product')){
-                        foreach (Input::get('product') as $key => $value) {
-                            $model_product_item = new ProductReturnItem();
-                            $model_product_item->product_return_id = $model->id;
-                            $model_product_item->product_id = $value['product_id'];
-                            $model_product_item->price = $value['price'];
-                            $model_product_item->amount = $value['amount'];
-                            $model_product_item->save();
-                        }
-                    }
+                    // if(Input::get('product')){
+                    //     foreach (Input::get('product') as $key => $value) {
+                    //         $model_product_item = new ProductReturnItem();
+                    //         $model_product_item->product_return_id = $model->id;
+                    //         $model_product_item->product_id = $value['product_id'];
+                    //         $model_product_item->price = $value['price'];
+                    //         $model_product_item->amount = $value['amount'];
+                    //         $model_product_item->save();
+                    //     }
+                    // }
                     return Redirect::action('ProductReturnController@getIndex');
                 }
             }else{
@@ -199,7 +200,19 @@ class ProductReturnController extends BaseController {
             }
         }
     }
-   
+    
+    public function postFormItem() {
+        $model = new ProductReturnItem();
+        $model->product_return_id = Input::get('product_return_id');
+        $model->product_id = Input::get('product_id');
+        $model->price = Input::get('price');
+        $model->amount = Input::get('amount');
+        $model->save();
+        if($model->save()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
+
     public function postDelete() {
         $id = Input::get('id');
         $model = ProductReturn::find($id);

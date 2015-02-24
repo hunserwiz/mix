@@ -21,6 +21,12 @@
                                 <!-- <td style="text-align:center">{{ $data->price }}</td> -->
 								<td style="text-align:center">{{ $data->type_deposit_id }}</td>
 								<td style="text-align:center">
+                                    <span class="" >
+                                        <a href="#" id="view_{{ $data->id }}" data-order-id='{{ $data->id }}' title="view">
+                                            <i class="icon-eye-open"></i>
+                                        </a>
+                                    </span>
+                                    <i class="icon-eye-open"></i>
 									<span class="" >
 										<a href="{{ url('edit-deposit/'.$data->id) }}" title="">
 											<i class="icon-edit"></i>

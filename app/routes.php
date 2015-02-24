@@ -65,6 +65,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-product-return','ProductReturnController@postSearch');
     Route::post('get-list-product','ProductReturnController@getListProduct');
     Route::post('view-product-return','ProductReturnController@postView');
+    Route::post('post-add-return-item','ProductReturnController@postFormItem');
+    
     // commition
     Route::get('commition','CommitionController@getIndex');
     // deposit

@@ -30,3 +30,42 @@
 							@endif							
 							</tbody>
 </table>
+
+<script type="text/javascript">
+$(document).ready(function(){
+// ============= Delete Item============== //
+	var mode = "{{ $mode }}";
+	console.log(mode);
+	if(mode == 'edit')
+	var product_return_id = "{{ $model->id }}";
+
+	if(mode == 'edit'){
+        $("[id^='del']").click(function(){
+        var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
+            if (result==true) {
+                var id = $("#"+this.id).attr("data-product-item-id");                
+                // ============= Ajax Delete ==============
+                $.ajax({
+                    url: "{{ url('delete-product-return-item') }}",
+                    type: "post",
+                    data: {id:id},
+                    success:function(r){                       
+                        if(r.status == 'success'){
+                            $.ajax({
+                                    url:"{{ url('product-return-item') }}",
+                                    type: "post",
+                                    data :{product_return_id:product_return_id,mode:mode},
+                                    success:function(r){
+                                        $("div#tbl_product").html(r);
+                                    }
+                            });
+                        }
+                    }
+                });     
+                // =========== Close Ajax Delete ==========
+            }
+        });
+	}
+	// ============= Close Delete Item ============== //.
+});
+</script>

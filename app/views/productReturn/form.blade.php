@@ -190,7 +190,10 @@ $(document).ready(function(){
 
 	if(mode == 'add')
 	$("#tbl_product").hide();
-	
+
+	if(mode == 'edit')
+	var product_return_id = "{{ $model->id }}";
+
 	$("#add").prop('disabled',true);
 	$("#product_id").change(function(){
 		product_id = this.value;
@@ -231,6 +234,7 @@ $(document).ready(function(){
 			console.log(price +" : "+ amount);
 
 			if(amount != "" && price != ""){
+				if(mode == 'add'){
 				$("#tbl_product").show();
 					$.ajax({
 	                    url: "{{ url('post-product-name') }}",
@@ -268,39 +272,30 @@ $(document).ready(function(){
 									});
 	                        }
 	                    }
-	                }); 
-				}
-
-		});
-	// ============= Delete Item============== //
-        $("[id^='del']").click(function(){
-        var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
-            if (result==true) {
-                var id = $("#"+this.id).attr("data-product-item-id");                
-                // ============= Ajax Delete ==============
-                $.ajax({
-                    url: "{{ url('delete-product-return-item') }}",
-                    type: "post",
-                    data: {id:id},
-                    success:function(r){                       
-                        if(r.status == 'success'){
-                        	var mode = "{{ $mode }}";
-                			var product_return_id = "{{ $model->id }}";
-                            $.ajax({
+	                });
+	            }else{
+	            	$.ajax({
+	                    url: "{{ url('post-add-return-item') }}",
+	                    type: "post",
+	                    data: {product_return_id:product_return_id,product_id:product_id,price:price,amount:amount},
+	                    success:function(r){                       
+	                        if(r.status == 'success'){
+	                        	$.ajax({
                                     url:"{{ url('product-return-item') }}",
                                     type: "post",
-                                    date:{mode:mode,product_return_id:product_return_id},
+                                    data: {mode:mode,product_return_id:product_return_id},
                                     success:function(r){
                                         $("div#tbl_product").html(r);
                                     }
-                            });
-                        }
-                    }
-                });     
-                // =========== Close Ajax Delete ==========
-            }
-        });
-	// ============= Close Delete Item ============== //
+                           		});
+	                        }
+	                    }
+	                });
+	            } 
+			}
+
+		});
+	
 	
 	// ---------------------------------------------------------------- //
 	$(".date-picker").datepicker({
