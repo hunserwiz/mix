@@ -151,13 +151,13 @@
 				<div class="row-fluid" >
 					<div class="span12">
 					สินค้า :
-						{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id','required'=>'',"class"=>"form-control")) }}
+						{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id',"class"=>"form-control")) }}
 					ราคา :     
 						{{ Form::text('price', Input::old('price'),
-			                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+			                                            array("id"=>"price",'class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
 			        จำนวน :                               
 			           	{{ Form::text('amount', Input::old('amount'),
-			                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
+			                                            array("id"=>"amount",'class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
 						
 					<input type="button" id='add' class="btn btn" value="เพิ่มรายการสินค้า">	
 		            
@@ -262,14 +262,19 @@ $(document).ready(function(){
 									"</tr>";
 									
 								$('div#tbl_product tbody tr:last').after(tr);	
-								
-								$("[id^='add-del_']").click(function(){
-									var str = this.id.split("_");
-									console.log(str[1]);
-									var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
-									if (result==true) 
-										$('div#tbl_product tbody tr#'+str[1]).remove();
+								// del form add //
+								// if(key == 1){
+									$("[id^='add-del_']").click(function(){
+										var key_id = $("#"+this.id).attr("data-key"); 
+										// var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
+										// if (result==true) {
+											$('div#tbl_product tbody tr#'+key_id).remove();										
+										// }else{
+										// 	return false;
+										// }
 									});
+								// }
+								// close del form add //
 	                        }
 	                    }
 	                });

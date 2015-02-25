@@ -21,7 +21,8 @@ class ProductReturnController extends BaseController {
         );
         $skip = ($arr_page['product'] - 1) * $arr_perpage['product'];
 
-        $model = ProductReturn::skip($skip)->take($arr_perpage['product'])
+        $model = ProductReturn::orderBy('created_at', 'desc')
+                            ->skip($skip)->take($arr_perpage['product'])
                             ->get();
 
         $count_model = ProductReturn::count();                
@@ -98,7 +99,8 @@ class ProductReturnController extends BaseController {
     }
 
     public function getForm() {
-        $model = null;
+        $model = new ProductReturn();
+        $model_product_item = new ProductReturnItem();
         $mode = "add";
     	$list_category = Categorise::lists('name','categorise_id');
         $list_location = ThaiHelper::getLocationList();
@@ -108,6 +110,7 @@ class ProductReturnController extends BaseController {
 
         return View::make('productReturn.form',compact(
             'model',
+            'model_product_item',
             'list_category',
             'list_product',
             'list_location',

@@ -36,8 +36,9 @@ $(document).ready(function(){
 // ============= Delete Item============== //
 	var mode = "{{ $mode }}";
 	console.log(mode);
-	if(mode == 'edit')
-	var product_return_id = "{{ $model->id }}";
+	if(mode == 'edit'){
+		var product_return_id = "{{ $model->id }}";
+	}
 
 	if(mode == 'edit'){
         $("[id^='del']").click(function(){
