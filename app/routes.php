@@ -29,12 +29,15 @@ Route::group(array('before' => 'auth'), function() {
     // order
 	Route::get('/','OrderController@getIndex');
 	Route::get('/order','OrderController@getIndex');
+    Route::post('product-order-item','OrderController@postIndexItem');
     Route::get('form-order','OrderController@getForm');
     Route::get('edit-order/{order_id}','OrderController@getFormEdit');
     Route::post('delete-order','OrderController@postDelete');
     Route::post('search-order','OrderController@postSearch');
     Route::post('post-product-name','OrderController@postProductName');
     Route::post('view-order','OrderController@postView');
+    Route::post('post-add-order-item','OrderController@postFormItem');
+    Route::post('delete-product-order-item','OrderController@postDeleteitem');
     // finance
     Route::get('finance','FinanceController@getIndex');
     Route::get('form-finance','FinanceController@getForm');

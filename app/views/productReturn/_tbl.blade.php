@@ -20,6 +20,7 @@
                                             <i class="icon-eye-open"></i>
                                         </a>
                                     </span>
+                                    @if(ThaiHelper::CheckRight())
 									<span class="" >
 										<a href="{{ url('edit-product-return/'.$data->id) }}" title="">
 											<i class="icon-edit"></i>
@@ -30,6 +31,7 @@
 											<i class="icon-trash"></i>
 										</a>
 									</span>
+                                    @endif
 								</td>							
 							</tr>
 							@endforeach

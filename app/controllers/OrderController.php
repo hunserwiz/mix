@@ -21,7 +21,7 @@ class OrderController extends BaseController {
         );
         $skip = ($arr_page['order'] - 1) * $arr_perpage['order'];
 
-        $model = Order::skip($skip)->take($arr_perpage['order'])->get();
+        $model = Order::orderBy('created_at', 'desc')->skip($skip)->take($arr_perpage['order'])->get();
 
         $count_model = Order::count();                
 
@@ -37,6 +37,13 @@ class OrderController extends BaseController {
                                         'arr_page',
                                         'arr_count_page'
                                         ));
+    }
+
+    public function postIndexItem() {
+        $model = Order::find(Input::get('order_id'));
+        $model_item = OrderItem::where("order_id","=",Input::get('order_id'))->get();
+        $mode = Input::get('mode');
+        return View::make('order._tbl_item',compact('model','model_item','mode'));
     }
 
     public function postSearch() {
@@ -93,18 +100,22 @@ class OrderController extends BaseController {
     }
 
     public function getForm() {
+        $mode = 'add';
         $list_categorise = Categorise::lists('name','categorise_id');
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
         $list_agent = User::where('user_type','=',3)->lists('name','id');
         $list_product = Product::lists('name','id');
-        $model = null;
+        $model = new Order();
+        $model_item = new OrderItem();
 
-        return View::make('order.form',compact('model','list_product','list_categorise','list_agent','list_location','list_user'));
+        return View::make('order.form',compact('model','model_item','mode','list_product','list_categorise','list_agent','list_location','list_user'));
     }
     
     public function getFormEdit($order_id) {
+        $mode = 'edit';
         $model = Order::find($order_id);
+        $model_item = OrderItem::where('order_id','=',$order_id)->get();
         $model->order_date = ThaiHelper::DateToShowForm($model->order_date);
         $list_categorise = Categorise::lists('name','categorise_id');
 
@@ -114,7 +125,7 @@ class OrderController extends BaseController {
         $list_product = Product::lists('name','id');
 
 
-        return View::make('order.form',compact('model','list_product','list_categorise','list_agent','list_location','list_user'));
+        return View::make('order.form',compact('model','model_item','mode','list_product','list_categorise','list_agent','list_location','list_user'));
     }
     public function postForm() {
         $validation = Order::validate(Input::all());
@@ -125,10 +136,6 @@ class OrderController extends BaseController {
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
                 $model->type = Input::get('type');
-                // $model->category_id = Input::get('category');
-                // $model->product_id = Input::get('product_id');
-                // $model->price = Input::get('price');
-                // $model->amount_total = Input::get('amount');
                 $model->agent_id = Input::get('agent_id');
                 $model->location_id = Input::get('location_id');
                 $model->receive_by = Input::get('operate_by');
@@ -142,10 +149,6 @@ class OrderController extends BaseController {
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
                 $model->type = Input::get('type');
-                // $model->category_id = Input::get('category');
-                // $model->product_id = Input::get('product_id');
-                // $model->price = Input::get('price');
-                // $model->amount_total = Input::get('amount');
                 $model->agent_id = Input::get('agent_id');
                 $model->location_id = Input::get('location_id');
                 $model->receive_by = Input::get('operate_by');
@@ -169,6 +172,26 @@ class OrderController extends BaseController {
             return Redirect::action('OrderController@getForm')
                             ->withErrors($validation)
                             ->withInput();    
+        }
+    }
+
+    public function postFormItem() {
+        $model = new OrderItem();
+        $model->order_id = Input::get('order_id');
+        $model->product_id = Input::get('product_id');
+        $model->price = Input::get('price');
+        $model->amount = Input::get('amount');
+        $model->save();
+        if($model->save()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
+
+    public function postDeleteItem() {
+        $id = Input::get('id');
+        $model = OrderItem::find($id);
+        if($model->delete()){
+            return Response::json(array('status' => 'success'));
         }
     }
 

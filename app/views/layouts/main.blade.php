@@ -75,12 +75,14 @@
                   <li><a href="{{ url('deposit') }}">รายการฝากลูกค้า</a></li>
               </ul>
               </li>
+              @if(ThaiHelper::CheckRight())
                <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">สินค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a></li>
               </ul>
               </li>
+              @endif
             </ul>
             <div class="navbar-form pull-right">
                 <a href="{{ url('account/sign-out') }}" class="navbar-link"> ออกจากระบบ</a>

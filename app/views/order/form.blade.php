@@ -169,13 +169,13 @@
 			<div class="row-fluid" >
 				<div class="span12">
 				สินค้า :
-					{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id','required'=>'',"class"=>"form-control")) }}
+					{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id',"class"=>"form-control")) }}
 				ราคา :     
 					{{ Form::text('price', Input::old('price'),
-		                                            array("id"=>"price",'required'=>'','class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
+		                                            array("id"=>"price",'class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
 		        จำนวน :                               
 		           	{{ Form::text('amount', Input::old('amount'),
-		                                            array("id"=>"amount",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
+		                                            array("id"=>"amount",'class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
 					
 				<input type="button" id='add' class="btn btn" value="เพิ่มรายการสินค้า">	
 	            
@@ -183,29 +183,13 @@
 			</div>
 		</div>
 
+
 		<div id='tbl_product'>
-			<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
-							<thead>
-								<tr>
-									<th style="text-align:center">ชื่อสินค้า</th>
-									<th style="text-align:center">ราคาต่อหน่วย</th>
-									<th style="text-align:center">จำนวน</th>	
-									<th style="text-align:center">จัดการ</th>																
-								</tr>
-							</thead>	
-							<tbody>	
-							<tr>
-								<td style="text-align:left"></td>
-								<td style="text-align:left"></td>
-								<td style="text-align:left"></td>
-								<td style="text-align:left"></td>							
-							</tr>								
-							</tbody>
-					</table>
+			@include('order._tbl_item')
 		</div>
 
 		<div class="text-center">
-		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
+{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}
 				<a href="{{ url('/') }}">
 					<input type="button" class="btn btn-danger" value="ยกเลิก">
@@ -220,7 +204,14 @@ $(document).ready(function(){
 	var price = $("#price").val();
 	var amount = $("#amount").val();
 	var key = 0;
+	var mode = "{{ $mode }}";
+
+	if(mode == 'add')
 	$("#tbl_product").hide();
+
+	if(mode == 'edit')
+	var order_id = "{{ $model->order_id }}";
+
 	$("#add").prop('disabled',true);
 	$("#product_id").change(function(){
 		product_id = this.value;
@@ -261,7 +252,8 @@ $(document).ready(function(){
 			console.log(price +" : "+ amount);
 
 			if(amount != "" && price != ""){
-				$("#tbl_product").show();
+				if(mode == 'add'){
+					$("#tbl_product").show();
 					$.ajax({
 	                    url: "{{ url('post-product-name') }}",
 	                    type: "post",
@@ -275,7 +267,7 @@ $(document).ready(function(){
 									"<td style='text-align:right'>"+ price +"</td>"+
 									"<td style='text-align:right'>"+ amount +"</td>"+
 									"<td style='text-align:center'>"+
-									"<input type='button' id='del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
+									"<input type='button' id='add-del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
 									"</td>"+
 									"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
 									"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
@@ -283,14 +275,32 @@ $(document).ready(function(){
 									"</tr>";
 								$('div#tbl_product tbody tr:last').after(tr);
 
-								$("[id^='del_']").click(function(){
-									var str = this.id.split("_");
-									console.log(str[1]);
-									$('div#tbl_product tbody tr#'+str[1]).remove();
+								$("[id^='add-del_']").click(function(){
+									var key_id = $("#"+this.id).attr("data-key"); 
+									$('div#tbl_product tbody tr#'+key_id).remove();
 									});
 	                        }
 	                    }
 	                }); 
+					}else{
+		            	$.ajax({
+		                    url: "{{ url('post-add-order-item') }}",
+		                    type: "post",
+		                    data: {order_id:order_id,product_id:product_id,price:price,amount:amount},
+		                    success:function(r){                       
+		                        if(r.status == 'success'){
+		                        	$.ajax({
+	                                    url:"{{ url('product-order-item') }}",
+	                                    type: "post",
+	                                    data: {mode:mode,order_id:order_id},
+	                                    success:function(r){
+	                                        $("div#tbl_product").html(r);
+	                                    }
+	                           		});
+		                        }
+		                    }
+		                });
+		            }
 				}
 
 		});

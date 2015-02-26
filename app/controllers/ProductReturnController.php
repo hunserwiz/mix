@@ -216,17 +216,17 @@ class ProductReturnController extends BaseController {
         }
     }
 
-    public function postDelete() {
+    public function postDeleteItem() {
         $id = Input::get('id');
-        $model = ProductReturn::find($id);
+        $model = ProductReturnItem::find($id);
         if($model->delete()){
             return Response::json(array('status' => 'success'));
         }
     }
 
-    public function postDeleteItem() {
+    public function postDelete() {
         $id = Input::get('id');
-        $model = ProductReturnItem::find($id);
+        $model = ProductReturn::find($id);
         if($model->delete()){
             return Response::json(array('status' => 'success'));
         }
