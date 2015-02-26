@@ -38,6 +38,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('view-order','OrderController@postView');
     Route::post('post-add-order-item','OrderController@postFormItem');
     Route::post('delete-product-order-item','OrderController@postDeleteitem');
+    // order-report
+    Route::get('order-report','OrderReportController@getIndex');
     // finance
     Route::get('finance','FinanceController@getIndex');
     Route::get('form-finance','FinanceController@getForm');
@@ -84,6 +86,7 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('post-finance','FinanceController@postForm');
         Route::post('post-debtor','DebtorController@postForm');
         Route::post('post-sell','SellController@postReport');
+        Route::post('post-order-report','OrderReportController@postReport');
         Route::post('post-commition','CommitionController@postReport');
         Route::post('post-product','ProductController@postForm');
         Route::post('post-product-return','ProductReturnController@postForm');

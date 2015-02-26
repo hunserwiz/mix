@@ -53,14 +53,18 @@
           <a class="brand" href="#"><img src="images/immage3.png" alt=""></a>
           <div class="nav-collapse collapse">
             <ul class="nav nav-tabs">
-              <li class="" ><a href="{{ url('/') }}">ใบวางบิล</a></li>
+              <li class="dropdown" ><a href="{{ url('/') }}">ใบวางบิล</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url('order-report') }}">รายงาน ใบวางบิล</a></li>
+                </ul>
+              </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">บัญชี <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('finance') }}">บัญชีรายรับ - รายจ่าย</a></li>
                   <li><a href="{{ url('debtor') }}">ลูกหนี้</a></li>
                   <li><a href="{{ url('sell') }}">sell</a></li>
-        </ul>
+              </ul>
               </li>
           <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">คืนสินค้า <b class="caret"></b></a>
