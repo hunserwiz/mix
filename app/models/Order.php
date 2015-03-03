@@ -44,6 +44,11 @@ class Order extends Eloquent {
       return $this->hasOne('User', 'id', 'agent_id');
     }
 
+
+    public function orderItem(){
+      return $this->hasMany('OrderItem', 'order_id', 'order_id');
+    }
+
     // public function product(){
     //   return $this->hasOne('Product', 'id', 'product_id');
     // }

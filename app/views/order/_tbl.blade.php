@@ -22,6 +22,11 @@
 								<td style="text-align:left">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
 								<td style="text-align:center">
 									<span class="" >
+										<a href="{{ url('order-report/'.$data->order_id) }}" target='_blank' title="report">
+											<i class="icon-search"></i>
+										</a>
+									</span>
+									<span class="" >
 										<a href="#" id="view_{{ $data->order_id }}" data-order-id='{{ $data->order_id }}' title="view">
 											<i class="icon-eye-open"></i>
 										</a>

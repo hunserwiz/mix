@@ -587,6 +587,11 @@ class ThaiHelper {
           return $model->name;
     }
 
+    public static function GetAgent($id){
+        $model = User::find($id);
+          return $model;
+    }
+
     public static function GetLocation($id){
         $text = "";
           if($id == 1){

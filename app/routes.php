@@ -39,7 +39,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('post-add-order-item','OrderController@postFormItem');
     Route::post('delete-product-order-item','OrderController@postDeleteitem');
     // order-report
-    Route::get('order-report','OrderReportController@getIndex');
+    Route::get('order-report/{order_id}','OrderReportController@getReportPDF');
     // finance
     Route::get('finance','FinanceController@getIndex');
     Route::get('form-finance','FinanceController@getForm');

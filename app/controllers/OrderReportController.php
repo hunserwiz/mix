@@ -14,7 +14,12 @@ class OrderReportController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
-
+    public function getReportPDF($order_id) {
+        $model = Order::find($order_id);
+        $model_item = Order::find($order_id)->orderItem()->get();
+        $total = 0;
+        return View::make('orderReport.reportPDF',compact('model','model_item','total'));
+    }
 	public function getIndex() {
         $day = null;
         $month = null;
