@@ -76,10 +76,14 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('commition','CommitionController@getIndex');
     // deposit
     Route::get('deposit','DepositController@getIndex');
+    Route::post('deposit-item','DepositController@postIndexItem');
     Route::get('form-deposit','DepositController@getForm');
     Route::get('edit-deposit/{id}','DepositController@getFormEdit');
     Route::post('delete-deposit','DepositController@postDelete');
+    Route::post('delete-deposit-item','DepositController@postDeleteitem');
     Route::post('search-deposit','DepositController@postSearch');
+    Route::post('view-deposit','DepositController@postView');
+    Route::post('post-add-deposit-item','DepositController@postFormItem');
     // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');

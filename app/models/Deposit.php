@@ -13,14 +13,10 @@ class Deposit extends Eloquent {
     public static function validate($input) {
         $rules = array(
             'date_deposit' => 'required',    
-            'categorise_id' => 'required',       
-            'product_id' => 'required',
-            'type_deposit' => 'required',
-            'price' => 'required', 
-            'amount' => 'required',            
+            'type_deposit_id' => 'required',       
             'deposit_by' => 'required',
             'create_by' => 'required',
-            'date_return_deposit' => 'required',    
+            'date_deposit_return' => 'required',    
         );
 
         return Validator::make($input, $rules,ThaiHelper::getValidationMessage());
@@ -29,14 +25,10 @@ class Deposit extends Eloquent {
     public static function attributeName() {
         $attributes_name = array(      
             'date_deposit' => 'วันที่ฝาก',    
-            'categorise_id' => 'ประเภทสินค้า',       
-            'product_id' => 'สินค้า',
-            'type_deposit' => 'ประเภทการฝากสินค้า',    
-            'price' => 'ราคา',      
-            'amount' => 'จำนวนสินค้า',            
+            'type_deposit_id' => 'ประเภทการฝากสินค้า',    
             'deposit_by' => 'ผู้ฝาก',
             'create_by' => 'ผู้รับฝาก',
-            'date_return_deposit' => 'วันรับคืน',    
+            'date_deposit_return' => 'วันรับคืน',    
         );
 
         return $attributes_name;
@@ -52,6 +44,16 @@ class Deposit extends Eloquent {
 
     public function user(){
       return $this->hasOne('User');
+    }
+
+    public static function GetTypeDeposit($type_id){
+        $text = "";
+        if($type_id == 1){
+            $text = "ฝากกลับบ้าน";
+        }else{
+            $text = "ฝากในตู้";
+        }    
+        return $text;
     }
 }
 ?>

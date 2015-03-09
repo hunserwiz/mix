@@ -42,6 +42,13 @@ class DepositController extends BaseController {
                                         'arr_count_page'));
     }
 
+    public function postIndexItem() {
+        $model = Deposit::find(Input::get('deposit_id'));
+        $model_deposit_item = DepositItem::where("deposit_id","=",Input::get('deposit_id'))->get();
+        $mode = Input::get('mode');
+        return View::make('deposit._tbl_item',compact('model','model_deposit_item','mode'));
+    }
+
     public function postSearch() {
         $keyword = Input::get('keyword');
         $keydate = Input::get('keydate');
@@ -102,16 +109,16 @@ class DepositController extends BaseController {
     }
 
     public function getForm() {
-        $model = null;
+        $model = new Deposit();
+        $model_deposit_item = new DepositItem();
         $mode = "add";
-        $list_category = Categorise::lists('name','categorise_id');
-        $list_location = ThaiHelper::getLocationList();
         $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
         $list_agent = User::where('user_type','=','3')->lists('name','id');
         
         return View::make('deposit.form',compact(
             'model',
+            'model_deposit_item',
             'list_category',
             'list_product',
             'list_location',
@@ -122,17 +129,17 @@ class DepositController extends BaseController {
     }
     public function getFormEdit($id = NULL) {
         $model = Deposit::find($id);
+        $model_deposit_item = DepositItem::where('deposit_id','=',$id)->get();
         $mode = "edit";
-        $list_category = Categorise::lists('name','categorise_id');
-        $list_location = ThaiHelper::getLocationList();
-        $list_product = Product::where('categorise_id','=',$model->categorise_id)->lists('name','id');
+        $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
         $list_agent = User::where('user_type','=','3')->lists('name','id');
         $model->date_deposit = ThaiHelper::DateToShowForm($model->date_deposit);
-        $model->date_return_depoist = ThaiHelper::DateToShowForm($model->date_return_depoist);
+        $model->date_deposit_return = ThaiHelper::DateToShowForm($model->date_deposit_return);
 
         return View::make('deposit.form',compact(
             'model',
+            'model_deposit_item',
             'list_category',
             'list_product',
             'list_location',
@@ -144,35 +151,35 @@ class DepositController extends BaseController {
     public function postForm() {
         $validation = Deposit::validate(Input::all());
         $validation->setAttributeNames(Deposit::attributeName());
-        echo "<pre>";
-        print_r(Input::all());
-        echo "</pre>";
-        die;
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Deposit::find(Input::get('id'));
                 $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
-                $model->categorise_id = Input::get('categorise_id');
-                $model->product_id = Input::get('product_id');    
                 $model->type_deposit_id = Input::get('type_deposit_id');                            
-                $model->amount = Input::get('amount');
                 $model->deposit_by = Input::get('deposit_by');
                 $model->create_by = Input::get('create_by');
-                $model->date_return_depoist = ThaiHelper::DateToDB(Input::get('date_return_depoist'));
+                $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
                 if($model->save()){
                     return Redirect::action('DepositController@getIndex');
                 }
             }else{
                 $model = new Deposit();
                 $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
-                $model->categorise_id = Input::get('categorise_id');
-                $model->product_id = Input::get('product_id');    
                 $model->type_deposit_id = Input::get('type_deposit_id');                            
-                $model->amount = Input::get('amount');
                 $model->deposit_by = Input::get('deposit_by');
                 $model->create_by = Input::get('create_by');
-                $model->date_return_depoist = ThaiHelper::DateToDB(Input::get('date_return_depoist'));
+                $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
                 if($model->save()){
+                    if(Input::get('product')){
+                        foreach (Input::get('product') as $key => $value) {
+                            $model_deposit_item = new DepositItem();
+                            $model_deposit_item->deposit_id = $model->id;
+                            $model_deposit_item->product_id = $value['product_id'];
+                            $model_deposit_item->price = $value['price'];
+                            $model_deposit_item->amount = $value['amount'];
+                            $model_deposit_item->save();
+                        }
+                    }
                     return Redirect::action('DepositController@getIndex');
                 }
             }
@@ -188,22 +195,38 @@ class DepositController extends BaseController {
             }
         }
     }
-   
+
+    public function postFormItem() {
+        $model = new DepositItem();
+        $model->deposit_id = Input::get('deposit_id');
+        $model->product_id = Input::get('product_id');
+        $model->price = Input::get('price');
+        $model->amount = Input::get('amount');
+        $model->save();
+        if($model->save()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
+    
+    public function postView() {
+        $deposit_id = Input::get('deposit_id');
+        $model = DepositItem::where('deposit_id','=',$deposit_id)->get();
+        return View::make('deposit._view',compact('model'));
+    }
+    
     public function postDelete() {
         $id = Input::get('id');
         $model = Deposit::find($id);
         if($model->delete()){
             return Response::json(array('status' => 'success'));
         }
+    } 
+
+    public function postDeleteItem() {
+        $id = Input::get('id');
+        $model = DepositItem::find($id);
+        if($model->delete()){
+            return Response::json(array('status' => 'success'));
+        }
     }
-
-    public function getListProduct() {
-        $categorise_id = Input::get('categorise_id');
-        $list_product = Product::where('categorise_id','=',$categorise_id)->lists('name','id');
-        
-        return View::make('productReturn._list_product',compact('list_product'));
-    }
-
-
- 
 }

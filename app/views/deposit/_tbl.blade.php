@@ -1,12 +1,11 @@
 <table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
 							<thead>
 								<tr>
-									<th style="text-align:center" lang="En">ชื่อสินค้า</th>
-									<th style="text-align:center" lang="En">ประเภทสินค้า</th>
 									<th style="text-align:center" lang="En">วันที่ฝากสินค้า</th>
-									<th style="text-align:center" lang="En">จำนวนที่ฝาก</th>
-									<th style="text-align:center" lang="En">ราคา</th>
                                     <th style="text-align:center" lang="En">ประเภทการฝาก</th>
+                                    <th style="text-align:center" lang="En">ผู้นำฝาก</th>
+                                    <th style="text-align:center" lang="En">ผู้รับฝาก</th>
+                                    <th style="text-align:center" lang="En">วันที่มารับของฝาก</th>
 									<th style="text-align:center" lang="En">จัดการ</th>						
 								</tr>
 							</thead>	
@@ -14,19 +13,17 @@
 							@if($model->count() > 0)
 							@foreach($model as $data)
 							<tr>
-								<!-- <td style="text-align:center">{{ $data->product->name }}</td> -->
-								<!-- <td style="text-align:center">{{ $data->categorise->name }}</td> -->
 								<td style="text-align:center">{{ $data->date_deposit }}</td>
-								<!-- <td style="text-align:center">{{ $data->amount }}</td> -->
-                                <!-- <td style="text-align:center">{{ $data->price }}</td> -->
-								<td style="text-align:center">{{ $data->type_deposit_id }}</td>
+								<td style="text-align:center">{{ Deposit::GetTypeDeposit($data->type_deposit_id) }}</td>
+                                <td style="text-align:center">{{ ThaiHelper::GetUser($data->deposit_by) }}</td>
+                                <td style="text-align:center">{{ ThaiHelper::GetUser($data->create_by) }}</td>
+                                <td style="text-align:center">{{ $data->date_deposit_return }}</td>
 								<td style="text-align:center">
                                     <span class="" >
-                                        <a href="#" id="view_{{ $data->id }}" data-order-id='{{ $data->id }}' title="view">
+                                        <a href="#" id="view_{{ $data->id }}" data-deposit-id='{{ $data->id }}' title="view">
                                             <i class="icon-eye-open"></i>
                                         </a>
                                     </span>
-                                    <i class="icon-eye-open"></i>
 									<span class="" >
 										<a href="{{ url('edit-deposit/'.$data->id) }}" title="">
 											<i class="icon-edit"></i>
@@ -50,8 +47,26 @@
 <div class="text-center">
     {{ ThaiHelper::getPaginationLink('deposit',$arr_page['deposit'],$arr_count_page['deposit'],$arr_list_page) }}
 </div>
+<div id="modal_deposit"></div>
 <script type="text/javascript">
 $(document).ready(function(){
+        // modal //
+        $("[id^='view_']").click(function(){
+            var deposit_id = $("#"+this.id).attr("data-deposit-id");
+            $.ajax({
+                    url: "{{ url('view-deposit') }}",
+                    data: {deposit_id:deposit_id},
+                    type:"POST",
+                    beforeSend : function(){
+                             
+                    },
+                    success:function(r){                    
+                        $("#modal_deposit").html(r);
+                        $("#viewDeposit").modal();
+                }
+            });
+        });
+        // closemodal //
         // ============= Delete ==============
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
