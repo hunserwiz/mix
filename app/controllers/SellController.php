@@ -64,9 +64,8 @@ class SellController extends BaseController {
         $salary = 0;
         $multiply = 0.08;
         foreach ($order_model as $o) {
-            // $array_result[$o->product_id]['name'] = $o->name;
             $array_result[$o->product_id]['amount'] = $o->amount;
-            $total_amount = $total_amount + $o->amountl;
+            $total_amount = $total_amount + $o->amount;
             $total_result = $total_result + $array_result[$o->product_id]['amount'] * $array_result[$o->product_id]['point'];
         }
         $point = $total_result * 26;

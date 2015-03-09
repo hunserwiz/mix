@@ -13,6 +13,25 @@ class Date {
         return $day;
     }
 
+    public static function getDaySection() { // use in dropDownList
+        $arr = array(
+            '1'  => '1 - 16',
+            '2'  => '17 - 31'
+        );
+
+        return $arr;
+    }
+
+    public static function getYear() { // use in dropDownList.
+        $arr = array();
+        $year_now = (2015 + 543) - 8;
+        $year_future = (date("Y") + 543) + 10;
+        for ($i = $year_now; $i <= $year_future ; $i++) { 
+            $arr[$i] = $i;
+        }
+        return $arr;
+    }
+
     public static function getMon($option = NULL) { // use in dropDownList
         if ($option == NULL) {
             $mon = array(

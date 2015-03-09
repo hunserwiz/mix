@@ -29,7 +29,7 @@
 							</tr>	
 							@else
 							<tr>
-								<td style="text-align:center" colspan="4">ไม่พบข้อมูล</td>						
+								<td style="text-align:center" colspan="5">ไม่พบข้อมูล</td>						
 							</tr>
 							@endif
 								

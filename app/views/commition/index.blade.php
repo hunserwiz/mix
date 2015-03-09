@@ -11,9 +11,9 @@
 	{{ Form::open(array('url' => 'post-commition')) }}
 	<div class="row-fluid" >
 		<div class="span4">
-		<label class="span4">วัน  :</label>
+		<label class="span4">ช่วง  :</label>
 			<div class="span4">					
-				{{ Form::select('day', array(''=> 'กรุณาเลือก') + Date::getDayInMon()  ,$day, array('required'=>'',"class"=>"form-control")) }}
+				{{ Form::select('section', array(''=> 'กรุณาเลือก') + Date::getDaySection()  ,$section, array('required'=>'',"class"=>"form-control")) }}
 			</div>
 		</div>
 		<div class="span4">
@@ -24,9 +24,8 @@
 		</div>
 		<div class="span4">
 		<label class="span4">ปี  :</label>
-			<div class="span4">					
-				{{ Form::text('year', $year,
-					array("id"=>"year",'required'=>'','class'=>'form-control','placeholder'=>'กรอกปี')) }}
+			<div class="span4">			
+				{{ Form::select('year', array(''=> 'กรุณาเลือก') + Date::getYear()  ,$year, array('required'=>'',"class"=>"form-control")) }}		
 			</div>
 		</div>.
 		<div class="span4">
@@ -52,8 +51,6 @@
 		<div id='tbl' class="row-fluid" style="padding-top: 0%;">
 			@if(!empty($array_result))
 				@include('commition._tbl')
-			@else
-				<h3 class='text-center'>ไม่พบข้อมูล</h3>
 			@endif
 		</div>	
 	</form>		
