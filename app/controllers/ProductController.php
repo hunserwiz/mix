@@ -68,23 +68,19 @@ class ProductController extends BaseController {
 
     public function getForm($product_id = NULL) {
     	$list_categories = Categorise::lists('name','categorise_id');
-        $model = null;
-        $model_stock = null;
+        $model = new Product();
         return View::make('product.form',compact(
             'list_categories',
-            'model',
-            'model_stock'
+            'model'
             ));
     }
     public function getFormEdit($id = NULL) {
         $list_categories = Categorise::lists('name','categorise_id');
         $model = Product::find($id);
-        $model_stock = Stock::where('product_id','=',$id)->first();
         
         return View::make('product.form',compact(
             'list_categories',
-            'model',
-            'model_stock'
+            'model'
             ));
     }
     public function postForm() {
@@ -97,13 +93,10 @@ class ProductController extends BaseController {
                 $model->categorise_id = Input::get('categorise_id');
                 $model->price = Input::get('price');
                 $model->size = Input::get('size');
+                $model->product_balance = Input::get('product_balance');
                 $model->flavor = Input::get('flavor');
                 if($model->save()){
-                    $model_stock = Stock::where('product_id','=',Input::get('id'))->first();
-                    $model_stock->product_balance = Input::get('product_balance');
-                    if($model_stock->save()){
-                        return Redirect::action('ProductController@getIndex');
-                    }
+                    return Redirect::action('ProductController@getIndex');                
                 }
             }else{
                 $model = new Product();
@@ -111,14 +104,10 @@ class ProductController extends BaseController {
                 $model->categorise_id = Input::get('categorise_id');
                 $model->price = Input::get('price');
                 $model->size = Input::get('size');
+                $model->product_balance = Input::get('product_balance');
                 $model->flavor = Input::get('flavor');
                 if($model->save()){
-                    $model_stock = new Stock();
-                    $model_stock->product_id = $model->id;
-                    $model_stock->product_balance = Input::get('product_balance');
-                    if($model_stock->save()){
-                        return Redirect::action('ProductController@getIndex');
-                    }
+                    return Redirect::action('ProductController@getIndex');                    
                 }
             }
         }else{
@@ -136,12 +125,9 @@ class ProductController extends BaseController {
    
     public function postDelete() {
         $id = Input::get('id');
-        $model_stock = Stock::where('product_id','=',$id)->first();
-        if($model_stock->delete()){
-            $model = Product::find($id);
-            $model->delete();
-            return Response::json(array('status' => 'success'));
-        }
+        $model = Product::find($id);
+        $model->delete();
+        return Response::json(array('status' => 'success'));        
     }
 
 

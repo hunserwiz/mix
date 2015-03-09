@@ -19,7 +19,7 @@
 								<td style="text-align:center">{{ $data->price }}</td>
 								<td style="text-align:center">{{ $data->flavor }}</td>
 								<td style="text-align:center">{{ $data->size }}</td>
-								<td style="text-align:center">{{ $data->stock->product_balance }}</td>
+								<td style="text-align:center">{{ $data->product_balance }}</td>
 								<td style="text-align:center">
 									<span class="" >
 										<a href="{{ url('edit-product/'.$data->id) }}" title="">

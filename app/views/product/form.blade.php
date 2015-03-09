@@ -115,7 +115,7 @@
 							{{ Form::text('product_balance',Input::old('product_balance') ,
                                         array('class'=>'form-control',"id"=>"product_balance",'placeholder'=>'กรอกจำนวน')) }}
 						@else
-							{{ Form::text('product_balance',$model_stock->product_balance,
+							{{ Form::text('product_balance',$model->product_balance,
                                         array('class'=>'form-control',"id"=>"product_balance",'placeholder'=>'กรอกจำนวน')) }}
 						@endif
 							
