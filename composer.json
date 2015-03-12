@@ -6,7 +6,8 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"thujohn/pdf": "dev-master"
+		"illuminate/support": "4.x",
+        "mpdf/mpdf": "5.7.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -16,7 +17,10 @@
 			"app/database/migrations",
 			"app/database/seeds",
 			"app/tests/TestCase.php"
-		]
+		],
+		"psr-0": {
+            "Lowerends\\Mpdf": "src/"
+        }
 	},
 	"scripts": {
 		"post-install-cmd": [
