@@ -15,24 +15,18 @@
 						<label>เรื่อง</label><br>
 						<label>{{ $model->order_title }}</label><br>
 						<label>บิลเงินสด / ใบกำกับภาษี </label><br>
-						<label>{{ $model->order_no }}</label><br>
-		
+						<label>{{ $model->order_no }}</label><br>		
 						<label>วันที่ {{ $model->order_date }}</label>
-
-						</div>
-
-
+					</div>
 			</div>
 			<div class="row-fluid" style="border: 1px solid #ddd;padding-left: 1%;padding-bottom: 2%;padding-top: 2%;" >
 				<div class="span6">
-						<label>ชื่อ นามสกุล ผู้ชื้อ {{ ThaiHelper::GetAgent($model->agent_id)->first_name . " " .ThaiHelper::GetAgent($model->agent_id)->last_name }}</label><br>
-					
-						</div>
-
-						<div class="span6">
-						<label>ที่อยู่ {{ ThaiHelper::GetAgent($model->agent_id)->address }} </label> 
-						<label>เบอร์โทรศัพท์ {{ ThaiHelper::GetAgent($model->agent_id)->tel }}</label>
-						</div>
+					<label>ชื่อ นามสกุล ผู้ชื้อ {{ ThaiHelper::GetAgent($model->agent_id)->first_name . " " .ThaiHelper::GetAgent($model->agent_id)->last_name }}</label><br>
+				</div>
+				<div class="span6">
+					<label>ที่อยู่ {{ ThaiHelper::GetAgent($model->agent_id)->address }} </label> 
+					<label>เบอร์โทรศัพท์ {{ ThaiHelper::GetAgent($model->agent_id)->tel }}</label>
+				</div>
 			</div>
    			<div class="row-fluid" style="border: 1px solid #ddd;padding-left: 1%;padding-top: 2%;" >
 				<div class="span9">
@@ -49,7 +43,7 @@
 						@if($model_item->count() > 0)
 						@foreach($model_item as $item)
 						<tr>
-							<td style="text-align:center">{{ $item->product_id }}</td>
+							<td style="text-align:center">{{ $item->product->name }}</td>
 							<td style="text-align:right">{{ $item->amount }}</td>
 							<td style="text-align:right">{{ $item->price }}</td>
 							<td style="text-align:right">{{ number_format($item->amount * $item->price) }}</td>
@@ -118,4 +112,8 @@
 			</div>
 	</div>
 </div>
+			<a class="btn btn-primary" href="{{ url('order-report-pdf/'.$model->order_id) }}">
+				<span lang="En" >PDF</span>
+			</a>
+
 @stop
