@@ -6,7 +6,9 @@
 									<th style="text-align:center">จำนวนเงิน</th>
 									<th style="text-align:center">รายละเอียด</th>
 									<th style="text-align:center">เจ้าหน้าที่บันทึกข้อมูล</th>	
-									<th style="text-align:center">จัดการ</th>									
+									@if(ThaiHelper::CheckRight())
+									<th style="text-align:center">จัดการ</th>		
+									@endif									
 								</tr>
 							</thead>	
 							<tbody>	
@@ -18,6 +20,7 @@
 								<td style="text-align:right">{{ $data->price }}</td>
 								<td style="text-align:center">{{ $data->detail }}</td>
 								<td style="text-align:center">{{ ThaiHelper::GetUser($data->create_by) }}</td>
+								@if(ThaiHelper::CheckRight())
 								<td style="text-align:center">
 									<span class="" >
 										<a href="{{ url('edit-finance/'.$data->id) }}" title="">
@@ -29,7 +32,8 @@
 											<i class="icon-trash"></i>
 										</a>
 									</span>
-								</td>							
+								</td>
+								@endif							
 							</tr>
 							@endforeach
 							@else

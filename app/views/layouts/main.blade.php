@@ -77,7 +77,9 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">ลูกค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
+                  @if(ThaiHelper::CheckRight())
                   <li><a href="{{ url('commition') }}">ค่า Commition</a></li>
+                  @endif  
                   <li><a href="{{ url('deposit') }}">รายการฝากลูกค้า</a></li>
               </ul>
               </li>
@@ -86,6 +88,14 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">สินค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a></li>
+              </ul>
+              </li>
+              @endif
+              @if(ThaiHelper::CheckRight())
+               <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">จัดการผู้ใช้งาน <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url('manage-user') }}">รายการผู้ใช้งาน</a></li>
               </ul>
               </li>
               @endif

@@ -85,6 +85,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('search-deposit','DepositController@postSearch');
     Route::post('view-deposit','DepositController@postView');
     Route::post('post-add-deposit-item','DepositController@postFormItem');
+    // commition
+    Route::get('manage-user','UserController@getIndex');
     // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');
