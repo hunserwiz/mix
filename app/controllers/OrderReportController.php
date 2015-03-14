@@ -29,7 +29,7 @@ class OrderReportController extends BaseController {
         $mpdf=new mPDF('th_sarabun', 'A4', 0, 'thsarabun'); 
         $mpdf->SetAutoFont();
         $mpdf->SetDisplayMode('fullpage');
-        // $mpdf->WriteHTML($stylesheet,1); 
+        $mpdf->WriteHTML($stylesheet,1); 
         $mpdf->WriteHTML(PDFHelper::Html($model,$model_item,$total));
         $mpdf->Output();
         exit;
