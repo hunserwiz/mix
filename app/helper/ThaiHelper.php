@@ -608,6 +608,18 @@ class ThaiHelper {
         else
         return false;
     }
+
+    public static function GetTypeUser($id){
+        $text = "";
+          if($id == 1){
+            $text = "admin";
+          }else if($id == 2){
+            $text = "operate";
+          }else if($id == 3){
+            $text = "sell";
+          }
+          return $text;
+    }
 }
 
 ?>

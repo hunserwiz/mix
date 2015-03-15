@@ -13,7 +13,7 @@
 							<tr>
 								<td style="text-align:left">{{ $data->name }}</td>
 								<td style="text-align:left">{{ $data->email }}</td>
-								<td style="text-align:left">{{ $data->user_type }}</td>
+								<td style="text-align:left">{{ ThaiHelper::GetTypeUser($data->user_type) }}</td>
 								<td style="text-align:center">
 									<span class="" >
 										<a href="#" id="view_{{ $data->id }}" data-user-id='{{ $data->order_idid }}' title="view">
