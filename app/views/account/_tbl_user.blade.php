@@ -15,11 +15,11 @@
 								<td style="text-align:left">{{ $data->email }}</td>
 								<td style="text-align:left">{{ ThaiHelper::GetTypeUser($data->user_type) }}</td>
 								<td style="text-align:center">
-									<span class="" >
+								<!-- 	<span class="" >
 										<a href="#" id="view_{{ $data->id }}" data-user-id='{{ $data->order_idid }}' title="view">
 											<i class="icon-eye-open"></i>
 										</a>
-									</span>
+									</span> -->
 									@if(ThaiHelper::CheckRight())
 									<span class="" >
 										<a href="{{ url('edit-user/'.$data->id) }}" title="">
@@ -46,7 +46,7 @@
 <div class="text-center">
     {{ ThaiHelper::getPaginationLink('user',$arr_page['user'],$arr_count_page['user'],$arr_list_page) }}
 </div>
-<div id="modal_order"></div>
+<div id="modal_user"></div>
 <script type="text/javascript">
 $(document).ready(function(){
 		// modal //
@@ -60,8 +60,8 @@ $(document).ready(function(){
 	                         
 	                },
 	                success:function(r){                    
-	                    $("#modal_user_id").html(r);
-	                    $("#viewUser_id").modal();
+	                    $("#modal_user").html(r);
+	                    $("#viewUser").modal();
 	            }
 	        });
 	    });
@@ -74,7 +74,7 @@ $(document).ready(function(){
                 var page = {{ $arr_page['user'] }};
                 // ============= Ajax Delete ==============
                 $.ajax({
-                    url: "{{ url('delete-order') }}",
+                    url: "{{ url('delete-user') }}",
                     type: "post",
                     data: {user_id:user_id},
                     success:function(r){                       
@@ -82,7 +82,7 @@ $(document).ready(function(){
                             $.ajax({
                                     url:"{{ url('search-user') }}",
                                     type: "post",
-                                    data:{ page: page, perpage: perpage ,keyword: ""},
+                                    data:{ page: page, perpage: perpage ,keyword: "",keytype: ""},
                                     success:function(r){
                                         $("div#tbl").html(r);
                                     }

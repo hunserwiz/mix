@@ -12,6 +12,12 @@
 		<div class="text-right" style="padding-bottom:1%">
 			<!-- Search Box -->
 			<div class="input-group input-search">
+				{{ Form::select('txt_keytype', 
+				array(''=> 'กรุณาเลือก',
+				'1'=>'admin',
+				'2'=>'operate',
+				'3'=>'sell')  
+				, null, array('id'=>'txt_keytype','required'=>'',"class"=>"form-control")) }}
 	            <input type="text" id="txt_keyword" class="form-control" placeholder="ค้นหา : ชื่อผู้ใช้งาน">
 	            <span class="input-group-btn">
 	                <button class="btn btn-default btn-primary" id='btn_search' type="button">
@@ -20,7 +26,7 @@
 	            </span>
 	        </div>
 	        <!-- Close Search Box -->
-			<a class="btn btn-primary" href="{{ url('form-order') }}">
+			<a class="btn btn-primary" href="{{ url('form-user') }}">
 				<i class="icon-plus-sign icon-white"></i>&nbsp;
 				<span lang="En" >เพิ่ม</span>
 			</a>			
@@ -45,32 +51,39 @@ $(document).ready(function(){
 
 	$("#btn_search").click(function(){
             var keyword = $("#txt_keyword").val();
-            Search(1,keyword);
+            var keytype = $("#txt_keytype").val();
+            Search(1,keyword,keytype);
     });
 
     $("ul.pagination.user li a").click(function(){
             var arr_id = (this.id).split("_");
             var page = arr_id.pop();
-            var keyword = {{ $keyword }}
+            var keyword = "{{ $keyword }}";
+            var keytype = "{{ $keytype }}";
 
-            SearchShop(page,keyword);
+            SearchShop(page,keyword,keytype);
 
             return false;
         });
 
+    $("#txt_keytype").change(function(){
+            var keytype = $("#txt_keytype").val();
+            Search(1,null,keytype);
+    });
+
 	$("#txt_keyword").keypress(function(e){  
             if (e.keyCode == 13) {
                 var keyword = $("#txt_keyword").val();
-                Search(1,keyword);
+                Search(1,keyword,null);
             }
 	});
 
 
-	function Search(page,keyword){
+	function Search(page,keyword,keytype){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-user') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword},
+                data:{ page: page, perpage: perpage, keyword: keyword , keytype:keytype},
                 success:function(result){
                     $("div#tbl").html(result);
                 }

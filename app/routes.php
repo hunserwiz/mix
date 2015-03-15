@@ -87,11 +87,14 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('post-add-deposit-item','DepositController@postFormItem');
     // user
     Route::get('manage-user','UserController@getIndex');
+    Route::get('form-user','UserController@getForm');
+    Route::get('edit-user/{user_id}','UserController@getFormEdit');
     Route::post('search-user','UserController@postSearch');
     // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');
         Route::post('post-finance','FinanceController@postForm');
+        Route::post('post-user','UserController@postForm');
         Route::post('post-debtor','DebtorController@postForm');
         Route::post('post-sell','SellController@postReport');
         Route::post('post-order-report','OrderReportController@postReport');

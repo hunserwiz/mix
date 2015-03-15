@@ -10,6 +10,7 @@ class UserController extends BaseController {
 
     public function getIndex() {
         $keyword = "";
+        $keytype = "";
 
         $arr_page = array(
             'user' => 1
@@ -31,6 +32,7 @@ class UserController extends BaseController {
                                         'model',
                                         'count_model',
                                         'keyword',
+                                        'keytype',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -57,31 +59,60 @@ class UserController extends BaseController {
                 $query->where('name','LIKE',"%".$keyword."%")
                 ->orWhere('first_name','LIKE',"%".$keyword."%");
             }
+            if($keytype){
+                $query->where('user_type','=',$keytype);
+            }
         })
         ->orderBy('created_at', 'desc')
         ->skip($skip)->take($arr_perpage['user'])->get();
 
-        $count_model = Order::where(function($query) use ($keyword,$keytype)
+        $count_model = User::where(function($query) use ($keyword,$keytype)
         {
             if($keyword){
                 $query->where('name','LIKE',"%".$keyword."%")
                 ->orWhere('first_name','LIKE',"%".$keyword."%");
-            } }
+            }
+            if($keytype){
+                $query->where('user_type','=',$keytype);
+            }
         })
         ->count();        
 
-       $arr_count_page['user'] = ceil($count_model/$arr_perpage['user']); 
+        $arr_count_page['user'] = ceil($count_model/$arr_perpage['user']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['user'],$arr_count_page['user']);
 
         return View::make('account._tbl_user',compact('model',
                                         'count_model',
                                         'keyword',
+                                        'keytype',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
                                         'arr_count_page'
             ));
     }
+
+    public function getForm() {
+        $model = new User();
+
+        return View::make('account.form',compact('model','list_user','list_type'));
+    }
+
+    public function getFormEdit($user_id) {
+        $model = User::find($user_id);
+
+        return View::make('account.form',compact('model'));
+    }
+
+    public function postDelete() {
+        $id = Input::get('id');
+        $model= User::find($id);
+        if($model->delete()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
+
+
 
    
 }
