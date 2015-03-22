@@ -250,35 +250,38 @@ $(document).ready(function(){
 			price = $("#price").val();
 			amount = $("#amount").val();
 			console.log(price +" : "+ amount);
-
 			if(amount != "" && price != ""){
-				if(mode == 'add'){
-					$("#tbl_product").show();
+				if(mode == 'add'){					
 					$.ajax({
 	                    url: "{{ url('post-product-name') }}",
 	                    type: "post",
 	                    data: {product_id:product_id},
 	                    success:function(r){                       
 	                        if(r.status == 'success'){
-	                        	key = key + 1;
-	                            product_name = r.name;
-	                            var tr = "<tr id='"+key+"'>"+
-									"<td style='text-align:left'>"+ product_name +"</td>"+
-									"<td style='text-align:right'>"+ price +"</td>"+
-									"<td style='text-align:right'>"+ amount +"</td>"+
-									"<td style='text-align:center'>"+
-									"<input type='button' id='add-del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
-									"</td>"+
-									"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
-									"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
-									"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
-									"</tr>";
-								$('div#tbl_product tbody tr:last').after(tr);
+	                        	if(parseInt(r.stock) >= parseInt(amount)){
+	                        		$("#tbl_product").show();
+		                        	key = key + 1;
+		                            product_name = r.name;
+		                            var tr = "<tr id='"+key+"'>"+
+										"<td style='text-align:left'>"+ product_name +"</td>"+
+										"<td style='text-align:right'>"+ price +"</td>"+
+										"<td style='text-align:right'>"+ amount +"</td>"+
+										"<td style='text-align:center'>"+
+										"<input type='button' id='add-del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
+										"</td>"+
+										"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
+										"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
+										"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
+										"</tr>";
+									$('div#tbl_product tbody tr:last').after(tr);
 
-								$("[id^='add-del_']").click(function(){
-									var key_id = $("#"+this.id).attr("data-key"); 
-									$('div#tbl_product tbody tr#'+key_id).remove();
-									});
+									$("[id^='add-del_']").click(function(){
+										var key_id = $("#"+this.id).attr("data-key"); 
+										$('div#tbl_product tbody tr#'+key_id).remove();
+										});
+								}else{
+									alert("Stock คงเหลือ " + r.stock);
+								}
 	                        }
 	                    }
 	                }); 
@@ -297,6 +300,8 @@ $(document).ready(function(){
 	                                        $("div#tbl_product").html(r);
 	                                    }
 	                           		});
+		                        }else{
+		                        	alert("Stock คงเหลือ " + r.stock);
 		                        }
 		                    }
 		                });

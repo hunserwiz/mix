@@ -162,7 +162,13 @@ class OrderController extends BaseController {
                             $model_order_item->product_id = $value['product_id'];
                             $model_order_item->price = $value['price'];
                             $model_order_item->amount = $value['amount'];
-                            $model_order_item->save();
+                            if($model_order_item->save()){
+                                $model_product = Product::find($value['product_id']);
+                                if($model_product->count() > 0){
+                                    $model_product->product_balance -= $value['amount'];
+                                    $model_product->save();
+                                }   
+                            }
                         }
                     }
                     return Redirect::action('OrderController@getIndex');
@@ -181,9 +187,15 @@ class OrderController extends BaseController {
         $model->product_id = Input::get('product_id');
         $model->price = Input::get('price');
         $model->amount = Input::get('amount');
-        $model->save();
-        if($model->save()){
-            return Response::json(array('status' => 'success'));
+        $model_product = Product::find(Input::get('product_id'));
+        if($model_product->product_balance >= Input::get('amount')){
+            if($model->save()){
+                $model_product->product_balance -= Input::get('amount');
+                $model_product->save();
+                return Response::json(array('status' => 'success','stock'=>$model_product->product_balance));
+            }
+        }else{
+            return Response::json(array('status' => 'not_success','stock'=>$model_product->product_balance));
         }
     }
 
@@ -214,7 +226,7 @@ class OrderController extends BaseController {
         $product_id = Input::get('product_id');
         $model= Product::find($product_id);
         if($model->count() > 0){
-            return Response::json(array('status' => 'success','name'=>$model->name));
+            return Response::json(array('status' => 'success','name'=>$model->name,'stock'=>$model->product_balance));
         }
     }
  
