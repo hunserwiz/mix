@@ -135,6 +135,16 @@
 					@endif				
 					</div>
 			</div>
+			<div class="span6">
+				<label class="span4"> ประเภทสมาชิก :</label>
+				<div class="span8">
+					@if($model == null)
+						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'สมาชิก','2'=>'ร้านค้า')   , null , array('required'=>'',"class"=>"form-control")) }}			
+					@else
+						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'สมาชิก','2'=>'ร้านค้า')   ,  $model->receive_by, array('required'=>'',"class"=>"form-control")) }}					
+					@endif
+				</div>
+			</div>
 		</div>
 		<!-- ################################################################################ -->
 		<div class="row-fluid" >
@@ -154,17 +164,17 @@
 				<div class="span8">
 					@if($model == null)
 						{{ Form::text('order_no', Input::old('order_no'),
-                                            array("id"=>"order_no",'required'=>'','class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}			
+                                            array("id"=>"order_no",'disabled'=> true,'required'=>'','class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}			
 					@else
 						{{ Form::text('order_no', $model->order_no,
-                                            array("id"=>"order_no",'required'=>'','class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}					
+                                            array("id"=>"order_no",'disabled'=> true,'required'=>'','class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}					
 					@endif				
 				</div>
 			</div>
 		<div>
 
 			<hr>
-
+<!--
 		<div class="text-center">
 			<div class="row-fluid" >
 				<div class="span12">
@@ -182,6 +192,7 @@
 	            </div>                  
 			</div>
 		</div>
+	-->
 
 
 		<div id='tbl_product'>
@@ -189,8 +200,8 @@
 		</div>
 
 		<div class="text-center">
-{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
-{{ Form::Close() }}
+			{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
+			{{ Form::Close() }}
 				<a href="{{ url('/') }}">
 					<input type="button" class="btn btn-danger" value="ยกเลิก">
 				</a>

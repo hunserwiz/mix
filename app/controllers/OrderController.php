@@ -6,8 +6,7 @@
  * and open the template in the editor.
  */
 
-class OrderController extends BaseController {
-
+class OrderController extends BaseController { 
     public function getIndex() {
     	$keyword = "";
         $keydate = "";
@@ -100,6 +99,7 @@ class OrderController extends BaseController {
     }
 
     public function getForm() {
+        $autorun = "001";
         $mode = 'add';
         $list_categorise = Categorise::lists('name','categorise_id');
         $list_location = ThaiHelper::getLocationList();
@@ -108,6 +108,13 @@ class OrderController extends BaseController {
         $list_product = Product::lists('name','id');
         $model = new Order();
         $model_item = new OrderItem();
+        $last_model = Order::orderBy('created_at','DESC')->first();
+        $model->order_no_time = "/".date('Hi')."/".date('dm').(date('y')+43); 
+        if ($last_model->count() > 0) {                        
+            $model->order_no = sprintf("%03d", $last_model->order_no + 1).$model->order_no_time;  // autorun
+        } else {
+            $model->order_no = $autorun.$model->order_no_time;
+        }
 
         return View::make('order.form',compact('model','model_item','mode','list_product','list_categorise','list_agent','list_location','list_user'));
     }
@@ -136,6 +143,7 @@ class OrderController extends BaseController {
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
                 $model->type = Input::get('type');
+                $model->type_member = Input::get('type_member');
                 $model->agent_id = Input::get('agent_id');
                 $model->location_id = Input::get('location_id');
                 $model->receive_by = Input::get('operate_by');
@@ -149,6 +157,7 @@ class OrderController extends BaseController {
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
                 $model->type = Input::get('type');
+                $model->type_member = Input::get('type_member');
                 $model->agent_id = Input::get('agent_id');
                 $model->location_id = Input::get('location_id');
                 $model->receive_by = Input::get('operate_by');

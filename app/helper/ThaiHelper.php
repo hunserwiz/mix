@@ -543,7 +543,7 @@ class ThaiHelper {
         return $arr;
     }
     public static function getLocationList($option = null){
-        return array('1'=>'พัทยาเหนือ','2'=>'พัทยาใต้');
+        return array('1'=>'พัทยาเหนือ','2'=>'พัทยาใต้','3'=>'บ่อวิน');
     }
     public static function getTypeAccountList($option = null){
         return array('1'=>'รายรับ','2'=>'รายจ่าย','3'=>'อื่น ๆ','4'=>'เก็บหนี้ + จ่ายค้าง');
