@@ -1,4 +1,4 @@
-<h3 class='text-center'>{{ Agent::GetNameAgent($agent_id); }}</h3>
+<h3 class='text-center'>{{ ThaiHelper::GetAgent($agent_id)->name; }}</h3>
 <table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
 							<thead>
 								<tr>

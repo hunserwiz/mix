@@ -57,7 +57,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">ใบวางบิล<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('/') }}">รายการใบวางบิล</a></li>
-                  <li><a href="{{ url('order-report') }}">รายงาน ใบวางบิล</a></li>
+                  <!-- <li><a href="{{ url('order-report') }}">รายงาน ใบวางบิล</a></li> -->
               </ul>
               </li>
               <li class="dropdown">
