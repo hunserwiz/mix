@@ -101,6 +101,7 @@ class OrderController extends BaseController {
     public function getForm() {
         $autorun = "001";
         $mode = 'add';
+        $type_member = null;
         $data_now_start = date("Y-m-d 00:00:00");
         $data_now_end = date("Y-m-d 23:59:59");
         $list_categorise = Categorise::lists('name','categorise_id');
@@ -123,23 +124,31 @@ class OrderController extends BaseController {
         }
 
         return View::make('order.form',compact('model','model_item','model_product','mode',
-            'list_product','list_categorise','list_agent','list_location','list_user'));
+            'list_product','list_categorise','list_agent','list_location','list_user','type_member'));
     }
     
     public function getFormEdit($order_id) {
         $mode = 'edit';
+        $model_product = Product::get();
         $model = Order::find($order_id);
         $model_item = OrderItem::where('order_id','=',$order_id)->get();
         $model->order_date = ThaiHelper::DateToShowForm($model->order_date);
         $list_categorise = Categorise::lists('name','categorise_id');
+        $type_member = $model->type_member;
 
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
         $list_agent = User::where('user_type','=',3)->lists('name','id');
         $list_product = Product::lists('name','id');
+        $arr_data = array();
+        if($model_item->count() > 0){
+            foreach ($model_item as $key => $value) {
+                $arr_data[$value->product_id] = $value->amount;
+            }
+        }
 
-
-        return View::make('order.form',compact('model','model_item','mode','list_product','list_categorise','list_agent','list_location','list_user'));
+        return View::make('order.form',compact('model','model_item','model_product','mode','list_product',
+            'list_categorise','list_agent','list_location','list_user','type_member','arr_data'));
     }
     public function postForm() {
         $validation = Order::validate(Input::all());
@@ -246,6 +255,22 @@ class OrderController extends BaseController {
         if($model->count() > 0){
             return Response::json(array('status' => 'success','name'=>$model->name,'stock'=>$model->product_balance));
         }
+    }
+
+    public function getTableOrderItem() {
+        $type_member = Input::get('type_member');
+        $order_id = Input::get('order_id');
+        $mode = Input::get('mode');
+        $model = new Order();
+        $model_item = OrderItem::where('order_id','=',$order_id)->get();
+        $model_product = Product::get();
+        $arr_data = array();
+        if($model_item->count() > 0){
+            foreach ($model_item as $key => $value) {
+                $arr_data[$value->product_id] = $value->amount;
+            }
+        }
+        return View::make('order._tbl_item',compact('model','model_product','mode','type_member','arr_data'));
     }
  
 }

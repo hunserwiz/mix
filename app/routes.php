@@ -28,6 +28,7 @@ Route::group(array('before' => 'guest'), function() {
 Route::group(array('before' => 'auth'), function() {
     // order
 	Route::get('/','OrderController@getIndex');
+    Route::get('get-tbl-order-item','OrderController@getTableOrderItem');
 	Route::get('/order','OrderController@getIndex');
     Route::post('product-order-item','OrderController@postIndexItem');
     Route::get('form-order','OrderController@getForm');

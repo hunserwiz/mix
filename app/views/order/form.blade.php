@@ -139,9 +139,9 @@
 				<label class="span4"> ประเภทสมาชิก :</label>
 				<div class="span8">
 					@if($model == null)
-						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'สมาชิก','2'=>'ร้านค้า')   , null , array('required'=>'',"class"=>"form-control")) }}			
+						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'ร้านค้า','2'=>'สมาชิก')   , null , array('id'=>'type_member','required'=>'',"class"=>"form-control")) }}			
 					@else
-						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'สมาชิก','2'=>'ร้านค้า')   ,  $model->receive_by, array('required'=>'',"class"=>"form-control")) }}					
+						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'ร้านค้า','2'=>'สมาชิก')   ,  $model->receive_by, array('id'=>'type_member','required'=>'',"class"=>"form-control")) }}					
 					@endif
 				</div>
 			</div>
@@ -192,7 +192,7 @@
 	-->
 
 
-		<div id='tbl_product'>
+		<div id='tbl_product' style='display:none;'>
 			@include('order._tbl_item')
 		</div>
 
@@ -207,6 +207,24 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
+	var mode = "{{ $mode }}";
+	if(mode == 'edit')
+	$("#tbl_product").show();
+
+	if(mode == 'edit')
+	var order_id = "{{ $model->order_id }}";
+	$("#type_member").change(function(){
+		type_member = this.value;
+		    		$.ajax({
+		                    url: "{{ url('get-tbl-order-item') }}",
+		                    type: "get",
+		                    data: {type_member:type_member,mode:mode,order_id:order_id},
+		                    success:function(r){                       
+	                            $("div#tbl_product").html(r);
+	                            $("#tbl_product").show();
+		                    }
+		                });
+	});
 	// var product_id = '';
 	// var product_name = '';
 	// var price = $("#price").val();
@@ -214,11 +232,7 @@ $(document).ready(function(){
 	// var key = 0;
 	// var mode = "{{ $mode }}";
 
-	// if(mode == 'add')
-	// $("#tbl_product").hide();
 
-	// if(mode == 'edit')
-	// var order_id = "{{ $model->order_id }}";
 
 	// $("#add").prop('disabled',true);
 	// $("#product_id").change(function(){

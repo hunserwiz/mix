@@ -12,7 +12,13 @@
 									@foreach($model_product as $item)
 									<tr>
 										<td style="text-align:left">{{ $item->name }}</td>
-										<td style="text-align:right">{{ $item->price }}</td>
+										<td style="text-align:right">
+											@if($type_member == null || $type_member == 1) 
+												{{ $item->price }}
+											@else
+												{{ $item->price_member }}
+											@endif
+										</td>
 										<td style="text-align:right">{{ $item->product_balance }}</td>
 										<td style="text-align:center">
 											@if($mode == 'edit')
