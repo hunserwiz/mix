@@ -162,13 +162,10 @@
 			<div class="span6">
 				<label class="span4">เลขที่ใบเสร็จ :</label>
 				<div class="span8">
-					@if($model == null)
-						{{ Form::text('order_no', Input::old('order_no'),
-                                            array("id"=>"order_no",'disabled'=> true,'required'=>'','class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}			
-					@else
+						{{ Form::hidden('order_no',$model->order_no) }}
 						{{ Form::text('order_no', $model->order_no,
-                                            array("id"=>"order_no",'disabled'=> true,'required'=>'','class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}					
-					@endif				
+                                        array("id"=>"order_no",'disabled'=> true,'required'=>'',
+                                        'class'=>'form-control','placeholder'=>'กรอกเลขที่ใบเสร็จ')) }}								
 				</div>
 			</div>
 		<div>
@@ -210,117 +207,116 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-	var product_id = '';
-	var product_name = '';
-	var price = $("#price").val();
-	var amount = $("#amount").val();
-	var key = 0;
-	var mode = "{{ $mode }}";
+	// var product_id = '';
+	// var product_name = '';
+	// var price = $("#price").val();
+	// var amount = $("#amount").val();
+	// var key = 0;
+	// var mode = "{{ $mode }}";
 
-	if(mode == 'add')
-	$("#tbl_product").hide();
+	// if(mode == 'add')
+	// $("#tbl_product").hide();
 
-	if(mode == 'edit')
-	var order_id = "{{ $model->order_id }}";
+	// if(mode == 'edit')
+	// var order_id = "{{ $model->order_id }}";
 
-	$("#add").prop('disabled',true);
-	$("#product_id").change(function(){
-		product_id = this.value;
-		$("#add").prop('disabled',true);
-		$("#price").val(null);
-		$("#amount").val(null);
-	});
+	// $("#add").prop('disabled',true);
+	// $("#product_id").change(function(){
+	// 	product_id = this.value;
+	// 	$("#add").prop('disabled',true);
+	// 	$("#price").val(null);
+	// 	$("#amount").val(null);
+	// });
 	
-	$("#price").keypress(function (e) {
-     //if the letter is not digit then display error and don't type anything
-	    amount = $("#amount").val();
-	    price = $("#price").val();
-	    if(product_id != ""){
-	    		$("#add").prop('disabled',false);
-	    	}else{
-	    		$("#add").prop('disabled',true);	    		
-	    	}
-    });
+	// $("#price").keypress(function (e) {
+ //     //if the letter is not digit then display error and don't type anything
+	//     amount = $("#amount").val();
+	//     price = $("#price").val();
+	//     if(product_id != ""){
+	//     		$("#add").prop('disabled',false);
+	//     	}else{
+	//     		$("#add").prop('disabled',true);	    		
+	//     	}
+ //    });
 
-    $("#amount").keypress(function (e) {
+    // $("#amount").keypress(function (e) {
 
-     //if the letter is not digit then display error and don't type anything
-	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	        return false; 
-	    }else{
-	    	if(product_id != ""){
-	    		$("#add").prop('disabled',false);
-	    	}else{
-	    		$("#add").prop('disabled',true);	    		
-	    	}
-	    }
+    //  //if the letter is not digit then display error and don't type anything
+	   //  if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	   //      return false; 
+	   //  }else{
+	   //  	if(product_id != ""){
+	   //  		$("#add").prop('disabled',false);
+	   //  	}else{
+	   //  		$("#add").prop('disabled',true);	    		
+	   //  	}
+	   //  }
 	    
-    });
+    // });
 
-		$("#add").click(function(){
-			price = $("#price").val();
-			amount = $("#amount").val();
-			console.log(price +" : "+ amount);
-			if(amount != "" && price != ""){
-				if(mode == 'add'){					
-					$.ajax({
-	                    url: "{{ url('post-product-name') }}",
-	                    type: "post",
-	                    data: {product_id:product_id},
-	                    success:function(r){                       
-	                        if(r.status == 'success'){
-	                        	if(parseInt(r.stock) >= parseInt(amount)){
-	                        		$("#tbl_product").show();
-		                        	key = key + 1;
-		                            product_name = r.name;
-		                            var tr = "<tr id='"+key+"'>"+
-										"<td style='text-align:left'>"+ product_name +"</td>"+
-										"<td style='text-align:right'>"+ price +"</td>"+
-										"<td style='text-align:right'>"+ amount +"</td>"+
-										"<td style='text-align:center'>"+
-										"<input type='button' id='add-del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
-										"</td>"+
-										"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
-										"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
-										"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
-										"</tr>";
-									$('div#tbl_product tbody tr:last').after(tr);
+		// $("#add").click(function(){
+		// 	price = $("#price").val();
+		// 	amount = $("#amount").val();
+		// 	console.log(price +" : "+ amount);
+		// 	if(amount != "" && price != ""){
+		// 		if(mode == 'add'){					
+		// 			$.ajax({
+	 //                    url: "{{ url('post-product-name') }}",
+	 //                    type: "post",
+	 //                    data: {product_id:product_id},
+	 //                    success:function(r){                       
+	 //                        if(r.status == 'success'){
+	 //                        	if(parseInt(r.stock) >= parseInt(amount)){
+	 //                        		$("#tbl_product").show();
+		//                         	key = key + 1;
+		//                             product_name = r.name;
+		//                             var tr = "<tr id='"+key+"'>"+
+		// 								"<td style='text-align:left'>"+ product_name +"</td>"+
+		// 								"<td style='text-align:right'>"+ price +"</td>"+
+		// 								"<td style='text-align:right'>"+ amount +"</td>"+
+		// 								"<td style='text-align:center'>"+
+		// 								"<input type='button' id='add-del_"+key+"' data-key='"+key+"' class='btn btn-danger' value='ลบ'>"+
+		// 								"</td>"+
+		// 								"<input type='hidden' name='product["+product_id+"][product_id]' value='"+product_id+"'>"+
+		// 								"<input type='hidden' name='product["+product_id+"][price]' value='"+price+"'>"+
+		// 								"<input type='hidden' name='product["+product_id+"][amount]' value='"+amount+"'>"+
+		// 								"</tr>";
+		// 							$('div#tbl_product tbody tr:last').after(tr);
 
-									$("[id^='add-del_']").click(function(){
-										var key_id = $("#"+this.id).attr("data-key"); 
-										$('div#tbl_product tbody tr#'+key_id).remove();
-										});
-								}else{
-									alert("Stock คงเหลือ " + r.stock);
-								}
-	                        }
-	                    }
-	                }); 
-					}else{
-		            	$.ajax({
-		                    url: "{{ url('post-add-order-item') }}",
-		                    type: "post",
-		                    data: {order_id:order_id,product_id:product_id,price:price,amount:amount},
-		                    success:function(r){                       
-		                        if(r.status == 'success'){
-		                        	$.ajax({
-	                                    url:"{{ url('product-order-item') }}",
-	                                    type: "post",
-	                                    data: {mode:mode,order_id:order_id},
-	                                    success:function(r){
-	                                        $("div#tbl_product").html(r);
-	                                    }
-	                           		});
-		                        }else{
-		                        	alert("Stock คงเหลือ " + r.stock);
-		                        }
-		                    }
-		                });
-		            }
-				}
+		// 							$("[id^='add-del_']").click(function(){
+		// 								var key_id = $("#"+this.id).attr("data-key"); 
+		// 								$('div#tbl_product tbody tr#'+key_id).remove();
+		// 								});
+		// 						}else{
+		// 							alert("Stock คงเหลือ " + r.stock);
+		// 						}
+	 //                        }
+	 //                    }
+	 //                }); 
+		// 			}else{
+		//             	$.ajax({
+		//                     url: "{{ url('post-add-order-item') }}",
+		//                     type: "post",
+		//                     data: {order_id:order_id,product_id:product_id,price:price,amount:amount},
+		//                     success:function(r){                       
+		//                         if(r.status == 'success'){
+		//                         	$.ajax({
+	 //                                    url:"{{ url('product-order-item') }}",
+	 //                                    type: "post",
+	 //                                    data: {mode:mode,order_id:order_id},
+	 //                                    success:function(r){
+	 //                                        $("div#tbl_product").html(r);
+	 //                                    }
+	 //                           		});
+		//                         }else{
+		//                         	alert("Stock คงเหลือ " + r.stock);
+		//                         }
+		//                     }
+		//                 });
+		//             }
+		// 		}
 
-		});
-	
+		// });
 
 	$(".date-picker").datepicker({
 		format: 'dd-mm-yyyy',

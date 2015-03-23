@@ -45,9 +45,9 @@
 						<tr>
 							<td style="text-align:center">{{ $item->product->name }}</td>
 							<td style="text-align:right">{{ $item->amount }}</td>
-							<td style="text-align:right">{{ $item->price }}</td>
-							<td style="text-align:right">{{ number_format($item->amount * $item->price) }}</td>
-							<?php $total += ($item->amount * $item->price); ?>
+							<td style="text-align:right">{{ $item->product->price }}</td>
+							<td style="text-align:right">{{ number_format($item->amount * $item->product->price,2) }}</td>
+							<?php $total += ($item->amount * $item->product->price); ?>
 						</tr>
 						@endforeach	
 						@endif	
@@ -58,7 +58,7 @@
 				<label class="span4"  style="padding-left: 22%;">รวม </label>
 				<div class="span8">					
 					<div class="span8">
-						<input class="span6" type="text" name="" value="{{ number_format($total) }}"> บาท
+						<input class="span6" type="text" name="" value="{{ number_format($total,2) }}"> บาท
 				</div>
 				</div>
 			</div>

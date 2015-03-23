@@ -3,20 +3,28 @@
 								<tr>
 									<th style="text-align:center">ชื่อสินค้า</th>
 									<th style="text-align:center">ราคาต่อหน่วย</th>
-									<th style="text-align:center">จำนวน</th>	
-									<th style="text-align:center">จัดการ</th>																
+									<th style="text-align:center">stock</th>	
+									<th style="text-align:center">จำนวน</th>																
 								</tr>
 							</thead>	
 							<tbody>	
-							@if($mode == 'edit')
-								@if($model_item->count() > 0)
-									@foreach($model_item as $item)
+								@if($model_product->count() > 0)
+									@foreach($model_product as $item)
 									<tr>
-										<td style="text-align:left">{{ $item->product->name }}</td>
+										<td style="text-align:left">{{ $item->name }}</td>
 										<td style="text-align:right">{{ $item->price }}</td>
-										<td style="text-align:right">{{ $item->amount }}</td>
+										<td style="text-align:right">{{ $item->product_balance }}</td>
 										<td style="text-align:center">
-											<input type='button' id='del_{{ $item->id }}' data-order-item-id='{{ $item->id }}' class='btn btn-danger' value='ลบ'>
+											@if($mode == 'edit')
+											{{ Form::text("product[$item->id][amount]", $arr_data[$item->id],
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน')) }}	
+                                            @else
+                                            {{ Form::text("product[$item->id][amount]", null ,
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน')) }}	
+                                            @endif						
+											<!-- <input type='button' id='del_{{ $item->id }}' data-order-item-id='{{ $item->id }}' class='btn btn-danger' value='ลบ'> -->
 										</td>							
 									</tr>
 									@endforeach
@@ -24,10 +32,7 @@
 									<tr id='empty'>
 										<td style="text-align:center" colspan="4">ไม่พบข้อมูล</td>						
 									</tr>
-								@endif	
-							@else	
-								<tr></tr>
-							@endif							
+								@endif							
 							</tbody>
 					</table>
 <script type="text/javascript">

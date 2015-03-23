@@ -101,22 +101,29 @@ class OrderController extends BaseController {
     public function getForm() {
         $autorun = "001";
         $mode = 'add';
+        $data_now_start = date("Y-m-d 00:00:00");
+        $data_now_end = date("Y-m-d 23:59:59");
         $list_categorise = Categorise::lists('name','categorise_id');
         $list_location = ThaiHelper::getLocationList();
         $list_user = User::where('user_type','=',2)->lists('name','id');
         $list_agent = User::where('user_type','=',3)->lists('name','id');
         $list_product = Product::lists('name','id');
+        $model_product = Product::get();
         $model = new Order();
         $model_item = new OrderItem();
-        $last_model = Order::orderBy('created_at','DESC')->first();
-        $model->order_no_time = "/".date('Hi')."/".date('dm').(date('y')+43); 
-        if ($last_model->count() > 0) {                        
-            $model->order_no = sprintf("%03d", $last_model->order_no + 1).$model->order_no_time;  // autorun
+        $last_model = Order::whereBetween('created_at',array($data_now_start,$data_now_end))
+                                ->orderBy('created_at','DESC')
+                                ->first();
+        $order_no_time = "/".date('Hi')."/".date('dm').(date('y')+43); 
+        if (isset($last_model)) {      
+            $list = explode("/", $last_model->order_no);
+            $model->order_no = sprintf("%03d", $list[0] + 1).$order_no_time;  // autorun
         } else {
-            $model->order_no = $autorun.$model->order_no_time;
+            $model->order_no = $autorun.$order_no_time; // start run
         }
 
-        return View::make('order.form',compact('model','model_item','mode','list_product','list_categorise','list_agent','list_location','list_user'));
+        return View::make('order.form',compact('model','model_item','model_product','mode',
+            'list_product','list_categorise','list_agent','list_location','list_user'));
     }
     
     public function getFormEdit($order_id) {
@@ -165,18 +172,19 @@ class OrderController extends BaseController {
                 $model->order_no = Input::get('order_no');
                 if($model->save()){
                     if(Input::get('product')){
-                        foreach (Input::get('product') as $key => $value) {
-                            $model_order_item = new OrderItem();
-                            $model_order_item->order_id = $model->order_id;
-                            $model_order_item->product_id = $value['product_id'];
-                            $model_order_item->price = $value['price'];
-                            $model_order_item->amount = $value['amount'];
-                            if($model_order_item->save()){
-                                $model_product = Product::find($value['product_id']);
-                                if($model_product->count() > 0){
-                                    $model_product->product_balance -= $value['amount'];
-                                    $model_product->save();
-                                }   
+                        foreach (Input::get('product') as $product_id => $value) {
+                            if($value['amount'] > 0){
+                                $model_order_item = new OrderItem();
+                                $model_order_item->order_id = $model->order_id;
+                                $model_order_item->product_id = $product_id;
+                                $model_order_item->amount = $value['amount'];
+                                if($model_order_item->save()){
+                                    $model_product = Product::find($product_id);
+                                    if($model_product->count() > 0){
+                                        $model_product->product_balance -= $value['amount'];
+                                        $model_product->save();
+                                    }   
+                                }
                             }
                         }
                     }
@@ -225,10 +233,11 @@ class OrderController extends BaseController {
     }
 
     public function postView() {
+        $total = 0;
         $order_id = Input::get('order_id');
         $model= OrderItem::where('order_id','=',$order_id)->get();
         
-        return View::make('order._view',compact('model'));
+        return View::make('order._view',compact('model','total'));
     }
 
     public function postProductName() {
