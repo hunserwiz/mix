@@ -95,13 +95,56 @@ class UserController extends BaseController {
     public function getForm() {
         $model = new User();
 
-        return View::make('account.form',compact('model','list_user','list_type'));
+        return View::make('account.form',compact('model'));
     }
 
-    public function getFormEdit($user_id) {
-        $model = User::find($user_id);
+    public function getFormEdit($id) {
+        $model = User::find($id);
 
         return View::make('account.form',compact('model'));
+    }
+
+    public function postForm(){
+        $validation = User::validate(Input::all());
+        $validation->setAttributeNames(User::attributeName());
+
+        if ($validation->passes()) {
+            if(Input::get('id')){
+                $model = User::find(Input::get('id'));
+                $model->first_name = Input::get('first_name');
+                $model->last_name = Input::get('last_name');
+                $model->email = Input::get('email');
+                $model->username = Input::get('username');
+                $model->password = Hash::make(Input::get('password'));
+                $model->user_type = Input::get('user_type');
+                if($model->save()){
+                    return Redirect::action('UserController@getIndex');
+                }
+            }else{
+                $model = new User();
+                $model->first_name = Input::get('first_name');
+                $model->last_name = Input::get('last_name');
+                $model->name = $model->first_name;
+                $model->email = Input::get('email');
+                $model->username = Input::get('username');
+                $model->password = Hash::make(Input::get('password'));
+                $model->user_type = Input::get('user_type');
+                $model->is_active = 1;
+                if($model->save()){
+                    return Redirect::action('UserController@getIndex');
+                }
+            }
+        } else {
+            if (Input::get('id')) {
+                return Redirect::action('UserController@getFormEdit',Input::get('id'))
+                            ->withErrors($validation)
+                            ->withInput();
+            } else {
+                return Redirect::action('UserController@getForm')
+                            ->withErrors($validation)
+                            ->withInput();
+            }
+        }
     }
 
     public function postDelete() {

@@ -66,6 +66,7 @@ $(document).ready(function(){
 	        });
 	    });
 	    // closemodal //
+	    var perpage = {{ $arr_perpage['user'] }};
         // ============= Delete ==============
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
@@ -76,7 +77,7 @@ $(document).ready(function(){
                 $.ajax({
                     url: "{{ url('delete-user') }}",
                     type: "post",
-                    data: {user_id:user_id},
+                    data: {id:user_id},
                     success:function(r){                       
                         if(r.status == 'success'){
                             $.ajax({

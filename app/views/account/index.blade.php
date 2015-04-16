@@ -17,7 +17,7 @@
 				'1'=>'admin',
 				'2'=>'operate',
 				'3'=>'sell')  
-				, null, array('id'=>'txt_keytype','required'=>'',"class"=>"form-control")) }}
+				, null, array('id'=>'txt_keytype',"class"=>"form-control")) }}
 	            <input type="text" id="txt_keyword" class="form-control" placeholder="ค้นหา : ชื่อผู้ใช้งาน">
 	            <span class="input-group-btn">
 	                <button class="btn btn-default btn-primary" id='btn_search' type="button">
@@ -74,7 +74,8 @@ $(document).ready(function(){
 	$("#txt_keyword").keypress(function(e){  
             if (e.keyCode == 13) {
                 var keyword = $("#txt_keyword").val();
-                Search(1,keyword,null);
+                var keytype = $("#txt_keytype").val();
+                Search(1,keyword,keytype);
             }
 	});
 

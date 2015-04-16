@@ -89,8 +89,9 @@ Route::group(array('before' => 'auth'), function() {
     // user
     Route::get('manage-user','UserController@getIndex');
     Route::get('form-user','UserController@getForm');
-    Route::get('edit-user/{user_id}','UserController@getFormEdit');
+    Route::get('edit-user/{id}','UserController@getFormEdit');
     Route::post('search-user','UserController@postSearch');
+    Route::post('delete-user','UserController@postDelete');
     // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');
