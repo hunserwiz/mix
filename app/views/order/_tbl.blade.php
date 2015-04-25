@@ -7,6 +7,7 @@
 									<th style="text-align:center">location</th>
 									<th style="text-align:center">ผู้ขาย</th>
 									<th style="text-align:center">ผู้ออกใบเสร็จ</th>	
+									<th style="text-align:center">สถานะใบวางบิล</th>	
 									<th style="text-align:center">จัดการ</th>									
 								</tr>
 							</thead>	
@@ -20,6 +21,7 @@
 								<td style="text-align:left">{{ ThaiHelper::GetLocation($data->location_id) }}</td>
 								<td style="text-align:left">{{ $data->user->name }}</td>
 								<td style="text-align:left">{{ ThaiHelper::GetUser($data->payment_by) }}</td>
+								<td style="text-align:center">{{ ThaiHelper::GetStatusOrder($data->status) }}</td>
 								<td style="text-align:center">
 									<span class="" >
 										<a href="{{ url('order-report/'.$data->order_id) }}" target='_blank' title="report">

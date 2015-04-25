@@ -25,6 +25,19 @@ class Order extends Eloquent {
         return Validator::make($input, $rules,ThaiHelper::getValidationMessage());
     }
 
+    public static function validationStock($product){
+        if(!empty($product)){
+            foreach ($product as $key => $value) {
+                if($value['stock'] < $value['amount']){
+                    return false;
+                }
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public static function attributeName() {
         $attributes_name = array(      
             'order_date' => 'วันที่ออกใบสินค้า',        	

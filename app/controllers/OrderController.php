@@ -7,6 +7,7 @@
  */
 
 class OrderController extends BaseController { 
+    public $message = 'กรุณาเช็ค Stock อีกครั้ง';
     public function getIndex() {
     	$keyword = "";
         $keydate = "";
@@ -153,7 +154,11 @@ class OrderController extends BaseController {
     public function postForm() {
         $validation = Order::validate(Input::all());
         $validation->setAttributeNames(Order::attributeName());
-        if ($validation->passes()) {
+        // echo "<pre>";
+        // print_r(Input::All());
+        // echo "</pre>";
+        // die;
+        if ($validation->passes() && Order::validationStock(Input::get('product'))) {
             if(Input::get('order_id')){
                 $model = Order::find(Input::get('order_id'));
                 $model->order_title = Input::get('order_title');
@@ -165,10 +170,31 @@ class OrderController extends BaseController {
                 $model->receive_by = Input::get('operate_by');
                 $model->payment_by = Input::get('operate_by');
                 $model->order_no = Input::get('order_no');
+                $model->status = Input::get('status');
                 if($model->save()){
+                    if(Input::get('product')){
+                        foreach (Input::get('product') as $product_id => $value) {
+                            if($value['amount'] > 0){
+                                $model_order_item = OrderItem::where('order_id','=',Input::get('order_id'))
+                                                               ->where('product_id','=', $product_id)
+                                                               ->first();
+                                if($value['amount'] > $model_order_item->amount) {                               
+                                    $diff = $value['amount'] - $model_order_item->amount;
+                                    $model_order_item->amount += $diff;
+                                    if($model_order_item->save()){
+                                        $model_product = Product::find($product_id);
+                                        if($model_product->count() > 0){
+                                            $model_product->product_balance -= $diff;
+                                            $model_product->save();
+                                        }   
+                                    }
+                                }
+                            }
+                        }
+                    }
                     return Redirect::action('OrderController@getIndex');
                 }
-            }else{             
+            }else{
                 $model = new Order();
                 $model->order_title = Input::get('order_title');
                 $model->order_date = ThaiHelper::DateToDB(Input::get('order_date'));
@@ -201,9 +227,24 @@ class OrderController extends BaseController {
                 }
             }
         }else{
-            return Redirect::action('OrderController@getForm')
+            if(!Order::validationStock(Input::get('product'))){
+                if(Input::get('order_id')){
+                    return Redirect::action('OrderController@getFormEdit',Input::get('order_id'))
+                                ->withErrors($validation)
+                                ->with('message', $this->message)
+                                ->withInput();   
+                } else {
+                    return Redirect::action('OrderController@getForm')
+                                ->withErrors($validation)
+                                ->with('message', $this->message)
+                                ->withInput();
+                }  
+            }else{
+                return Redirect::action('OrderController@getForm')
                             ->withErrors($validation)
                             ->withInput();    
+            }
+            
         }
     }
 

@@ -19,14 +19,17 @@
 												{{ $item->price_member }}
 											@endif
 										</td>
-										<td style="text-align:right">{{ $item->product_balance }}</td>
+										<td style="text-align:right">
+											{{ $item->product_balance }}
+											{{ Form::hidden("product[$item->id][stock]", $item->product_balance) }}
+										</td>
 										<td style="text-align:center">
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][amount]", $arr_data[$item->id],
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control','placeholder'=>'กรอกจำนวน')) }}	
                                             @else
-                                            {{ Form::text("product[$item->id][amount]", null ,
+                                            {{ Form::text("product[$item->id][amount]", Input::old("product[$item->id][amount]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control','placeholder'=>'กรอกจำนวน')) }}	
                                             @endif						

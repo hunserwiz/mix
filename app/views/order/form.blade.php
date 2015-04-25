@@ -7,13 +7,16 @@
         </ul>
 @stop
 @section('content')
-{{ Form::open(array('url' => 'post-order')) }}
+{{ Form::open(array('url' => 'post-order' , 'id' => 'target-order')) }}
 @if($model != null)
 	{{ Form::hidden('order_id',$model->order_id) }}
 @endif	
 
 {{ $errors->first() }}
 <div>
+	@if(Session::has('message'))
+		<p class="alert alert-danger"> {{ Session::get('message') }} </p>
+	@endif
 	<form name="form-sep">
 		<!-- ################################################################################ -->
 			<div class="row-fluid" >
@@ -141,7 +144,7 @@
 					@if($model == null)
 						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'ร้านค้า','2'=>'สมาชิก')   , null , array('id'=>'type_member','required'=>'',"class"=>"form-control")) }}			
 					@else
-						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'ร้านค้า','2'=>'สมาชิก')   ,  $model->receive_by, array('id'=>'type_member','required'=>'',"class"=>"form-control")) }}					
+						{{ Form::select('type_member', array(''=> 'กรุณาเลือก','1'=>'ร้านค้า','2'=>'สมาชิก')   ,  $model->type_member, array('id'=>'type_member','required'=>'',"class"=>"form-control")) }}					
 					@endif
 				</div>
 			</div>
@@ -169,47 +172,50 @@
 				</div>
 			</div>
 		<div>
-
-			<hr>
-<!--
-		<div class="text-center">
-			<div class="row-fluid" >
-				<div class="span12">
-				สินค้า :
-					{{ Form::select('product_id', array(''=> 'กรุณาเลือก') + $list_product  , null, array('id'=>'product_id',"class"=>"form-control")) }}
-				ราคา :     
-					{{ Form::text('price', Input::old('price'),
-		                                            array("id"=>"price",'class'=>'form-control','placeholder'=>'กรอกราคาต่อหน่วย')) }}
-		        จำนวน :                               
-		           	{{ Form::text('amount', Input::old('amount'),
-		                                            array("id"=>"amount",'class'=>'form-control','placeholder'=>'กรอกจำนวนสินค้า')) }}
-					
-				<input type="button" id='add' class="btn btn" value="เพิ่มรายการสินค้า">	
-	            
-	            </div>                  
+		<!-- ################################################################################ -->
+		@if($mode == 'edit')
+		<div class="row-fluid" >
+			<div class="span6">
+				<label class="span4"> สถานะใบวางบิล :</label>
+				<div class="span8">
+						{{ Form::select('status', array('0'=> 'ยังไม่ยืนยัน','1'=> 'ยืนยัน') , $model->status , array("class"=>"form-control")) }}			
+				</div>
 			</div>
-		</div>
-	-->
-
+		<div>
+		@endif
 
 		<div id='tbl_product' style='display:none;'>
 			@include('order._tbl_item')
 		</div>
 
 		<div class="text-center">
-			{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
+			@if($model->status != 1)
+				{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
+			@endif
 			{{ Form::Close() }}
 				<a href="{{ url('/') }}">
-					<input type="button" class="btn btn-danger" value="ยกเลิก">
+					<input type="button" id='btn-back' class="btn btn-danger" value="ยกเลิก">
 				</a>
 		</div>
      </form> 
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
+	var status = "{{ $model->status }}";
+	if(status == 1) {
+		$("#target-order :input").prop("disabled", true);
+		$("#btn-back").prop("disabled", false);
+	}
+
 	var mode = "{{ $mode }}";
 	if(mode == 'edit')
 	$("#tbl_product").show();
+	
+	var message = "{{ Session::has('message') }}";
+	if(message)
+	$("#tbl_product").show();
+
+	
 
 	if(mode == 'edit')
 	var order_id = "{{ $model->order_id }}";
@@ -225,6 +231,10 @@ $(document).ready(function(){
 		                    }
 		                });
 	});
+
+
+
+	
 	// var product_id = '';
 	// var product_name = '';
 	// var price = $("#price").val();

@@ -592,15 +592,28 @@ class ThaiHelper {
           return $model;
     }
 
+    public static function GetStatusOrder($status){
+        $text = "";
+          if ($status == 1){
+            $text = "ยืนยัน";
+          }else {
+            $text = "ไม่ยืนยัน";
+          }
+          return $text;
+    }
+
     public static function GetLocation($id){
         $text = "";
           if($id == 1){
             $text = "พัทยาเหนือ";
           }else if($id == 2){
             $text = "พัทยาใต้";
+          }else if($id == 3){
+            $text = "บ่อวิน";
           }
           return $text;
     }
+
 
     public static function CheckRight(){
         if(Auth::user()->user_type == 1 || Auth::user()->user_type == 2)
