@@ -31,8 +31,8 @@
 						@endif
 						</div>
 					</div>
-					<div class="span6">
-						<label class="span4">  ประเภทการฝาก  :</label>
+					<!-- <div class="span6"> -->
+			<!-- 			<label class="span4">  ประเภทการฝาก  :</label>
 						<div class="span8">		
 						@if($model == null)	.
 							{{ Form::radio('type_deposit_id', '1', false, array('id'=>'type_deposit_id','required'=>'')) ."ฝากกลับบ้าน" }}
@@ -42,7 +42,7 @@
 							{{ Form::radio('type_deposit_id', '2', $model->type_deposit_id == 2 ? true : false, array('id'=>'type_deposit_id','required'=>'')) ."ฝากในตู้" }}	
 						@endif
 						</div>
-					</div>
+					</div> -->
 			</div>
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >
@@ -84,7 +84,7 @@
 			</div>
 			<hr>
 
-			<div class="text-center">
+		<!-- 	<div class="text-center">
 				<div class="row-fluid" >
 					<div class="span12">
 					สินค้า :
@@ -99,7 +99,7 @@
 					<input type="button" id='add' class="btn btn" value="เพิ่มรายการสินค้า">			          
 		            </div>                  
 				</div>
-			</div>
+			</div> -->
 
 			<div id='tbl_product'>
 				@include('deposit._tbl_item')
@@ -125,7 +125,7 @@ $(document).ready(function(){
 	var mode = "{{ $mode }}";
 
 	if(mode == 'add')
-	$("#tbl_product").hide();
+	// $("#tbl_product").hide();
 
 	if(mode == 'edit')
 	var deposit_id = "{{ $model->id }}";

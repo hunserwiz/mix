@@ -1,4 +1,4 @@
-<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
+<!-- <table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
 							<thead>
 								<tr>
 									<th style="text-align:center">ชื่อสินค้า</th>
@@ -29,9 +29,78 @@
 								<tr></tr>
 							@endif							
 							</tbody>
-</table>
-
+</table> -->
+ <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.1/angular.min.js"></script>
+ <div ng-app ng-init="home=0;box=0;market=0">
+<table id="dtable_siteShow" class="table table-striped table-bordered table-condensed dtabler trcolor">
+							<thead>
+								<tr>
+									<th style="text-align:center">ชื่อสินค้า</th>
+									<th style="text-align:center">ฝากกลับบ้าน</th>
+									<th style="text-align:center">ฝากในตู้</th>	
+									<th style="text-align:center">ตลาดนัด</th>																
+								</tr>
+							</thead>	
+							<tbody>	
+								@if($model_product->count() > 0)
+									@foreach($model_product as $item)
+									<tr>
+										<td style="text-align:left">{{ $item->name }}</td>
+										<td style="text-align:center">
+											@if($mode == 'edit')
+											{{ Form::text("product[$item->id][home]", $arr_data[$item->id],
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'home')) }}	
+                                            @else
+                                            {{ Form::text("product[$item->id][home]", Input::old("product[$item->id][home]") ,
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'home')) }}	
+                                            @endif						
+										</td>	
+										<td style="text-align:center">
+											@if($mode == 'edit')
+											{{ Form::text("product[$item->id][box]", $arr_data[$item->id],
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'ng-model' =>'box')) }}	
+                                            @else
+                                            {{ Form::text("product[$item->id][box]", Input::old("product[$item->id][box]") ,
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'ng-model' =>'box')) }}	
+                                            @endif						
+										</td>	
+										<td style="text-align:center">
+											@if($mode == 'edit')
+											{{ Form::text("product[$item->id][market]", $arr_data[$item->id],
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'ng-model' =>'market')) }}	
+                                            @else
+                                            {{ Form::text("product[$item->id][market]", Input::old("product[$item->id][market]") ,
+                                            		array("id"=>"product_$item->id",'required'=>'',
+                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'ng-model' =>'market')) }}	
+                                            @endif						
+										</td>							
+									</tr>
+									@endforeach
+									<td></td>
+									<td>Total:<p id='total_home'></p></td>
+									<td>Total:<p id='total_box'></p></td>
+									<td>Total:<p id='total_market'></p></td>
+								@else
+									<tr id='empty'>
+										<td style="text-align:center" colspan="4">ไม่พบข้อมูล</td>						
+									</tr>
+								@endif							
+							</tbody>
+					</table>
+</div>
 <script type="text/javascript">
+
 $(document).ready(function(){
 // ============= Delete Item============== //
 	var mode = "{{ $mode }}";
@@ -39,6 +108,18 @@ $(document).ready(function(){
 	if(mode == 'edit'){
 		var deposit_id = "{{ $model->id }}";
 	}
+
+	$( "[attr-type^='home']" ).keypress(function(e){
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+               return false;
+    	}else{
+    		var sum = 0;
+        	$.each($( "[attr-type^='home']" ), function( index, value ) {
+			  sum+= value.value;
+			});
+			$("#total_home").html(sum);
+    	}
+	});
 
 	if(mode == 'edit'){
         $("[id^='del']").click(function(){

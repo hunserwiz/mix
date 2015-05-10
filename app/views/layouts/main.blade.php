@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" ng-app>
 <head>
     <meta charset="utf-8">
     <title>Betagen</title>
@@ -17,7 +17,6 @@
       {{ HTML::style('bootstrap/css/bootstrap-responsive.css') }}
       {{ HTML::style('bootstrap/css/bootstrap.css') }}
       {{ HTML::style('bootstrap/css/datepicker.css') }}
-      
 
       {{ HTML::script('js/jquery-1.10.2.js') }}     
       {{ HTML::script('js/jquery-ui-1.10.4.custom.js') }}     

@@ -111,6 +111,7 @@ class DepositController extends BaseController {
     public function getForm() {
         $model = new Deposit();
         $model_deposit_item = new DepositItem();
+        $model_product = Product::all();
         $mode = "add";
         $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
@@ -124,7 +125,8 @@ class DepositController extends BaseController {
             'list_location',
             'list_user',
             'list_agent',
-            'mode'
+            'mode',
+            'model_product'
             ));
     }
     public function getFormEdit($id = NULL) {
@@ -151,6 +153,9 @@ class DepositController extends BaseController {
     public function postForm() {
         $validation = Deposit::validate(Input::all());
         $validation->setAttributeNames(Deposit::attributeName());
+        echo '<pre>';
+        print_r(Input::all());
+        echo '</pre>';die;
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Deposit::find(Input::get('id'));
