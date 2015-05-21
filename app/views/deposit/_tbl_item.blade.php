@@ -50,12 +50,12 @@
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][home]", $arr_data[$item->id],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'class'=>'form-control-home','placeholder'=>'กรอกจำนวน',
                                             		'attr-type' =>'home')) }}	
                                             @else
                                             {{ Form::text("product[$item->id][home]", Input::old("product[$item->id][home]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
+                                            		'class'=>'form-control-home','placeholder'=>'กรอกจำนวน',
                                             		'attr-type' =>'home')) }}	
                                             @endif						
 										</td>	
@@ -63,26 +63,26 @@
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][box]", $arr_data[$item->id],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
-                                            		'ng-model' =>'box')) }}	
+                                            		'class'=>'form-control-box','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'box')) }}	
                                             @else
                                             {{ Form::text("product[$item->id][box]", Input::old("product[$item->id][box]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
-                                            		'ng-model' =>'box')) }}	
+                                            		'class'=>'form-control-box','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'box')) }}	
                                             @endif						
 										</td>	
 										<td style="text-align:center">
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][market]", $arr_data[$item->id],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
-                                            		'ng-model' =>'market')) }}	
+                                            		'class'=>'form-control-market','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'market')) }}	
                                             @else
                                             {{ Form::text("product[$item->id][market]", Input::old("product[$item->id][market]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน',
-                                            		'ng-model' =>'market')) }}	
+                                            		'class'=>'form-control-market','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'market')) }}	
                                             @endif						
 										</td>							
 									</tr>
@@ -99,8 +99,10 @@
 							</tbody>
 					</table>
 </div>
-<script type="text/javascript">
 
+<script>$(document).ready(function(){
+	$(".txt").each(function(){$(this).keyup(function(){calculateSum();});});});function calculateSum(){var sum=0;$(".txt").each(function(){if(!isNaN(this.value)&&this.value.length!=0){sum+=parseFloat(this.value);}});$("#sum").html(sum.toFixed(2));}</script>
+<script type="text/javascript">
 $(document).ready(function(){
 // ============= Delete Item============== //
 	var mode = "{{ $mode }}";
@@ -109,17 +111,64 @@ $(document).ready(function(){
 		var deposit_id = "{{ $model->id }}";
 	}
 
-	$( "[attr-type^='home']" ).keypress(function(e){
-		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-               return false;
-    	}else{
-    		var sum = 0;
-        	$.each($( "[attr-type^='home']" ), function( index, value ) {
-			  sum+= value.value;
-			});
-			$("#total_home").html(sum);
-    	}
+	$(".form-control-home").each(function(){
+		$(this).keyup(function(e){
+			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+				
+			} else {
+				calculateSum('home');
+			}
+		});
 	});
+
+
+	$(".form-control-box").each(function(){
+		$(this).keyup(function(e){
+			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+				
+			} else {
+				calculateSum('box');
+			}
+		});
+	});
+
+	$(".form-control-market").each(function(){
+		$(this).keyup(function(e){
+			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+				
+			} else {
+				calculateSum('market');
+			}
+		});
+	});
+
+
+
+	function calculateSum(type){
+		var sum=0;
+		if(type == 'home') {
+			$(".form-control-home").each(function(){
+				if(!isNaN(this.value)&&this.value.length!=0){
+					sum+=parseFloat(this.value);
+				}
+				$("#total_home").html(sum);
+			});
+		} else if(type == 'box') {
+			$(".form-control-box").each(function(){
+				if(!isNaN(this.value)&&this.value.length!=0){
+					sum+=parseFloat(this.value);
+				}
+				$("#total_box").html(sum);
+			});
+		} else {
+			$(".form-control-market").each(function(){
+				if(!isNaN(this.value)&&this.value.length!=0){
+					sum+=parseFloat(this.value);
+				}
+				$("#total_market").html(sum);
+			});
+		}
+	}
 
 	if(mode == 'edit'){
         $("[id^='del']").click(function(){
