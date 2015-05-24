@@ -4,6 +4,8 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">View Deposit</h4>
+                <h5>ผู้ฝาก : {{ ThaiHelper::GetUser($model->deposit_by) }}</h5>
+                <h5>เจ้าหน้ที่รับฝาก : {{ ThaiHelper::GetUser($model->create_by) }}</h5>
             </div>
             <div class="modal-body">
                <div class="panel">
@@ -13,19 +15,27 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align:center">สินค้า</th>
-                                        <th style="text-align:center">ราคาต่อหน่วย</th>
-                                        <th style="text-align:center">จำนวน</th>                                                                   
+                                        <th style="text-align:center">ฝากกลับบ้าน</th>
+                                        <th style="text-align:center">ฝากในตู้</th> 
+                                        <th style="text-align:center">ตลาดนัด</th>
                                     </tr>
                                 </thead>    
                                 <tbody> 
-                                @if($model->count() > 0)
-                                @foreach($model as $k => $data)
+                                @if($model_item->count() > 0)
+                                @foreach($model_item as $k => $item)
                                 <tr>
-                                    <td style="text-align:center">{{ $data->product->name }}</td>
-                                    <td style="text-align:right">{{ $data->price }}</td>
-                                    <td style="text-align:right">{{ $data->amount }}</td>                         
+                                    <td style="text-align:center">{{ $item->product->name }}</td>
+                                    <td style="text-align:right">{{ $item->at_home }}</td>
+                                    <td style="text-align:right">{{ $item->at_box }}</td> 
+                                    <td style="text-align:right">{{ $item->at_market }}</td>                         
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <td>{{ 'รวม' }}</td>
+                                    <td style="text-align:right">{{ $model->total_home }}</td>
+                                    <td style="text-align:right">{{ $model->total_box }}</td> 
+                                    <td style="text-align:right">{{ $model->total_market }}</td>                         
+                                </tr>
                                 @else
                                 <tr>
                                     <td style="text-align:center" colspan="3">ไม่พบข้อมูล</td>                      

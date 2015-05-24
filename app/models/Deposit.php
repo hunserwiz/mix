@@ -13,7 +13,7 @@ class Deposit extends Eloquent {
     public static function validate($input) {
         $rules = array(
             'date_deposit' => 'required',    
-            'type_deposit_id' => 'required',       
+            // 'type_deposit_id' => 'required',       
             'deposit_by' => 'required',
             'create_by' => 'required',
             'date_deposit_return' => 'required',    

@@ -11,7 +11,7 @@ class DepositController extends BaseController {
     public function getIndex() {
         $keyword = "";
         $keydate = "";
-        $keytype = "";
+        $keydeposit = "";
 
         $arr_page = array(
             'deposit' => 1
@@ -26,16 +26,18 @@ class DepositController extends BaseController {
                         ->skip($skip)->take($arr_perpage['deposit'])
                         ->get();
 
-        $count_model = Deposit::count();                
+        $count_model = Deposit::count(); 
+        $list_agent = User::where('user_type','=','3')->lists('name','id');            
 
         $arr_count_page['deposit'] = ceil($count_model/$arr_perpage['deposit']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['deposit'],$arr_count_page['deposit']);
 
         return View::make('deposit.index',compact('model',
                                         'count_model',
+                                        'list_agent',
                                         'keyword',
                                         'keydate',
-                                        'keytype',
+                                        'keydeposit',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -52,7 +54,7 @@ class DepositController extends BaseController {
     public function postSearch() {
         $keyword = Input::get('keyword');
         $keydate = Input::get('keydate');
-        $keytype = Input::get('keytype');
+        $keydeposit = Input::get('keydeposit');
         $keydate = ThaiHelper::DateToDB($keydate);
 
         $arr_page = array(
@@ -64,43 +66,39 @@ class DepositController extends BaseController {
         );
         $skip = ($arr_page['deposit'] - 1) * $arr_perpage['deposit'];
 
-        $model = Deposit::where(function($query) use ($keyword,$keydate,$keytype)
+        $model = Deposit::where(function($query) use ($keyword,$keydate,$keydeposit)
         {
-           // if($keyword){
-           //      $query->where('detail','LIKE',"%".$keyword."%");
-           //  }
             if($keydate){
                 $query->where('date_deposit','=',$keydate);
             }
-            if($keytype){
-                $query->where('type_deposit_id','=',$keytype);
+            if($keydeposit){
+                $query->where('deposit_by','=',$keydeposit);
             }
         })
         ->orderBy('created_at', 'desc')
         ->skip($skip)->take($arr_perpage['deposit'])->get();
 
-        $count_model = Deposit::where(function($query) use ($keyword,$keydate,$keytype)
+        $count_model = Deposit::where(function($query) use ($keyword,$keydate,$keydeposit)
         {
-            // if($keyword){
-            //     $query->where('detail','LIKE',"%".$keyword."%");
-            // }
             if($keydate){
                 $query->where('date_deposit','=',$keydate);
             }
-            if($keytype){
-                $query->where('type_deposit_id','=',$keytype);
+            if($keydeposit){
+                $query->where('deposit_by','=',$keydeposit);
             }
         })
         ->count();           
+        $list_agent = User::where('user_type','=','3')->lists('name','id');   
 
         $arr_count_page['deposit'] = ceil($count_model/$arr_perpage['deposit']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['deposit'],$arr_count_page['deposit']);
 
         return View::make('deposit._tbl',compact('model',
                                         'count_model',
+                                        'list_agent',
                                         'keyword',
                                         'keydate',
-                                        'keytype',
+                                        'keydeposit',
                                         'arr_list_page',
                                         'arr_perpage',
                                         'arr_page',
@@ -132,12 +130,23 @@ class DepositController extends BaseController {
     public function getFormEdit($id = NULL) {
         $model = Deposit::find($id);
         $model_deposit_item = DepositItem::where('deposit_id','=',$id)->get();
+        $model_product = Product::all();
         $mode = "edit";
         $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
         $list_agent = User::where('user_type','=','3')->lists('name','id');
         $model->date_deposit = ThaiHelper::DateToShowForm($model->date_deposit);
         $model->date_deposit_return = ThaiHelper::DateToShowForm($model->date_deposit_return);
+        $arr_data = array();
+        
+        if($model_deposit_item->count() > 0){
+            
+            foreach ($model_deposit_item as $key => $value) {
+                $arr_data[$value->product_id]['home'] = $value->at_home;
+                $arr_data[$value->product_id]['box'] = $value->at_box;
+                $arr_data[$value->product_id]['market'] = $value->at_market;
+            }
+        }
 
         return View::make('deposit.form',compact(
             'model',
@@ -147,41 +156,60 @@ class DepositController extends BaseController {
             'list_location',
             'list_user',
             'list_agent',
-            'mode'
+            'mode',
+            'model_product',
+            'arr_data'
             ));
     }
     public function postForm() {
         $validation = Deposit::validate(Input::all());
         $validation->setAttributeNames(Deposit::attributeName());
-        echo '<pre>';
-        print_r(Input::all());
-        echo '</pre>';die;
+
         if ($validation->passes()) {
             if(Input::get('id')){
                 $model = Deposit::find(Input::get('id'));
                 $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
-                $model->type_deposit_id = Input::get('type_deposit_id');                            
+                $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
+                $model->total_home = Input::get('home');
+                $model->total_box = Input::get('box');
+                $model->total_market = Input::get('market');                          
                 $model->deposit_by = Input::get('deposit_by');
                 $model->create_by = Input::get('create_by');
-                $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
                 if($model->save()){
+                    if(Input::get('product')){
+
+                        foreach (Input::get('product') as $product_id => $value) {
+                            $model_deposit_item = DepositItem::where('deposit_id','=',Input::get('id'))
+                                                               ->where('product_id','=', $product_id)
+                                                               ->first();
+                            if ($model_deposit_item->count() > 0) {
+                                $model_deposit_item->at_home    = $value['home'];
+                                $model_deposit_item->at_box     = $value['box'];
+                                $model_deposit_item->at_market  = $value['market'];
+                                $model_deposit_item->save();
+                            }
+                        }
+                    }
                     return Redirect::action('DepositController@getIndex');
                 }
             }else{
                 $model = new Deposit();
                 $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
-                $model->type_deposit_id = Input::get('type_deposit_id');                            
+                $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
+                $model->total_home = Input::get('home');
+                $model->total_box = Input::get('box');
+                $model->total_market = Input::get('market');          
                 $model->deposit_by = Input::get('deposit_by');
                 $model->create_by = Input::get('create_by');
-                $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
                 if($model->save()){
                     if(Input::get('product')){
                         foreach (Input::get('product') as $key => $value) {
                             $model_deposit_item = new DepositItem();
                             $model_deposit_item->deposit_id = $model->id;
-                            $model_deposit_item->product_id = $value['product_id'];
-                            $model_deposit_item->price = $value['price'];
-                            $model_deposit_item->amount = $value['amount'];
+                            $model_deposit_item->product_id = $key;
+                            $model_deposit_item->at_home    = $value['home'];
+                            $model_deposit_item->at_box     = $value['box'];
+                            $model_deposit_item->at_market  = $value['market'];
                             $model_deposit_item->save();
                         }
                     }
@@ -215,8 +243,10 @@ class DepositController extends BaseController {
     
     public function postView() {
         $deposit_id = Input::get('deposit_id');
-        $model = DepositItem::where('deposit_id','=',$deposit_id)->get();
-        return View::make('deposit._view',compact('model'));
+        $model = Deposit::find($deposit_id);
+        $model_item = DepositItem::where('deposit_id','=',$deposit_id)->get();
+        $model_product = Product::all();
+        return View::make('deposit._view',compact('model','model_item','model_product'));
     }
     
     public function postDelete() {

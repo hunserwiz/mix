@@ -48,7 +48,7 @@
 										<td style="text-align:left">{{ $item->name }}</td>
 										<td style="text-align:center">
 											@if($mode == 'edit')
-											{{ Form::text("product[$item->id][home]", $arr_data[$item->id],
+											{{ Form::text("product[$item->id][home]", $arr_data[$item->id]['home'],
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control-home','placeholder'=>'กรอกจำนวน',
                                             		'attr-type' =>'home')) }}	
@@ -61,7 +61,7 @@
 										</td>	
 										<td style="text-align:center">
 											@if($mode == 'edit')
-											{{ Form::text("product[$item->id][box]", $arr_data[$item->id],
+											{{ Form::text("product[$item->id][box]", $arr_data[$item->id]['box'],
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control-box','placeholder'=>'กรอกจำนวน',
                                             		'attr-type' =>'box')) }}	
@@ -74,7 +74,7 @@
 										</td>	
 										<td style="text-align:center">
 											@if($mode == 'edit')
-											{{ Form::text("product[$item->id][market]", $arr_data[$item->id],
+											{{ Form::text("product[$item->id][market]", $arr_data[$item->id]['market'],
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control-market','placeholder'=>'กรอกจำนวน',
                                             		'attr-type' =>'market')) }}	
@@ -88,9 +88,30 @@
 									</tr>
 									@endforeach
 									<td></td>
-									<td>Total:<p id='total_home'></p></td>
-									<td>Total:<p id='total_box'></p></td>
-									<td>Total:<p id='total_market'></p></td>
+									<td>Total:
+										<p id='total_home'>
+											@if(!empty($model->total_home))
+												{{ $model->total_home }}
+											@endif
+										</p>
+										{{ Form::hidden('home',$model->total_home,array('class'=>'home')) }}
+									</td>
+									<td>Total:
+										<p id='total_box'>
+											@if(!empty($model->total_box))
+												{{ $model->total_box }}
+											@endif
+										</p>
+										{{ Form::hidden('box',$model->total_box,array('class'=>'box')) }}
+									</td>
+									<td>Total:
+										<p id='total_market'>
+											@if(!empty($model->total_market))
+												{{ $model->total_market }}
+											@endif
+										</p>
+										{{ Form::hidden('market',$model->total_market,array('class'=>'market')) }}
+									</td>
 								@else
 									<tr id='empty'>
 										<td style="text-align:center" colspan="4">ไม่พบข้อมูล</td>						
@@ -100,13 +121,11 @@
 					</table>
 </div>
 
-<script>$(document).ready(function(){
-	$(".txt").each(function(){$(this).keyup(function(){calculateSum();});});});function calculateSum(){var sum=0;$(".txt").each(function(){if(!isNaN(this.value)&&this.value.length!=0){sum+=parseFloat(this.value);}});$("#sum").html(sum.toFixed(2));}</script>
 <script type="text/javascript">
 $(document).ready(function(){
 // ============= Delete Item============== //
 	var mode = "{{ $mode }}";
-	console.log(mode);
+
 	if(mode == 'edit'){
 		var deposit_id = "{{ $model->id }}";
 	}
@@ -152,6 +171,7 @@ $(document).ready(function(){
 					sum+=parseFloat(this.value);
 				}
 				$("#total_home").html(sum);
+				$(".home").val(sum);
 			});
 		} else if(type == 'box') {
 			$(".form-control-box").each(function(){
@@ -159,6 +179,7 @@ $(document).ready(function(){
 					sum+=parseFloat(this.value);
 				}
 				$("#total_box").html(sum);
+				$(".box").val(sum);
 			});
 		} else {
 			$(".form-control-market").each(function(){
@@ -166,6 +187,7 @@ $(document).ready(function(){
 					sum+=parseFloat(this.value);
 				}
 				$("#total_market").html(sum);
+				$(".market").val(sum);
 			});
 		}
 	}

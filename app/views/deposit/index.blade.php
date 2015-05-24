@@ -12,12 +12,10 @@
 		<div class="text-right" style="padding-bottom:1%">
 			<!-- Search Box -->
 			<div class="input-group input-search">	
-				{{ "ค้นหาประเภทการฝาก: " }}
-				{{ Form::select('txt_type', 
-				array(''=> 'กรุณาเลือก',
-				'1'=>'ฝากกลับบ้าน',
-				'2'=>'ฝากในตู้')  
-				, null, array('id'=>'txt_type','required'=>'',"class"=>"form-control")) }}		
+				{{ "ค้นหาผู้ฝาก : " }}
+				{{ Form::select('txt_keydeposit', 
+				array(''=> 'กรุณาเลือก') + $list_agent
+				, null, array('id'=>'txt_keydeposit',"class"=>"form-control")) }}		
 				<input type="text" id="txt_date" class="date-picker form-control" placeholder="ค้นหา : วันที่ฝากสินค้า">
 	            <span class="input-group-btn">
 	                <button class="btn btn-default btn-primary" id='btn_search' type="button">
@@ -51,24 +49,22 @@ $(document).ready(function(){
 	$("#btn_search").click(function(){
             var keyword = $("#txt_keyword").val();
             var keydate = $("#txt_date").val();
-    		var keytype = $("#txt_type").val();
+    		var keydepost = $("#txt_keydeposit").val();
 
-            Search(1,keyword,keydate,keytype);
+            Search(1,keyword,keydate,keydepost);
     });
            
-    $("#txt_type").change(function(){
-            // var keyword = $("#txt_keyword").val();
-            // var keydate = $("#txt_date").val();
-            var keytype = $("#txt_type").val();
+    $("#txt_keydeposit").change(function(){
+            var keydeposit = $("#txt_keydeposit").val();
     
-            Search(1,null,null,keytype);
+            Search(1,null,null,keydeposit);
     });
 
-	function Search(page,keyword,keydate,keytype){
+	function Search(page,keyword,keydate,keydeposit){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-deposit') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword ,keydate:keydate,keytype:keytype  },
+                data:{ page: page, perpage: perpage, keyword: keyword ,keydate:keydate,keydeposit:keydeposit  },
                 success:function(result){
                     $("div#tbl").html(result);
                 }

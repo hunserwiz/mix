@@ -2,7 +2,9 @@
 							<thead>
 								<tr>
 									<th style="text-align:center" lang="En">วันที่ฝากสินค้า</th>
-                                    <th style="text-align:center" lang="En">ประเภทการฝาก</th>
+                                    <th style="text-align:center" lang="En">ฝากกลับบ้านทั้งหมด</th>
+                                    <th style="text-align:center" lang="En">ฝากในตู้ทั้งหมด</th>
+                                    <th style="text-align:center" lang="En">ฝากตลาดนัดทั้งหมด</th>
                                     <th style="text-align:center" lang="En">ผู้นำฝาก</th>
                                     <th style="text-align:center" lang="En">ผู้รับฝาก</th>
                                     <th style="text-align:center" lang="En">วันที่มารับของฝาก</th>
@@ -14,7 +16,10 @@
 							@foreach($model as $data)
 							<tr>
 								<td style="text-align:center">{{ $data->date_deposit }}</td>
-								<td style="text-align:center">{{ Deposit::GetTypeDeposit($data->type_deposit_id) }}</td>
+								<!-- <td style="text-align:center">{{ Deposit::GetTypeDeposit($data->type_deposit_id) }}</td> -->
+                                <td style="text-align:center">{{ $data->total_home }}</td>
+                                <td style="text-align:center">{{ $data->total_box }}</td>
+                                <td style="text-align:center">{{ $data->total_market }}</td>
                                 <td style="text-align:center">{{ ThaiHelper::GetUser($data->deposit_by) }}</td>
                                 <td style="text-align:center">{{ ThaiHelper::GetUser($data->create_by) }}</td>
                                 <td style="text-align:center">{{ $data->date_deposit_return }}</td>
@@ -41,7 +46,7 @@
 							@endforeach
 							@else
 							<tr>
-								<td style="text-align:center" colspan="7">ไม่พบข้อมูล</td>						
+								<td style="text-align:center" colspan="8">ไม่พบข้อมูล</td>						
 							</tr>
 							@endif
 							</tbody>
@@ -105,18 +110,18 @@ $(document).ready(function(){
             var page = arr_id.pop();
             var keyword = "{{ $keyword }}";
             var keydate = "{{ $keydate }}";
-            var keytype = "{{ $keytype }}";
+            var keydeposit = "{{ $keydeposit }}";
 
-            Search(page,keyword,keydate,keytype);
+            Search(page,keyword,keydate,keydeposit);
 
             return false;
         });
 
-        function Search(page,keyword,keydate,keytype){
+        function Search(page,keyword,keydate,keydeposit){
             $.ajax({
                 type:"POST",
                 url:"{{ url('search-deposit') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword,keydate: keydate,keytype: keytype },
+                data:{ page: page, perpage: perpage, keyword: keyword,keydate: keydate,keydeposit: keydeposit },
                 success:function(result){
                     $("div#tbl").html(result);
                 }
