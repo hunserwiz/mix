@@ -2,6 +2,7 @@
 							<thead>
 								<tr>
 									<th style="text-align:center" lang="En">วันที่ฝากสินค้า</th>
+                                    <th style="text-align:center" lang="En">สาขา</th>
                                     <th style="text-align:center" lang="En">ฝากกลับบ้านทั้งหมด</th>
                                     <th style="text-align:center" lang="En">ฝากในตู้ทั้งหมด</th>
                                     <th style="text-align:center" lang="En">ฝากตลาดนัดทั้งหมด</th>
@@ -17,6 +18,7 @@
 							<tr>
 								<td style="text-align:center">{{ $data->date_deposit }}</td>
 								<!-- <td style="text-align:center">{{ Deposit::GetTypeDeposit($data->type_deposit_id) }}</td> -->
+                                <td style="text-align:center">{{ ThaiHelper::GetLocation($data->location_id) }}</td>
                                 <td style="text-align:center">{{ $data->total_home }}</td>
                                 <td style="text-align:center">{{ $data->total_box }}</td>
                                 <td style="text-align:center">{{ $data->total_market }}</td>
@@ -46,7 +48,7 @@
 							@endforeach
 							@else
 							<tr>
-								<td style="text-align:center" colspan="8">ไม่พบข้อมูล</td>						
+								<td style="text-align:center" colspan="9">ไม่พบข้อมูล</td>						
 							</tr>
 							@endif
 							</tbody>

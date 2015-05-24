@@ -4,6 +4,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">View Deposit</h4>
+                <h5>สาขา : {{ ThaiHelper::GetLocation($model->location_id) }}</h5>
                 <h5>ผู้ฝาก : {{ ThaiHelper::GetUser($model->deposit_by) }}</h5>
                 <h5>เจ้าหน้ที่รับฝาก : {{ ThaiHelper::GetUser($model->create_by) }}</h5>
             </div>
@@ -38,7 +39,7 @@
                                 </tr>
                                 @else
                                 <tr>
-                                    <td style="text-align:center" colspan="3">ไม่พบข้อมูล</td>                      
+                                    <td style="text-align:center" colspan="4">ไม่พบข้อมูล</td>                      
                                 </tr>
                                 @endif
                                   

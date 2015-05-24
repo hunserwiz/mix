@@ -43,6 +43,16 @@
 						@endif
 						</div>
 					</div> -->
+					<div class="span6">
+					<label class="span4">   สาขา :</label>
+					<div class="span8">
+						@if($model == null)			
+							{{ Form::select('location_id', array(''=> 'กรุณาเลือก') + $list_location  , null, array('required'=>'',"class"=>"form-control")) }}			
+						@else
+							{{ Form::select('location_id', array(''=> 'กรุณาเลือก') + $list_location  , $model->location_id , array('required'=>'',"class"=>"form-control")) }}			
+						@endif	
+					</div>
+				</div>
 			</div>
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >

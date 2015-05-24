@@ -110,6 +110,7 @@ class DepositController extends BaseController {
         $model = new Deposit();
         $model_deposit_item = new DepositItem();
         $model_product = Product::all();
+        $list_location = ThaiHelper::getLocationList();
         $mode = "add";
         $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
@@ -124,13 +125,15 @@ class DepositController extends BaseController {
             'list_user',
             'list_agent',
             'mode',
-            'model_product'
+            'model_product',
+            'list_location'
             ));
     }
     public function getFormEdit($id = NULL) {
         $model = Deposit::find($id);
         $model_deposit_item = DepositItem::where('deposit_id','=',$id)->get();
         $model_product = Product::all();
+        $list_location = ThaiHelper::getLocationList();
         $mode = "edit";
         $list_product = Product::lists('name','id');
         $list_user = User::where('user_type','=','2')->lists('name','id');
@@ -158,7 +161,8 @@ class DepositController extends BaseController {
             'list_agent',
             'mode',
             'model_product',
-            'arr_data'
+            'arr_data',
+            'list_location'
             ));
     }
     public function postForm() {
@@ -170,6 +174,7 @@ class DepositController extends BaseController {
                 $model = Deposit::find(Input::get('id'));
                 $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
                 $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
+                $model->location_id = Input::get('location_id');
                 $model->total_home = Input::get('home');
                 $model->total_box = Input::get('box');
                 $model->total_market = Input::get('market');                          
@@ -196,6 +201,7 @@ class DepositController extends BaseController {
                 $model = new Deposit();
                 $model->date_deposit = ThaiHelper::DateToDB(Input::get('date_deposit'));
                 $model->date_deposit_return = ThaiHelper::DateToDB(Input::get('date_deposit_return'));
+                $model->location_id = Input::get('location_id');
                 $model->total_home = Input::get('home');
                 $model->total_box = Input::get('box');
                 $model->total_market = Input::get('market');          
