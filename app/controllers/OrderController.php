@@ -146,6 +146,10 @@ class OrderController extends BaseController {
             foreach ($model_item as $key => $value) {
                 $arr_data[$value->product_id] = $value->amount;
             }
+        } else if($model_product->count() > 0){
+            foreach ($model_product as $key => $value) {
+                $arr_data[$value->id] = '';
+            }
         }
 
         return View::make('order.form',compact('model','model_item','model_product','mode','list_product',
@@ -154,10 +158,7 @@ class OrderController extends BaseController {
     public function postForm() {
         $validation = Order::validate(Input::all());
         $validation->setAttributeNames(Order::attributeName());
-        // echo "<pre>";
-        // print_r(Input::All());
-        // echo "</pre>";
-        // die;
+
         if ($validation->passes() && Order::validationStock(Input::get('product'))) {
             if(Input::get('order_id')){
                 $model = Order::find(Input::get('order_id'));
