@@ -55,7 +55,7 @@
 					</table>	
 				</div>
 			<div class="span12" style="padding-left: 39%;">
-				<label class="span4"  style="padding-left: 22%;">รวม </label>
+				<label class="span4">รวม </label>
 				<div class="span8">					
 					<div class="span8">
 						<input class="span6" type="text" name="" value="{{ number_format($total,2) }}"> บาท
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div class="span12" style="padding-left: 39%;">
-				<label class="span4"  style="padding-left: 15%;">ภาษีมูลค่าเพิ่ม </label>
+				<label class="span4">ภาษีมูลค่าเพิ่ม </label>
 				<div class="span8">					
 					<div class="span8">
 						<input class="span6" type="text" name="" value="{{ number_format($total * 0.07) }}"> บาท
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 			<div class="span12" style="padding-left: 39%;">
-					<label class="span4" style="padding-left: 12%;">รวมเป็นเงินทั้งสิ้น  </label>
+					<label class="span4">รวมเป็นเงินทั้งสิ้น  </label>
 					<div class="span8">					
 						<div class="span8">
 							<input class="span6" type="text" name="" value="{{ number_format(($total * 0.07) + $total) }}"> บาท
@@ -80,13 +80,13 @@
 			</div>
 			<div class="row-fluid" >
 				  <div class="span5">
-					<label class="span4" style="padding-left: 12%;">วันที่รับสินค้า</label>
+					<label class="span4">วันที่รับสินค้า</label>
 					<div class="span8">
 							<input class="span6" type="text" name=""  >
 					</div>
 				   </div>
 				<div class="span7">
-				<label class="span4" style="padding-left: 12%;">ผู้รับสินค้า</label>
+				<label class="span4">ผู้รับสินค้า</label>
 				<div class="span8">					
 					<div class="span8">
 						<input class="span6" type="text" name=""  >
@@ -96,13 +96,13 @@
 			</div>
 			<div class="row-fluid" >
 				  <div class="span5">
-					<label class="span4" style="padding-left: 12%;">วันที่ส่งสินค้า</label>
+					<label class="span4">วันที่ส่งสินค้า</label>
 					<div class="span8">
 							<input class="span6" type="text" name=""  >
 					</div>
 				   </div>
 				<div class="span7">
-				<label class="span4" style="padding-left: 12%;">ผู้ส่งสินค้า</label>
+				<label class="span4">ผู้ส่งสินค้า</label>
 				<div class="span8">					
 					<div class="span8">
 						<input class="span6" type="text" name=""  >
