@@ -92,6 +92,13 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('edit-user/{id}','UserController@getFormEdit');
     Route::post('search-user','UserController@postSearch');
     Route::post('delete-user','UserController@postDelete');
+    // webboard
+    Route::get('manage-webboard','WebboardController@getIndex');
+    Route::get('form-webboard','WebboardController@getForm');
+    Route::get('edit-webboard/{id}','WebboardController@getFormEdit');
+    Route::get('comment-webboard/{id}','WebboardController@getComment');
+    Route::post('search-webboard','WebboardController@postSearch');
+    Route::post('delete-webboard','WebboardController@postDelete');
     // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');
@@ -104,6 +111,8 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('post-product','ProductController@postForm');
         Route::post('post-product-return','ProductReturnController@postForm');
         Route::post('post-deposit','DepositController@postForm');
+        Route::post('post-webboard','WebboardController@postForm');
+        Route::post('post-comment','WebboardController@postFormComment');
     });
 
     Route::get('account/sign-out','AccountController@getSignOut');

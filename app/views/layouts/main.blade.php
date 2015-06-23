@@ -49,7 +49,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#"><img src="images/immage3.png" alt=""></a>
+          <a class="brand" href="{{ url('/') }}"><img src="images/immage3.png" alt=""></a>
           <div class="nav-collapse collapse">
             <ul class="nav nav-tabs">
               <li class="dropdown">
@@ -87,6 +87,14 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">สินค้า <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('manage-product') }}">จัดการสินค้า</a></li>
+              </ul>
+              </li>
+              @endif
+              @if(ThaiHelper::CheckRight())
+               <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">กระดานสนทนา <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url('manage-webboard') }}">รายการกระดานสนทนา</a></li>
               </ul>
               </li>
               @endif
