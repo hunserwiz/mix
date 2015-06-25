@@ -13,6 +13,8 @@ class WebboardComment extends Eloquent {
     	public static function validate($input) {
         $rules = array( 
             'comment' => 'required',
+            'comment_by' => 'required', 
+            'gender' => 'required',   
         );
 
         return Validator::make($input, $rules,ThaiHelper::getValidationMessage());
@@ -20,10 +22,16 @@ class WebboardComment extends Eloquent {
 
     public static function attributeName() {
         $attributes_name = array(      
-            'comment' => 'ความคิดเห็น',    
+            'comment' => 'ความคิดเห็น', 
+            'comment_by' => 'ความคิดเห็นโดย', 
+            'gender' => 'เพศ',    
         );
 
         return $attributes_name;
+    }
+
+    public function webboard(){
+      return $this->hasOne('Webboard', 'id', 'webboard_id');
     }
 }
 ?>

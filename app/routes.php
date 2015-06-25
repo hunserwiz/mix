@@ -97,8 +97,10 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('form-webboard','WebboardController@getForm');
     Route::get('edit-webboard/{id}','WebboardController@getFormEdit');
     Route::get('comment-webboard/{id}','WebboardController@getComment');
+    Route::get('edit-comment/{id}','WebboardController@getEditComment');
     Route::post('search-webboard','WebboardController@postSearch');
     Route::post('delete-webboard','WebboardController@postDelete');
+    Route::post('delete-comment','WebboardController@postDeleteComment');
     // form //
     Route::group(array('before' => 'csrf'), function() {        
         Route::post('post-order','OrderController@postForm');

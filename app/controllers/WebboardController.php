@@ -44,7 +44,16 @@ class WebboardController extends BaseController {
         $model = Webboard::find($id);
 
         return View::make('webboard.form_comment',compact(
-                                        'model',
+                                        'model'
+
+                                        ));
+    }
+
+    public function getEditComment($id) {
+        $model = WebboardComment::find($id);
+
+        return View::make('webboard.form_edit_comment',compact(
+                                        'model'
                                         ));
     }
 
@@ -140,15 +149,24 @@ class WebboardController extends BaseController {
         $validation->setAttributeNames(WebboardComment::attributeName());
 
         if ($validation->passes()) {
-            $model = new WebboardComment();
-            $model->comment = Input::get('comment');
-            $model->webboard_id = Input::get('webboard_id');
-            $model->create_by = Auth::user()->id;
+            if(Input::get('id')){
+                $model = WebboardComment::find(Input::get('id'));
+                $model->comment = Input::get('comment');
+                $model->gender = Input::get('gender');
+                $model->comment_by = Input::get('comment_by');
+            } else {
+                $model = new WebboardComment();
+                $model->comment = Input::get('comment');
+                $model->gender = Input::get('gender');
+                $model->comment_by = Input::get('comment_by');
+                $model->webboard_id = Input::get('webboard_id');
+                $model->create_by = Auth::user()->id;
+            }
             if($model->save()){
-                return Redirect::action('WebboardController@getComment'Input::get('webboard_id'));
+                return Redirect::action('WebboardController@getComment',Input::get('webboard_id'));
             }
         } else {
-                return Redirect::action('WebboardController@getFormComment',Input::get('webboard_id'))
+                return Redirect::action('WebboardController@getEditComment',Input::get('id'))
                             ->withErrors($validation)
                             ->withInput();
         }
@@ -157,12 +175,19 @@ class WebboardController extends BaseController {
     public function postDelete() {
         $id = Input::get('id');
         $model= Webboard::find($id);
+
         if($model->delete()){
             return Response::json(array('status' => 'success'));
         }
     }
 
+    public function postDeleteComment() {
+        $model_comment = WebboardComment::find(Input::get('id'));
 
+        if($model_comment->delete()){
+            return Response::json(array('status' => 'success'));
+        }
+    }
 
    
 }

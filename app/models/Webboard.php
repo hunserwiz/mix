@@ -25,5 +25,9 @@ class Webboard extends Eloquent {
 
         return $attributes_name;
     }
+
+    public function comment(){
+      return $this->hasMany('WebboardComment', 'webboard_id', 'id');
+    }
 }
 ?>

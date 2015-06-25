@@ -614,6 +614,15 @@ class ThaiHelper {
           return $text;
     }
 
+    public static function GetGender($id){
+        $text = "";
+          if($id == 1){
+            $text = "ชาย";
+          }else {
+            $text = "หญิง";
+          }
+          return $text;
+    }
 
     public static function CheckRight(){
         if(Auth::user()->user_type == 1 || Auth::user()->user_type == 2)
