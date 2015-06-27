@@ -21,16 +21,18 @@ class OrderReportController extends BaseController {
         return View::make('orderReport.reportPDF',compact('model','model_item','total'));
     }
 
-    public function getReportPDF($order_id) {
+    public function postReportPDF() {
+        $order_id = Input::get('order_id');
         $model = Order::find($order_id);
         $model_item = Order::find($order_id)->orderItem()->get();
         $total = 0;
+        $input_data  = Input::all();
         include("mpdf/mpdf.php");
         $mpdf=new mPDF('th_sarabun', 'A4', 0, 'thsarabun'); 
         $mpdf->SetAutoFont();
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($stylesheet,1); 
-        $mpdf->WriteHTML(PDFHelper::Html($model,$model_item,$total));
+        $mpdf->WriteHTML(PDFHelper::Html($model,$model_item,$total,$input_data));
         $mpdf->Output();
         exit;
     }

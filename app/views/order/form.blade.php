@@ -178,7 +178,7 @@
 			<div class="span6">
 				<label class="span4"> สถานะใบวางบิล :</label>
 				<div class="span8">
-						{{ Form::select('status', array('0'=> 'ยังไม่ยืนยัน','1'=> 'ยืนยัน') , $model->status , array("class"=>"form-control")) }}			
+					{{ Form::select('status', array('0'=> 'ยังไม่ยืนยัน','1'=> 'ยืนยัน') , $model->status , array("class"=>"form-control")) }}			
 				</div>
 			</div>
 		<div>

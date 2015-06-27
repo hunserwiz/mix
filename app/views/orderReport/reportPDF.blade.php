@@ -2,6 +2,9 @@
 
 @section('content')
  <div>
+ 	{{ Form::open(array('url' => 'post-pdf' , 'id' => 'pdf')) }}
+ 	{{ Form::hidden('order_id',$model->order_id) }}
+
 	<form name="form-sep">
 			<div class="row-fluid" >
 					<div class="span3" style="border: 3px solid #ddd;padding-left: 1%;">
@@ -45,7 +48,11 @@
 						<tr>
 							<td style="text-align:center">{{ $item->product->name }}</td>
 							<td style="text-align:right">{{ $item->amount }}</td>
-							<td style="text-align:right">{{ $item->product->price }}</td>
+							@if($model->type_member == 1)
+								<td style="text-align:right">{{ $item->product->price }}</td>
+							@else	
+								<td style="text-align:right">{{ $item->product->price_member }}</td>
+							@endif
 							<td style="text-align:right">{{ number_format($item->amount * $item->product->price,2) }}</td>
 							<?php $total += ($item->amount * $item->product->price); ?>
 						</tr>
@@ -59,7 +66,7 @@
 				<div class="span8">					
 					<div class="span8">
 						<input class="span6" type="text" name="" value="{{ number_format($total,2) }}"> บาท
-				</div>
+					</div>
 				</div>
 			</div>
 			<div class="span12" style="padding-left: 39%;">
@@ -67,7 +74,7 @@
 				<div class="span8">					
 					<div class="span8">
 						<input class="span6" type="text" name="" value="{{ number_format($total * 0.07) }}"> บาท
-				</div>
+					</div>
 				</div>
 			</div>
 			<div class="span12" style="padding-left: 39%;">
@@ -75,22 +82,22 @@
 					<div class="span8">					
 						<div class="span8">
 							<input class="span6" type="text" name="" value="{{ number_format(($total * 0.07) + $total) }}"> บาท
-					</div>
+						</div>
 					</div>
 			</div>
 			<div class="row-fluid" >
 				  <div class="span5">
 					<label class="span4">วันที่รับสินค้า</label>
 					<div class="span8">
-							<input class="span6" type="text" name=""  >
+						<input class="span6 date-picker" type="text" name="date_get">
 					</div>
 				   </div>
 				<div class="span7">
 				<label class="span4">ผู้รับสินค้า</label>
 				<div class="span8">					
 					<div class="span8">
-						<input class="span6" type="text" name=""  >
-				</div>
+						<input class="span6" type="text" name="get_by">
+					</div>
 				</div>
 			</div>
 			</div>
@@ -98,22 +105,37 @@
 				  <div class="span5">
 					<label class="span4">วันที่ส่งสินค้า</label>
 					<div class="span8">
-							<input class="span6" type="text" name=""  >
+						<input class="span6 date-picker" type="text" name="date_send">
 					</div>
 				   </div>
 				<div class="span7">
 				<label class="span4">ผู้ส่งสินค้า</label>
 				<div class="span8">					
 					<div class="span8">
-						<input class="span6" type="text" name=""  >
-				</div>
+						<input class="span6" type="text" name="send_by">
+					</div>
 				</div>
 			</div>
 			</div>
 	</div>
 </div>
-			<a class="btn btn-primary" href="{{ url('order-report-pdf/'.$model->order_id) }}">
+			{{ Form::submit('PDF',array('class'=>'btn btn-success')) }}
+			<!-- <a class="btn btn-primary" href="{{ url('order-report-pdf/'.$model->order_id) }}">
 				<span lang="En" >PDF</span>
-			</a>
+			</a> -->
+			{{ Form::Close() }}
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".date-picker").datepicker({
+		format: 'dd-mm-yyyy',
+	});
 
+	$(".date-picker").on("change", function () {
+	    var id = $(this).attr("id");
+	    var val = $("label[for='" + id + "']").text();
+	    $("#msg").text(val + " changed");
+	});
+});
+
+</script>
 @stop

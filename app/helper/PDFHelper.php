@@ -2,20 +2,34 @@
 
 class PDFHelper {
 
-    public static function Html($model, $model_item,$total){ 
+    public static function Html($model, $model_item,$total,$input_data){ 
         $strTR = '';
         if($model_item->count() > 0){
-            foreach($model_item as $item):
-            $strTR .= '   
-                <tr>
-                    <td style="text-align:center">'. $item->product->name .'</td>
-                    <td style="text-align:right">'. $item->amount .'</td>
-                    <td style="text-align:right">'. $item->price .'</td>
-                    <td style="text-align:right">'. number_format($item->amount * $item->price) .'</td>
-                    
-                </tr>';
-                $total += ($item->amount * $item->price);
-            endforeach; 
+            if ($model->type_member == 1) {
+                foreach($model_item as $item):
+                $strTR .= '   
+                    <tr>
+                        <td style="text-align:center">'. $item->product->name .'</td>
+                        <td style="text-align:right">'. $item->amount .'</td>
+                        <td style="text-align:right">'. $item->product->price .'</td>
+                        <td style="text-align:right">'. number_format($item->amount * $item->product->price,2) .'</td>
+                        
+                    </tr>';
+                    $total += ($item->amount * $item->product->price);
+                endforeach; 
+            } else {
+                foreach($model_item as $item):
+                $strTR .= '   
+                    <tr>
+                        <td style="text-align:center">'. $item->product->name .'</td>
+                        <td style="text-align:right">'. $item->amount .'</td>
+                        <td style="text-align:right">'. $item->product->price_member .'</td>
+                        <td style="text-align:right">'. number_format($item->amount * $item->product->price_member,2) .'</td>
+                        
+                    </tr>';
+                    $total += ($item->amount * $item->product->price_member);
+                endforeach;    
+            }
         }else{
             $strTR .= '   
                 <tr>
@@ -77,7 +91,7 @@ class PDFHelper {
                         <label class="span4"  style="padding-left: 22%;">รวม </label>
                         <div class="span8">                 
                             <div class="span8">
-                                <input class="span6" type="text" name="" value="'. number_format($total) .'"> บาท
+                                <input class="span6" type="text" name="" value="'. number_format($total,2) .'"> บาท
                         </div>
                         </div>
                     </div>
@@ -86,7 +100,7 @@ class PDFHelper {
                         <div class="span8">                 
                             <div class="span8">
                                 <input class="span6" type="text" name="" value="'. number_format($total * 0.07) .'"> บาท
-                        </div>
+                            </div>
                         </div>
                     </div>
                     <div class="span12" style="padding-left: 39%;">
@@ -94,22 +108,22 @@ class PDFHelper {
                             <div class="span8">                 
                                 <div class="span8">
                                     <input class="span6" type="text" name="" value="'. number_format(($total * 0.07) + $total) .'"> บาท
-                            </div>
+                                </div>
                             </div>
                     </div>
                     <div class="row-fluid" >
                           <div class="span5">
                             <label class="span4" style="padding-left: 12%;">วันที่รับสินค้า</label>
                             <div class="span8">
-                                    <input class="span6" type="text" name=""  >
+                                <input class="span6" type="text" name="data_get" value="'.$input_data['date_get'].'">
                             </div>
                            </div>
                         <div class="span7">
                         <label class="span4" style="padding-left: 12%;">ผู้รับสินค้า</label>
                         <div class="span8">                 
                             <div class="span8">
-                                <input class="span6" type="text" name=""  >
-                        </div>
+                                <input class="span6" type="text" name="get_by" value="'.$input_data['get_by'].'">
+                            </div>
                         </div>
                     </div>
                     </div>
@@ -117,20 +131,19 @@ class PDFHelper {
                           <div class="span5">
                             <label class="span4" style="padding-left: 12%;">วันที่ส่งสินค้า</label>
                             <div class="span8">
-                                    <input class="span6" type="text" name=""  >
+                                <input class="span6" type="text" name="date_send" value="'.$input_data['date_send'].'">
                             </div>
                            </div>
                         <div class="span7">
                         <label class="span4" style="padding-left: 12%;">ผู้ส่งสินค้า</label>
                         <div class="span8">                 
                             <div class="span8">
-                                <input class="span6" type="text" name=""  >
-                        </div>
+                                <input class="span6" type="text" name="send_by" value="'.$input_data['send_by'].'">
+                            </div>
                         </div>
                     </div>
                     </div>
             </div>
         </div>';
     }
-
 }

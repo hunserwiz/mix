@@ -41,7 +41,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('delete-product-order-item','OrderController@postDeleteitem');
     // order-report
     Route::get('order-report/{order_id}','OrderReportController@getReport');
-    Route::get('order-report-pdf/{order_id}','OrderReportController@getReportPDF');    
+    Route::get('order-report-pdf/{order_id}','OrderReportController@getReportPDF');  
     // finance
     Route::get('finance','FinanceController@getIndex');
     Route::get('form-finance','FinanceController@getForm');
@@ -115,6 +115,7 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('post-deposit','DepositController@postForm');
         Route::post('post-webboard','WebboardController@postForm');
         Route::post('post-comment','WebboardController@postFormComment');
+        Route::post('post-pdf','OrderReportController@postReportPDF'); 
     });
 
     Route::get('account/sign-out','AccountController@getSignOut');
