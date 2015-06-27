@@ -66,6 +66,13 @@ $(document).ready(function(){
  //        }
 	// });
 
+	$("#txt_keyword").keypress(function(e){ 
+	    if (e.keyCode == 13) {  //tab pressed
+	        e.preventDefault(); // stops its action
+	    }
+	}
+
+
 
 	function Search(page,keyword){
         $.ajax({
