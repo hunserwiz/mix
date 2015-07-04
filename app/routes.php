@@ -54,6 +54,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('edit-debtor/{id}','DebtorController@getFormEdit');
     Route::post('delete-debtor','DebtorController@postDelete');
     Route::post('search-debtor','DebtorController@postSearch');
+    // debtor report
+    Route::get('debtor-filter','DebtorReportController@getIndex');
     // sell
     Route::get('sell','SellController@getIndex');
     // product
@@ -107,6 +109,7 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('post-finance','FinanceController@postForm');
         Route::post('post-user','UserController@postForm');
         Route::post('post-debtor','DebtorController@postForm');
+        Route::post('post-debtor-report','DebtorReportController@postReport');
         Route::post('post-sell','SellController@postReport');
         Route::post('post-order-report','OrderReportController@postReport');
         Route::post('post-commition','CommitionController@postReport');

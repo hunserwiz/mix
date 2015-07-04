@@ -50,39 +50,39 @@
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][home]", $arr_data[$item->id]['home'],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control-home','placeholder'=>'กรอกจำนวน',
-                                            		'attr-type' =>'home')) }}	
+                                            		'class'=>'form-control-home numeric','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'home','maxlength'=>6)) }}	
                                             @else
                                             {{ Form::text("product[$item->id][home]", Input::old("product[$item->id][home]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control-home','placeholder'=>'กรอกจำนวน',
-                                            		'attr-type' =>'home')) }}	
+                                            		'class'=>'form-control-home numeric','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'home','maxlength'=>6)) }}	
                                             @endif						
 										</td>	
 										<td style="text-align:center">
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][box]", $arr_data[$item->id]['box'],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control-box','placeholder'=>'กรอกจำนวน',
-                                            		'attr-type' =>'box')) }}	
+                                            		'class'=>'form-control-box numeric','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'box','maxlength'=>6)) }}	
                                             @else
                                             {{ Form::text("product[$item->id][box]", Input::old("product[$item->id][box]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control-box','placeholder'=>'กรอกจำนวน',
-                                            		'attr-type' =>'box')) }}	
+                                            		'class'=>'form-control-box numeric','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'box','maxlength'=>6)) }}	
                                             @endif						
 										</td>	
 										<td style="text-align:center">
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][market]", $arr_data[$item->id]['market'],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control-market','placeholder'=>'กรอกจำนวน',
-                                            		'attr-type' =>'market')) }}	
+                                            		'class'=>'form-control-market numeric','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'market','maxlength'=>6)) }}	
                                             @else
                                             {{ Form::text("product[$item->id][market]", Input::old("product[$item->id][market]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control-market','placeholder'=>'กรอกจำนวน',
-                                            		'attr-type' =>'market')) }}	
+                                            		'class'=>'form-control-market numeric','placeholder'=>'กรอกจำนวน',
+                                            		'attr-type' =>'market','maxlength'=>6)) }}	
                                             @endif						
 										</td>							
 									</tr>

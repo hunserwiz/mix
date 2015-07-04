@@ -115,7 +115,7 @@
 				</div>
 			</div>
 			<div class="span6">
-				<label class="span4">เขตการขาย :</label>
+				<label class="span4">สาขา :</label>
 					<div class="span8">		
 					@if($model == null)
 						{{ Form::select('location_id', array(''=> 'กรุณาเลือก') + $list_location  , null , array('required'=>'',"class"=>"form-control")) }}			

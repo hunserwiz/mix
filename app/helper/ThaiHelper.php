@@ -281,8 +281,37 @@ class ThaiHelper {
         return $text_date;
     }
 
+    public static function getThaiMonth($month) {
+         switch ($month) {
+            case "01":$month = "มกราคม";
+                break;
+            case "02":$month = "กุมพาพันธ์";
+                break;
+            case "03":$month = "มีนาคม";
+                break;
+            case "04":$month = "เมษายน";
+                break;
+            case "05":$month = "พฤษภาคม";
+                break;
+            case "06":$month = "มิภุนายน";
+                break;
+            case "07":$month = "กรกฏาคม";
+                break;
+            case "08":$month = "สิงหาคม";
+                break;
+            case "09":$month = "กันยายน";
+                break;
+            case "10":$month = "ตุลาคม";
+                break;
+            case "11":$month = "พฤศจิกายน";
+                break;
+            case "12":$month = "ธันวาคม";
+                break;
+        }
+        return $month;
+    }
 
-       public function ChangThaiDateString($datetime) {
+    public function ChangThaiDateString($datetime) {
 
         list($d, $m, $y) = explode('/', $datetime); // แยกวันเป็น ปี เดือน วัน
          switch ($m) {
@@ -545,6 +574,9 @@ class ThaiHelper {
     public static function getLocationList($option = null){
         return array('1'=>'พัทยาเหนือ','2'=>'พัทยาใต้','3'=>'บ่อวิน');
     }
+    public static function getTypeDebtorList(){
+        return array('1'=>'ติดบิล','2'=>'ค้างจ่าย');
+    }
     public static function getTypeAccountList($option = null){
         return array('1'=>'รายรับ','2'=>'รายจ่าย','3'=>'อื่น ๆ','4'=>'เก็บหนี้ + จ่ายค้าง');
     }
@@ -585,6 +617,14 @@ class ThaiHelper {
     public static function GetUser($id){
           $model = User::find($id);
           return $model->name;
+    }
+
+    public static function GetFullName($id){
+        $model = User::find($id);
+        if ($model->count() > 0) 
+            return $model->first_name ." ". $model->last_name;
+        else
+            return false;
     }
 
     public static function GetAgent($id){

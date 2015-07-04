@@ -46,6 +46,7 @@ class OrderReportController extends BaseController {
 
         return View::make('orderReport.index',compact('day','month','year','list_agent','agent_id'));
     }
+    
     public function postReport() {
         $day = Input::get('day');
         $month = Input::get('month');

@@ -63,7 +63,8 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">บัญชี <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url('finance') }}">บัญชีรายรับ - รายจ่าย</a></li>
-                  <li><a href="{{ url('debtor') }}">ลูกหนี้</a></li>
+                  <li><a href="{{ url('debtor') }}">รายการลูกหนี้</a></li>
+                  <li><a href="{{ url('debtor-filter') }}">ดูข้อมูลลูกหนี้</a></li>
                   <li><a href="{{ url('sell') }}">sell</a></li>
               </ul>
               </li>
@@ -134,5 +135,8 @@ $(document).keydown(function(objEvent) {
     if (objEvent.keyCode == 9) {  //tab pressed
         objEvent.preventDefault(); // stops its action
     }
+    $('.numeric').on('input', function (event) { 
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
 });
 </script>

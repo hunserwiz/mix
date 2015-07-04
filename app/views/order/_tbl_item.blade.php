@@ -27,11 +27,11 @@
 											@if($mode == 'edit')
 											{{ Form::text("product[$item->id][amount]", $arr_data[$item->id],
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน')) }}	
+                                            		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
                                             @else
                                             {{ Form::text("product[$item->id][amount]", Input::old("product[$item->id][amount]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control','placeholder'=>'กรอกจำนวน')) }}	
+                                            		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
                                             @endif						
 											<!-- <input type='button' id='del_{{ $item->id }}' data-order-item-id='{{ $item->id }}' class='btn btn-danger' value='ลบ'> -->
 										</td>							

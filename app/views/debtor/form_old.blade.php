@@ -19,27 +19,17 @@
 		<!-- ################################################################################ -->
 			<div class="row-fluid" >
 					<div class="span6">
-						<label class="span4"> วันที่ติดหนี้  :</label>
+						<label class="span4"> วันที่ลงข้อมูล  :</label>
 						<div class="span8">		
 						@if($model == null)			
 							{{ Form::text('date_debtor', Input::old('date_debtor'),
-                                            array("id"=>"date_debtor",'required'=>'','class'=>'date-picker form-control','placeholder'=>'วันที่ติดหนี้')) }}
+                                            array("id"=>"date_debtor",'required'=>'','class'=>'date-picker form-control','placeholder'=>'วันที่ลงข้อมูล')) }}
 						@else
 							{{ Form::text('date_debtor', $model->date_debtor,
-                                            array("id"=>"date_debtor",'required'=>'','class'=>'date-picker form-control','placeholder'=>'วันที่ติดหนี้')) }}
+                                            array("id"=>"date_debtor",'required'=>'','class'=>'date-picker form-control','placeholder'=>'วันที่ลงข้อมูล')) }}
 						@endif
 						</div>
 					</div>
-					<div class="span6">
-						<label class="span4">สาขา :</label>
-						<div class="span8">		
-						@if($model == null)
-							{{ Form::select('branch_id', array(''=> 'กรุณาเลือก') + $list_location  , null , array('required'=>'',"class"=>"form-control")) }}			
-						@else
-							{{ Form::select('branch_id', array(''=> 'กรุณาเลือก') + $list_location  , $model->branch_id , array('required'=>'',"class"=>"form-control")) }}			
-						@endif				
-						</div>
-			</div>
 			</div>
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >
@@ -53,32 +43,39 @@
 						@endif			
 						</div>
 					</div>
-					<div class="span6">
-						<label class="span4"> ประเภทคงค้าง :</label>
-						<div class="span8">
-							@if($model == null)			
-							{{ Form::select('type_debtor', array(''=> 'กรุณาเลือก') + $list_type_debtor  , null, array('required'=>'',"class"=>"form-control")) }}			
-						@else
-							{{ Form::select('type_debtor', array(''=> 'กรุณาเลือก') + $list_type_debtor  , $model->type_debtor , array('required'=>'',"class"=>"form-control")) }}			
-						@endif		
-						</div>
-					</div>
-					
 			</div>
 			<!-- ################################################################################ -->
 			<div class="row-fluid" >
+					<div class="span6">
+						<label class="span4">  วันที่จ่ายเงินค้างชำระ  :</label>
+						<div class="span8">		
+						@if($model == null)			
+							{{ Form::text('date_pay', Input::old('date_pay'),
+                                            array("id"=>"date_pay",'required'=>'','class'=>'date-picker form-control','placeholder'=>' วันที่จ่ายเงินค้างชำระ')) }}
+						@else
+							{{ Form::text('date_pay', $model->date_pay,
+                                            array("id"=>"date_pay",'required'=>'','class'=>'date-picker form-control','placeholder'=>' วันที่จ่ายเงินค้างชำระ')) }}
+						@endif
+						</div>
+					</div>
+			</div>
+    	<!-- ################################################################################ -->
+			<div class="row-fluid" >
 				<div class="span6">
-					<label class="span4">  จำนวนเงินที่ค้าง :</label>
+					<label class="span4">  จำนวนเงินที่ค้างชำระ :</label>
 					<div class="span8">
 						@if($model == null)			
 							{{ Form::text('payable', Input::old('payable'),
-                                            array("id"=>"payable",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่ค้าง')) }}
+                                            array("id"=>"payable",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่ค้างชำระ')) }}
 						@else
 							{{ Form::text('payable', $model->payable,
-                                            array("id"=>"payable",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่ค้าง')) }}
+                                            array("id"=>"payable",'required'=>'','class'=>'form-control','placeholder'=>'กรอกจำนวนเงินที่ค้างชำระ')) }}
 						@endif						
 					</div>
 				</div>
+			</div>
+			 	<!-- ################################################################################ -->
+			<div class="row-fluid" >
 				<div class="span6">
 					<label class="span4">   จำนวนเงินที่จ่าย :</label>
 					<div class="span8">
@@ -92,32 +89,7 @@
 					</div>
 				</div>
 			</div>
-    	<!-- ################################################################################ -->
-			<div class="row-fluid" >
-				<div class="span6">
-					<label class="span4">  วันที่จ่ายเงินค้างชำระ  :</label>
-					<div class="span8">		
-					@if($model == null)			
-						{{ Form::text('date_pay', Input::old('date_pay'),
-                                           array("id"=>"date_pay",'required'=>'','class'=>'date-picker form-control','placeholder'=>' วันที่จ่ายเงินค้างชำระ')) }}
-					@else
-						{{ Form::text('date_pay', $model->date_pay,
-                                            array("id"=>"date_pay",'required'=>'','class'=>'date-picker form-control','placeholder'=>' วันที่จ่ายเงินค้างชำระ')) }}
-					@endif
-					</div>
-				</div>
-				<div class="span6">
-					<label class="span4">  เจ้าหน้ารับเงิน :</label>
-				<div class="span8">
-					@if($model == null)			
-						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user_operate  , null, array('required'=>'',"class"=>"form-control")) }}			
-					@else
-						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user_operate  , $model->create_by , array('required'=>'',"class"=>"form-control")) }}			
-					@endif	
-				</div>
-				</div>
-			</div>
-			<!-- ################################################################################ -->
+ 		<!-- ################################################################################ -->
 			<div class="row-fluid" >
 				<div class="span6">
 					<label class="span4"> รายละเอียด :</label>
@@ -132,6 +104,20 @@
 					</div>
 				</div>
 			</div>
+		<!-- ################################################################################ -->
+		<div class="row-fluid" >
+			<div class="span6">
+				<label class="span4">  เจ้าหน้ารับเงิน :</label>
+				<div class="span8">
+					@if($model == null)			
+						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user_operate  , null, array('required'=>'',"class"=>"form-control")) }}			
+					@else
+						{{ Form::select('create_by', array(''=> 'กรุณาเลือก') + $list_user_operate  , $model->create_by , array('required'=>'',"class"=>"form-control")) }}			
+					@endif	
+				</div>
+			</div>
+		</div>
+
 		<div class="text-center">
 		 	{{ Form::submit('บันทึก',array('class'=>'btn btn-success')) }}
 {{ Form::Close() }}

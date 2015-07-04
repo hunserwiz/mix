@@ -101,10 +101,12 @@ class DebtorController extends BaseController {
 
     public function getForm() {
         $model = null;
+        $list_location = ThaiHelper::getLocationList();
+        $list_type_debtor = ThaiHelper::getTypeDebtorList();
         $list_user_operate = User::where('user_type','=',2)->lists('name','id');  
         $list_user = User::where('user_type','=',3)->lists('name','id');  
         
-        return View::make('debtor.form',compact('model','list_user','list_user_operate'));
+        return View::make('debtor.form',compact('model','list_user','list_user_operate','list_location','list_type_debtor'));
     }
 
     public function getFormEdit($id) {
@@ -113,8 +115,10 @@ class DebtorController extends BaseController {
         $model = Debtor::find($id);
         $model->date_debtor = ThaiHelper::DateToShowForm($model->date_debtor);
         $model->date_pay = ThaiHelper::DateToShowForm($model->date_pay);
+        $list_location = ThaiHelper::getLocationList();
+        $list_type_debtor = ThaiHelper::getTypeDebtorList();
 
-        return View::make('debtor.form',compact('model','list_user','list_user_operate'));
+        return View::make('debtor.form',compact('model','list_user','list_user_operate','list_location','list_type_debtor'));
     }
 
     public function postForm() {
@@ -126,6 +130,8 @@ class DebtorController extends BaseController {
                 $model->date_debtor = ThaiHelper::DateToDB(Input::get('date_debtor'));
                 $model->date_pay = ThaiHelper::DateToDB(Input::get('date_pay'));
                 $model->debtor_id = Input::get('debtor_id');
+                $model->branch_id = Input::get('branch_id');
+                $model->type_debtor = Input::get('type_debtor');
                 $model->payable = Input::get('payable');
                 $model->pay = Input::get('pay');
                 $model->detail = Input::get('detail');
@@ -138,6 +144,8 @@ class DebtorController extends BaseController {
                 $model->date_debtor = ThaiHelper::DateToDB(Input::get('date_debtor'));
                 $model->date_pay = ThaiHelper::DateToDB(Input::get('date_pay'));
                 $model->debtor_id = Input::get('debtor_id');
+                $model->branch_id = Input::get('branch_id');
+                $model->type_debtor = Input::get('type_debtor');
                 $model->payable = Input::get('payable');
                 $model->pay = Input::get('pay');
                 $model->detail = Input::get('detail');

@@ -15,4 +15,12 @@ class BaseController extends Controller {
 		}
 	}
 
+	function alert($data, $die = false) {
+		echo "<pre>";
+	    print_r($data);
+	    echo "</pre>";
+	    if ($die)
+	    die();
+	}
+
 }
