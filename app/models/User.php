@@ -33,8 +33,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
             // 'organization_tel' => 'required|regex:/^\(?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/',
             'email' => 'required|email|max:50',
             'username' => 'required|min:4|max:10',
-            'password' => 'required|min:6',
-            'password_again' => 'required|same:password|min:6',
+            'password' => 'required|min:6|max:10',
+            'password_again' => 'required|same:password|min:6|max:10',
         );
 
         return Validator::make($input, $rules,ThaiHelper::getValidationMessage());

@@ -22,12 +22,15 @@ class UserController extends BaseController {
         $skip = ($arr_page['user'] - 1) * $arr_perpage['user'];
 
         $model = User::orderBy('created_at', 'desc')->skip($skip)->take($arr_perpage['user'])->get();
-
+        
         $count_model = User::count();                
 
         $arr_count_page['user'] = ceil($count_model/$arr_perpage['user']); 
         $arr_list_page = ThaiHelper::getArrListPage($arr_page['user'],$arr_count_page['user']);
 
+        // $this->alert($arr_page['user']);
+        // $this->alert($arr_count_page['user']);
+        // $this->alert($arr_list_page);
         return View::make('account.index',compact(
                                         'model',
                                         'count_model',
@@ -135,6 +138,10 @@ class UserController extends BaseController {
                 }
             }
         } else {
+            // echo "<pre>";
+            // print_r($validation->errors());
+            // echo "</pre>";
+            // die('11');
             if (Input::get('id')) {
                 return Redirect::action('UserController@getFormEdit',Input::get('id'))
                             ->withErrors($validation)

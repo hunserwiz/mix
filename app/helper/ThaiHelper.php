@@ -514,7 +514,6 @@ class ThaiHelper {
     public static function getPaginationLink($name,$arr_page,$arr_count_page,$arr_list_page){
         $result = '';
         if ($arr_count_page > 1){
-            // $result .= '<div class="text-center">';
                 $result .= '<ul class="pagination '.$name.'">';
                     if ($arr_page == 1){
                         $result .= '<li class="disabled"><span>«</span></li>';
@@ -540,11 +539,11 @@ class ThaiHelper {
                         $result .= '<li><a id="'.$name.'_page_'. ($arr_page + 1) .'" href="#">»</a></li>'; 
                     }
                 $result .= '</ul>';
-            // $result .= '</div>';
         }
 
         return $result;
     }
+    
     public static function getDataList($name = null){
         $arr = array();
         if($name == 'prefix'){

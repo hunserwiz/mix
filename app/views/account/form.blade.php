@@ -141,8 +141,8 @@
 				<div class="span6">
 					<label class="span4"> รหัสผ่าน :</label>
 					<div class="span8">				
-							{{ Form::password('password', Input::old('password'),
-                                            array("id"=>"password",'class'=>'form-control','placeholder'=>'กรอกรหัสผ่าน')) }}.
+							{{ Form::password('password', null ,
+                                            array("id"=>"password",'class'=>'form-control','placeholder'=>'กรอกรหัสผ่าน','minlength'=>'6','maxlength'=>'12')) }}.
 						@if($errors->has('password'))
 										<span id='span_password'>
 								        </span>
@@ -158,8 +158,8 @@
 				<div class="span6">
 					<label class="span4"> ยืนยันรหัสผ่าน :</label>
 					<div class="span8">		
-							{{ Form::password('password_again', Input::old('password_again'),
-                                            array("id"=>"password_again",'class'=>'form-control','placeholder'=>'กรอกรหัสผ่าน อีกครั้ง')) }}
+							{{ Form::password('password_again', null,
+                                            array("id"=>"password_again",'class'=>'form-control','placeholder'=>'กรอกรหัสผ่าน อีกครั้ง','minlength'=>'6','maxlength'=>'12')) }}
 						@if($errors->has('password_again'))
 										<span id='span_password_again'>
 								        </span>

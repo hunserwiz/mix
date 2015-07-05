@@ -175,21 +175,36 @@ class OrderController extends BaseController {
                 if($model->save()){
                     if(Input::get('product')){
                         foreach (Input::get('product') as $product_id => $value) {
-                            if($value['amount'] > 0){
+                            if($value['amount'] >= 0){
                                 $model_order_item = OrderItem::where('order_id','=',Input::get('order_id'))
                                                                ->where('product_id','=', $product_id)
                                                                ->first();
-                                if($value['amount'] > $model_order_item->amount) {                               
-                                    $diff = $value['amount'] - $model_order_item->amount;
-                                    $model_order_item->amount += $diff;
+                                if (!empty($model_order_item)) {
+                                    if($value['amount'] > $model_order_item->amount) {                               
+                                        $diff = $value['amount'] - $model_order_item->amount;
+                                        $model_order_item->amount += $diff;
+                                        if($model_order_item->save()){
+                                            $model_product = Product::find($product_id);
+                                            if($model_product->count() > 0){
+                                                $model_product->product_balance -= $diff;
+                                                $model_product->save();
+                                            }   
+                                        }
+                                    }
+                                } else {
+                                    $model_order_item = new OrderItem();
+                                    $model_order_item->order_id     = $model->order_id;
+                                    $model_order_item->product_id   = $product_id;
+                                    $model_order_item->amount       = $value['amount'];
                                     if($model_order_item->save()){
                                         $model_product = Product::find($product_id);
                                         if($model_product->count() > 0){
-                                            $model_product->product_balance -= $diff;
+                                            $model_product->product_balance -= $value['amount'];
                                             $model_product->save();
                                         }   
                                     }
-                                }
+                                }                            
+                                
                             }
                         }
                     }
@@ -209,7 +224,7 @@ class OrderController extends BaseController {
                 if($model->save()){
                     if(Input::get('product')){
                         foreach (Input::get('product') as $product_id => $value) {
-                            if($value['amount'] > 0){
+                            if($value['amount'] >= 0){
                                 $model_order_item = new OrderItem();
                                 $model_order_item->order_id = $model->order_id;
                                 $model_order_item->product_id = $product_id;

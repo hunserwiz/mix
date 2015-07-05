@@ -55,17 +55,6 @@ $(document).ready(function(){
             Search(1,keyword,keytype);
     });
 
-    $("ul.pagination.user li a").click(function(){
-            var arr_id = (this.id).split("_");
-            var page = arr_id.pop();
-            var keyword = "{{ $keyword }}";
-            var keytype = "{{ $keytype }}";
-
-            SearchShop(page,keyword,keytype);
-
-            return false;
-        });
-
     $("#txt_keytype").change(function(){
             var keytype = $("#txt_keytype").val();
             Search(1,null,keytype);
@@ -79,17 +68,6 @@ $(document).ready(function(){
             }
 	});
 
-
-	function Search(page,keyword,keytype){
-            $.ajax({
-                type:"POST",
-                url:"{{ url('search-user') }}",
-                data:{ page: page, perpage: perpage, keyword: keyword , keytype:keytype},
-                success:function(result){
-                    $("div#tbl").html(result);
-                }
-            });
-	}
 });
 </script>
 @stop
