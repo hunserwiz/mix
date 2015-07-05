@@ -25,10 +25,16 @@
 										</td>
 										<td style="text-align:center">
 											@if($mode == 'edit')
-											{{ Form::text("product[$item->id][amount]", $arr_data[$item->id],
-                                            		array("id"=>"product_$item->id",'required'=>'',
-                                            		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
-                                            @else
+												@if(!empty($arr_data[$item->id]))
+												{{ Form::text("product[$item->id][amount]", $arr_data[$item->id] ,
+	                                            		array("id"=>"product_$item->id",'required'=>'',
+	                                            		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
+                                            	@else
+                                            	{{ Form::text("product[$item->id][amount]", null ,
+	                                            		array("id"=>"product_$item->id",'required'=>'',
+	                                            		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
+                                            	@endif
+                                            @else	
                                             {{ Form::text("product[$item->id][amount]", Input::old("product[$item->id][amount]") ,
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	

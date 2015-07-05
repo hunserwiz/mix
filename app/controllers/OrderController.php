@@ -148,10 +148,10 @@ class OrderController extends BaseController {
             }
         } else if($model_product->count() > 0){
             foreach ($model_product as $key => $value) {
-                $arr_data[$value->id] = '';
+                $arr_data[$value->id] = null;
             }
         }
-
+        // $this->alert($arr_data,1);
         return View::make('order.form',compact('model','model_item','model_product','mode','list_product',
             'list_categorise','list_agent','list_location','list_user','type_member','arr_data'));
     }
