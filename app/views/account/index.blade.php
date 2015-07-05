@@ -65,8 +65,20 @@ $(document).ready(function(){
                 var keyword = $("#txt_keyword").val();
                 var keytype = $("#txt_keytype").val();
                 Search(1,keyword,keytype);
+                return false;
             }
 	});
+
+	function Search(page,keyword,keytype){
+            $.ajax({
+                type:"POST",
+                url:"{{ url('search-user') }}",
+                data:{ page: page, perpage: perpage, keyword: keyword , keytype:keytype},
+                success:function(result){
+                    $("div#tbl").html(result);
+                }
+         	});
+        }
 
 });
 </script>
