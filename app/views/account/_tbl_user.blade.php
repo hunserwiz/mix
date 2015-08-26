@@ -17,7 +17,7 @@
 								<td style="text-align:center">
 								<!-- 	<span class="" >
 										<a href="#" id="view_{{ $data->id }}" data-user-id='{{ $data->order_idid }}' title="view">
-											<i class="icon-eye-open"></i>
+											<i class="icon-esye-open"></i>
 										</a>
 									</span> -->
 									@if(ThaiHelper::CheckRight())
@@ -26,11 +26,13 @@
 											<i class="icon-edit"></i>
 										</a>
 									</span>
+									@if($data->user_type != 1)
 									<span class="" >
 										<a id='del_{{ $data->id }}' data-user-id='{{ $data->id }}' href="#" title="">
 											<i class="icon-trash"></i>
 										</a>
 									</span>
+									@endif
 									@endif
 								</td>							
 							</tr>
