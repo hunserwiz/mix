@@ -29,7 +29,7 @@
 	                                            		array("id"=>"product_$item->id",'required'=>'',
 	                                            		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
                                             @else	
-                                            {{ Form::text("product[$item->id][amount]", Input::old("product[$item->id][amount]") ,
+                                            {{ Form::text("product[$item->id][amount]", Input::old("product[$item->id][amount]") ? '' : 0,
                                             		array("id"=>"product_$item->id",'required'=>'',
                                             		'class'=>'form-control numeric','placeholder'=>'กรอกจำนวน','maxlength'=>6)) }}	
                                             @endif						

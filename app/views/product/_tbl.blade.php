@@ -67,6 +67,8 @@ $(document).ready(function(){
                                         $("div#tbl").html(r);
                                     }
                             });
+                        } else {
+                        	alert("สินค้านี้ มีการใช้งานอยู่ในระบบ ไม่สามารถลบได้");
                         }
                     }
                 });     

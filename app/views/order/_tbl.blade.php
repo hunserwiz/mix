@@ -79,6 +79,7 @@ $(document).ready(function(){
 	        });
 	    });
 	    // closemodal //
+	    var perpage = {{ $arr_perpage['order'] }};
         // ============= Delete ==============
         $("[id^='del']").click(function(){
         var result = confirm("คุณต้องการลบข้อมูลหรือไม่?");
@@ -100,6 +101,8 @@ $(document).ready(function(){
                                         $("div#tbl").html(r);
                                     }
                             });
+                        } else {
+                        	alert("กรุณาลองใหม่อีกครั้ง")
                         }
                     }
                 });     

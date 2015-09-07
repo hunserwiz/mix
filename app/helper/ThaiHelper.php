@@ -615,6 +615,7 @@ class ThaiHelper {
     
     public static function GetUser($id){
           $model = User::find($id);
+          if (!empty($model->name))
           return $model->name;
     }
 

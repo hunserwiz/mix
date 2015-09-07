@@ -35,12 +35,16 @@ class Product extends Eloquent {
 
         return $attributes_name;
     }
-    public function stock(){
-          return $this->hasOne('Stock');
+    public function productReturnItem(){
+          return $this->hasMany('ProductReturnItem');
     }
 
-    public function orders(){
-          return $this->hasOne('Order');
+    public function ordersItem(){
+          return $this->hasMany('OrderItem');
+    }
+
+    public function depositItem(){
+          return $this->hasMany('DepositItem');
     }
 
     public function categorise($categorise_id){

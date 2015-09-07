@@ -126,8 +126,12 @@ class ProductController extends BaseController {
     public function postDelete() {
         $id = Input::get('id');
         $model = Product::find($id);
-        $model->delete();
-        return Response::json(array('status' => 'success'));        
+        if ($model->depositItem()->count() == 0 && $model->ordersItem()->count() == 0 && $model->productReturnItem()->count() == 0) {
+            $model->delete();
+            return Response::json(array('status' => 'success'));        
+        } else {
+            return Response::json(array('status' => 'fail'));        
+        }
     }
 
 

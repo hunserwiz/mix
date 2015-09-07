@@ -295,6 +295,8 @@ class OrderController extends BaseController {
         $model= Order::find($order_id);
         if($model->delete()){
             return Response::json(array('status' => 'success'));
+        } else {
+            return Response::json(array('status' => 'fail'));
         }
     }
 
